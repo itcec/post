@@ -228,7 +228,8 @@
     }
 
     container.innerHTML = rooms.map((room, idx) => `
-      <div class="admin-list-item anim-fade-in" style="animation-delay: ${idx * 0.05}s">
+      <div class="admin-list-item anim-fade-in" draggable="true" data-id="${room.id}" data-index="${idx}">
+        <span class="material-symbols-outlined admin-drag-handle" title="Drag to reorder schedule">drag_indicator</span>
         <div class="admin-list-item-content">
           <span style="display:inline-flex;align-items:center;justify-content:center;width:48px;height:32px;border-radius:4px;background:rgba(91,141,239,0.15);color:var(--accent-blue);font-family:var(--font-display);font-weight:700;font-size:13px;flex-shrink:0">${escapeHtml(room.room)}</span>
           <div class="admin-list-item-text">
@@ -246,6 +247,8 @@
         </div>
       </div>
     `).join('');
+
+    setupListDragAndDrop('rooms-list', 'roomSchedule', renderRoomList, 'Schedules reordered and saved!');
   }
 
   function saveOrAddRoom() {
@@ -433,7 +436,8 @@
       const sizeDisplay = item.fontSize && item.fontSize !== 'auto' ? item.fontSize : 'Auto';
 
       return `
-        <div class="admin-list-item anim-fade-in" style="animation-delay: ${idx * 0.05}s">
+        <div class="admin-list-item anim-fade-in" draggable="true" data-id="${item.id}" data-index="${idx}">
+          <span class="material-symbols-outlined admin-drag-handle" title="Drag to reorder notice">drag_indicator</span>
           <div class="admin-list-item-content">
             <span class="material-symbols-outlined" style="color:${colorHex};font-size:22px;flex-shrink:0;margin-top:2px;">${iconName}</span>
             <div class="admin-list-item-text" style="flex:1;min-width:0;">
@@ -456,6 +460,8 @@
         </div>
       `;
     }).join('');
+
+    setupListDragAndDrop('announcements-list', 'announcements', renderAnnouncementList, 'Notices reordered and saved!');
   }
 
   function addAnnouncement() {
@@ -793,6 +799,102 @@
       toast.style.transform = 'translateY(20px)';
       toast.style.opacity = '0';
     }, 2500);
+  }
+
+  // ================================================================
+  // DRAG AND DROP REARRANGEMENT HELPER
+  // ================================================================
+  function setupListDragAndDrop(containerId, storageKey, renderCallback, successMessage) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const items = container.querySelectorAll('.admin-list-item[draggable="true"]');
+    let draggedItem = null;
+    let draggedIndex = null;
+
+    items.forEach(item => {
+      item.addEventListener('dragstart', e => {
+        draggedItem = item;
+        draggedIndex = parseInt(item.getAttribute('data-index'));
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', draggedIndex.toString());
+        
+        // Add visual cue
+        setTimeout(() => {
+          item.classList.add('is-dragging');
+        }, 10);
+      });
+
+      item.addEventListener('dragend', () => {
+        item.classList.remove('is-dragging');
+        items.forEach(el => el.classList.remove('drag-over-top', 'drag-over-bottom'));
+        draggedItem = null;
+        draggedIndex = null;
+      });
+
+      item.addEventListener('dragover', e => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+
+        if (!draggedItem || draggedItem === item) return;
+
+        const rect = item.getBoundingClientRect();
+        const midpoint = rect.top + rect.height / 2;
+
+        if (e.clientY < midpoint) {
+          item.classList.add('drag-over-top');
+          item.classList.remove('drag-over-bottom');
+        } else {
+          item.classList.add('drag-over-bottom');
+          item.classList.remove('drag-over-top');
+        }
+      });
+
+      item.addEventListener('dragleave', () => {
+        item.classList.remove('drag-over-top', 'drag-over-bottom');
+      });
+
+      item.addEventListener('drop', e => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        items.forEach(el => el.classList.remove('drag-over-top', 'drag-over-bottom'));
+
+        if (!draggedItem || draggedItem === item) return;
+
+        const targetIndex = parseInt(item.getAttribute('data-index'));
+        const rect = item.getBoundingClientRect();
+        const midpoint = rect.top + rect.height / 2;
+        const placeAfter = e.clientY >= midpoint;
+
+        let listData = getData(storageKey);
+        if (!Array.isArray(listData) || draggedIndex === null || isNaN(draggedIndex)) return;
+
+        // Remove item from source
+        const [movedItem] = listData.splice(draggedIndex, 1);
+        
+        // Calculate new insert position
+        let newIndex = targetIndex;
+        if (draggedIndex < targetIndex && !placeAfter) {
+          newIndex = targetIndex - 1;
+        } else if (draggedIndex > targetIndex && placeAfter) {
+          newIndex = targetIndex + 1;
+        }
+
+        // Clamp index
+        newIndex = Math.max(0, Math.min(listData.length, newIndex));
+        listData.splice(newIndex, 0, movedItem);
+
+        // Save locally and automatically sync to Google Sheets
+        setData(storageKey, listData);
+        showSaveToast(successMessage || 'Order updated and saved!');
+
+        // Refresh UI
+        if (typeof renderCallback === 'function') {
+          renderCallback();
+        }
+      });
+    });
   }
 
   // ---- Helpers ----
