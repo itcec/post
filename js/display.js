@@ -334,26 +334,19 @@
   function renderOfficeHours() {
     const data = getData('officeHours');
     const container = document.getElementById('office-hours-content');
-    const pctEl = document.getElementById('office-status-pct');
     if (!container) return;
 
     let statusClass = 'available';
     let statusText = 'Available';
-    let pctVal = '88%';
     if (data.status === 'busy') { 
       statusClass = 'busy'; 
       statusText = 'In Meeting'; 
-      pctVal = '45%';
     } else if (data.status === 'closed') { 
       statusClass = 'closed'; 
       statusText = 'Closed'; 
-      pctVal = '10%';
     } else { 
       statusText = 'Available'; 
-      pctVal = '90%';
     }
-
-    if (pctEl) pctEl.textContent = pctVal;
 
     const pillEl = document.getElementById('office-status-pill');
     if (pillEl) {
@@ -384,7 +377,7 @@
     if (!container) return;
 
     if (counterEl) {
-      counterEl.textContent = `${data.length} Milestone${data.length === 1 ? '' : 's'}`;
+      counterEl.textContent = `${data.length} Event${data.length === 1 ? '' : 's'}`;
     }
 
     if (data.length === 0) {
@@ -415,27 +408,6 @@
       </div>
     `).join('');
   }
-
-  // Switch Schedule Tab (Month vs Today)
-  window._switchScheduleTab = function(tab) {
-    const btnMonth = document.getElementById('tab-month');
-    const btnToday = document.getElementById('tab-today');
-    if (tab === 'today') {
-      if (btnMonth) btnMonth.classList.remove('active');
-      if (btnToday) btnToday.classList.add('active');
-      // Filter or highlight today
-      const todayText = new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit' }).toUpperCase();
-      const allItems = document.querySelectorAll('.month-schedule-item');
-      allItems.forEach(el => {
-        el.style.opacity = el.textContent.includes(todayText) ? '1' : '0.6';
-      });
-    } else {
-      if (btnMonth) btnMonth.classList.add('active');
-      if (btnToday) btnToday.classList.remove('active');
-      const allItems = document.querySelectorAll('.month-schedule-item');
-      allItems.forEach(el => el.style.opacity = '1');
-    }
-  };
 
   // ---- Sidebar: Announcements ----
   function renderAnnouncements() {

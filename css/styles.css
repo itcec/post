@@ -69,7 +69,41 @@
   
   /* Layout Dimensions */
   --topbar-height: 64px;
+  --header-height: 72px;
   --footer-height: 48px;
+
+  /* Aliases & Spacing for Admin & Components */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+
+  --bg-primary: #140e0d;
+  --bg-card: rgba(28, 20, 18, 0.78);
+  --bg-surface: rgba(36, 25, 22, 0.65);
+  --bg-surface-high: rgba(48, 33, 29, 0.78);
+  --bg-surface-highest: rgba(60, 42, 37, 0.85);
+
+  --border-subtle: rgba(255, 230, 215, 0.10);
+  --border-medium: rgba(255, 230, 215, 0.18);
+  --border-accent: rgba(252, 163, 17, 0.40);
+
+  --accent-gold: var(--accent-warm);
+  --accent-gold-dim: var(--accent-warm-dim);
+  --accent-red: var(--status-alert);
+  --accent-red-dim: #d93838;
+  --accent-red-container: var(--status-alert-bg);
+  --text-on-gold: #1a0e05;
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 6px 16px rgba(0, 0, 0, 0.35);
+  --shadow-xl: 0 16px 36px rgba(0, 0, 0, 0.55);
+  --shadow-glow-gold: 0 0 24px rgba(252, 163, 17, 0.25);
 }
 
 /* Base Reset */
@@ -120,39 +154,146 @@ body:not(.admin-body) {
 }
 
 /* ================================================================
-   MISSION DASHBOARD CONTAINER (Full-Bleed Viewport Grid)
+   TV SIGNAGE CONTAINER (Strict 75% Left / 25% Right Column)
    ================================================================ */
-body.mission-dashboard {
-  background: var(--bg-dark-gradient);
+.tv-screen-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  z-index: 10;
+}
+
+/* ---------- LEFT 75% COLUMN (Header, Carousel, Flash Footer) ---------- */
+.tv-left-column {
+  flex: 0 0 75%;
+  width: 75%;
+  max-width: 75%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  position: relative;
   overflow: hidden;
+  position: relative;
+  border-right: 1px solid rgba(255, 230, 215, 0.12);
+  background: rgba(14, 10, 9, 0.45);
 }
 
 /* ================================================================
-   TOP BAR: MISSION CONTROL STATUS & NAV
+   SITE HEADER (Clean 75% Header: Time on Left, Title & Logos on Right)
    ================================================================ */
-.mission-topbar {
-  height: var(--topbar-height);
+.site-header {
+  height: 72px;
+  flex-shrink: 0;
+  width: 100%;
   padding: 0 24px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  background: rgba(20, 14, 13, 0.75);
+  background: rgba(24, 16, 14, 0.78);
   backdrop-filter: var(--filter-blur-smooth);
   -webkit-backdrop-filter: var(--filter-blur-smooth);
-  border-bottom: var(--border-glass-subtle);
+  border-bottom: 1px solid rgba(255, 230, 215, 0.10);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
   position: relative;
-  z-index: 40;
-  flex-shrink: 0;
+  z-index: 30;
 }
 
-.topbar-left {
+.header-content {
   display: flex;
   align-items: center;
-  gap: 14px;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* Time on Left */
+.header-time-block {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.clock-display {
+  display: flex;
+  align-items: baseline;
+  font-family: var(--font-display);
+}
+
+.clock-time {
+  font-size: 34px;
+  font-weight: 300;
+  color: var(--text-pure);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.clock-colon {
+  font-size: 30px;
+  color: var(--accent-warm);
+  animation: pulse-blink 1.5s ease-in-out infinite;
+  margin: 0 2px;
+}
+
+.clock-ampm {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-warm);
+  margin-left: 6px;
+  letter-spacing: 0.04em;
+}
+
+.date-display {
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid rgba(255, 230, 215, 0.14);
+  padding-left: 16px;
+}
+
+.date-day {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1.1;
+}
+
+.date-full {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 2px;
+}
+
+/* Title & Logos on Right */
+.header-branding {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-title-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.header-title-wrap h1 {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--text-pure);
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+.header-title-wrap .subtitle {
+  font-size: 11px;
+  color: var(--accent-warm);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .header-logos {
@@ -162,533 +303,21 @@ body.mission-dashboard {
 }
 
 .header-logos img {
-  height: 38px;
+  height: 42px;
   width: auto;
   object-fit: contain;
-  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));
-}
-
-.mission-brand {
-  display: flex;
-  flex-direction: column;
-}
-
-.brand-title {
-  font-family: var(--font-display);
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: var(--text-pure);
-}
-
-.brand-mark {
-  font-size: 10px;
-  vertical-align: super;
-  color: var(--accent-warm);
-}
-
-.brand-sub {
-  font-size: 9.5px;
-  letter-spacing: 0.14em;
-  color: var(--text-muted);
-  font-weight: 600;
-}
-
-/* Center Nav-Style Section Labels */
-.topbar-nav {
-  display: flex;
-  align-items: center;
-  gap: 28px;
-}
-
-.nav-link {
-  font-family: var(--font-display);
-  font-size: 12.5px;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  color: var(--text-muted);
-  cursor: default;
-  transition: color 0.2s ease;
-}
-
-.nav-link.active {
-  color: var(--text-pure);
-  font-weight: 600;
-}
-
-/* Right Status, Clock, Avatar */
-.topbar-right {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.update-badge {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--font-display);
-  font-size: 11px;
-}
-
-.update-label {
-  color: var(--text-muted);
-  letter-spacing: 0.08em;
-}
-
-.update-time {
-  color: var(--text-secondary);
-  font-weight: 600;
-}
-
-.topbar-divider {
-  width: 1px;
-  height: 18px;
-  background: rgba(255, 230, 215, 0.12);
-}
-
-.mission-clock {
-  display: flex;
-  align-items: baseline;
-  font-family: var(--font-display);
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--text-pure);
-  letter-spacing: 0.02em;
-}
-
-.clock-colon {
-  animation: pulse-blink 1.5s ease-in-out infinite;
-  color: var(--accent-warm);
-  margin: 0 1px;
-}
-
-.clock-ampm {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--accent-warm);
-  margin-left: 4px;
-}
-
-.topbar-icon-btn {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  color: var(--text-secondary);
-}
-
-.topbar-icon-btn .material-symbols-outlined {
-  font-size: 18px;
-}
-
-.notif-dot {
-  position: absolute;
-  top: 7px;
-  right: 7px;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent-warm);
-  box-shadow: 0 0 6px var(--accent-warm);
-}
-
-.topbar-avatar {
-  position: relative;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 230, 215, 0.25);
-  padding: 2px;
-  flex-shrink: 0;
-}
-
-.topbar-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-}
-
-.avatar-online-dot {
-  position: absolute;
-  bottom: 0px;
-  right: 0px;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--status-available);
-  border: 2px solid #140e0d;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
 }
 
 /* ================================================================
-   MAIN 3-COLUMN MISSION CONTROL GRID
+   CAROUSEL SECTION (75% Middle)
    ================================================================ */
-.mission-grid-container {
+.carousel-section {
   flex: 1;
   min-height: 0;
-  display: grid;
-  grid-template-columns: 280px 1fr 310px;
-  gap: 16px;
-  padding: 16px 20px;
   position: relative;
-  z-index: 10;
-}
-
-/* Shared Card Glass Surface */
-.mission-card {
-  background: var(--bg-surface-glass);
-  backdrop-filter: var(--filter-blur-smooth);
-  -webkit-backdrop-filter: var(--filter-blur-smooth);
-  border: var(--border-glass);
-  border-radius: var(--radius-card);
-  box-shadow: var(--shadow-card), var(--inner-bevel-glass);
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.mission-card:hover {
-  border-color: rgba(255, 235, 220, 0.22);
-}
-
-/* ================================================================
-   LEFT SLIM COLUMN
-   =============================================================== */
-.mission-col-left {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  min-height: 0;
-}
-
-/* Card 1: Dual Stat Weather Card */
-.weather-card {
-  padding: 18px 20px;
-}
-
-.card-meta-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 12px;
-}
-
-.weather-symbol {
-  font-size: 22px;
-  color: var(--accent-warm);
-  filter: drop-shadow(0 0 6px rgba(252, 163, 17, 0.5));
-}
-
-.location-tag {
-  font-size: 10px;
-  color: var(--text-muted);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.dual-stat-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.stat-unit {
-  display: flex;
-  flex-direction: column;
-}
-
-.stat-number {
-  font-family: var(--font-display);
-  font-size: 34px;
-  font-weight: 300;
-  color: var(--text-pure);
-  line-height: 1;
-  letter-spacing: -0.02em;
-}
-
-.stat-number.highlight {
-  color: var(--text-pure);
-}
-
-.stat-label {
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  margin-top: 6px;
-}
-
-.stat-divider {
-  width: 1px;
-  height: 38px;
-  background: rgba(255, 230, 215, 0.10);
-}
-
-/* Card 2: Faculty / Office Hours Card with Radial Ring Indicator */
-.office-status-card {
-  padding: 16px;
-}
-
-.card-header-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 12px;
-}
-
-.card-title-text {
-  font-family: var(--font-display);
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--text-primary);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.card-header-left {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.status-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 3px 10px;
-  border-radius: var(--radius-pill);
-  font-family: var(--font-display);
-  font-size: 9.5px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.status-pill.available {
-  background: var(--status-available-bg);
-  border: 1px solid rgba(49, 210, 156, 0.40);
-  color: var(--status-available);
-}
-
-.status-pill.busy {
-  background: var(--status-busy-bg);
-  border: 1px solid rgba(252, 163, 17, 0.40);
-  color: var(--accent-warm);
-}
-
-.status-pill.closed {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  color: var(--text-muted);
-}
-
-.status-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: currentColor;
-  animation: pulse-blink 1.5s ease-in-out infinite;
-}
-
-.office-body-wrap {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-/* Radial Ring Indicator (Matching Cosmo Ref) */
-.radial-ring-container {
-  position: relative;
-  width: 76px;
-  height: 76px;
-  flex-shrink: 0;
-}
-
-.radial-ring-svg {
-  width: 100%;
-  height: 100%;
-  transform: rotate(-90deg);
-}
-
-.ring-bg {
-  fill: none;
-  stroke: rgba(255, 230, 215, 0.08);
-  stroke-width: 6;
-}
-
-.ring-fill {
-  fill: none;
-  stroke: var(--accent-orange);
-  stroke-width: 6;
-  stroke-linecap: round;
-  transition: stroke-dashoffset 1s ease;
-}
-
-.ring-fill.glow-warm {
-  filter: drop-shadow(0 0 6px rgba(255, 112, 40, 0.6));
-}
-
-.radial-center-content {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.radial-primary-val {
-  font-family: var(--font-display);
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text-pure);
-  line-height: 1;
-}
-
-.radial-sub-val {
-  font-size: 8px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin-top: 2px;
-}
-
-/* Office Details */
-.office-card {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 0;
-}
-
-.office-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-sm);
-  background: rgba(252, 163, 17, 0.15);
-  border: 1px solid rgba(252, 163, 17, 0.35);
-  color: var(--accent-warm);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-display);
-  font-size: 13px;
-  font-weight: 700;
-  flex-shrink: 0;
-}
-
-.office-info {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.office-name {
-  font-family: var(--font-display);
-  font-size: 13.5px;
-  font-weight: 700;
-  color: var(--text-pure);
-  line-height: 1.2;
-}
-
-.office-role {
-  font-size: 11px;
-  color: var(--text-secondary);
-}
-
-.office-time {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--accent-warm);
-  margin-top: 2px;
-}
-
-/* Card 3: Important Announcements Pod */
-.announcements-card {
-  flex: 1;
-  min-height: 0;
   overflow: hidden;
-}
-
-.alert-symbol {
-  font-size: 16px;
-  color: var(--status-alert);
-}
-
-.live-tag {
-  font-size: 9px;
-  font-weight: 800;
-  color: var(--status-alert);
-  letter-spacing: 0.1em;
-  background: var(--status-alert-bg);
-  padding: 2px 6px;
-  border-radius: 4px;
-}
-
-.announcements-scroll-wrap {
-  flex: 1;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 4px;
-}
-
-.announcement-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  padding: 8px 10px;
-  background: rgba(36, 24, 21, 0.55);
-  border: 1px solid rgba(255, 230, 215, 0.06);
-  border-left: 3px solid var(--status-alert);
-  border-radius: var(--radius-sm);
-}
-
-.announcement-item .material-symbols-outlined {
-  font-size: 15px;
-  color: var(--status-alert);
-  flex-shrink: 0;
-  margin-top: 1px;
-}
-
-.announcement-text {
-  font-size: 11.5px;
-  line-height: 1.35;
-  color: var(--text-primary);
-}
-
-/* ================================================================
-   CENTRAL HERO PANEL (Full-bleed Media Slide with Pill Badge & Headline)
-   ================================================================ */
-.mission-col-center {
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-}
-
-.hero-carousel-frame {
-  flex: 1;
-  min-height: 0;
-  position: relative;
-  background: #000000;
-  border-radius: var(--radius-card);
-  border: var(--border-glass);
-  box-shadow: var(--shadow-floating), var(--inner-bevel-glass);
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: #080505;
 }
 
 .carousel-viewport {
@@ -738,173 +367,10 @@ body.mission-dashboard {
   width: 100%;
   height: 100%;
   background: 
-    linear-gradient(180deg, rgba(16, 11, 10, 0.65) 0%, rgba(16, 11, 10, 0.05) 25%, rgba(16, 11, 10, 0.20) 65%, rgba(16, 11, 10, 0.85) 100%),
-    radial-gradient(ellipse at center, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.40) 100%);
+    linear-gradient(180deg, rgba(16, 11, 10, 0.40) 0%, rgba(16, 11, 10, 0.02) 25%, rgba(16, 11, 10, 0.15) 65%, rgba(16, 11, 10, 0.75) 100%),
+    radial-gradient(ellipse at center, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.35) 100%);
   pointer-events: none;
   z-index: 2;
-}
-
-/* Floating Top Pill Badge (Reference Style) */
-.hero-top-badge {
-  position: absolute;
-  top: 18px;
-  z-index: 20;
-  pointer-events: none;
-}
-
-.hero-pill-tag {
-  display: inline-flex;
-  align-items: center;
-  padding: 5px 16px;
-  border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, 0.85);
-  color: #120e0d;
-  font-family: var(--font-display);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-}
-
-/* Central Prominent Headline & Caption Overlay */
-.hero-headline-overlay {
-  position: absolute;
-  bottom: 80px;
-  left: 28px;
-  right: 28px;
-  z-index: 20;
-  pointer-events: none;
-}
-
-.hero-headline {
-  font-family: var(--font-display);
-  font-size: 32px;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  line-height: 1.15;
-  color: #ffffff;
-  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.75);
-  max-width: 90%;
-}
-
-.hero-subcaption {
-  font-size: 13px;
-  color: var(--text-secondary);
-  margin-top: 6px;
-  letter-spacing: 0.04em;
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
-}
-
-/* Floating HUD Dock */
-.hero-hud-dock {
-  position: absolute;
-  bottom: 16px;
-  left: 20px;
-  right: 20px;
-  z-index: 25;
-  background: rgba(24, 16, 14, 0.78);
-  backdrop-filter: var(--filter-blur-smooth);
-  -webkit-backdrop-filter: var(--filter-blur-smooth);
-  border: var(--border-glass);
-  border-radius: var(--radius-pill);
-  box-shadow: var(--shadow-card), var(--inner-bevel-pill);
-  padding: 8px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.hud-progress-track {
-  position: absolute;
-  top: 0;
-  left: 24px;
-  right: 24px;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.08);
-  overflow: hidden;
-  border-radius: 2px;
-}
-
-.hud-progress-bar {
-  height: 100%;
-  background: var(--accent-warm);
-  box-shadow: 0 0 10px var(--accent-warm);
-  width: 0%;
-  transition: width linear;
-}
-
-.hud-meta {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.hud-dots {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.carousel-dot {
-  width: 8px;
-  height: 5px;
-  border-radius: 3px;
-  background: rgba(255, 255, 255, 0.20);
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.carousel-dot.active {
-  width: 22px;
-  background: var(--accent-warm);
-  box-shadow: 0 0 8px var(--accent-warm);
-}
-
-.hud-count-text {
-  font-family: var(--font-display);
-  font-size: 10.5px;
-  font-weight: 700;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
-.hud-timer-status {
-  font-size: 10px;
-  color: var(--accent-warm);
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.hud-buttons {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.hud-btn {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: var(--text-pure);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.hud-btn:hover {
-  background: rgba(255, 255, 255, 0.16);
-  border-color: rgba(255, 255, 255, 0.28);
-}
-
-.hud-btn .material-symbols-outlined {
-  font-size: 16px;
 }
 
 /* Video Containers */
@@ -923,277 +389,154 @@ body.mission-dashboard {
   border: none;
 }
 
-/* ================================================================
-   RIGHT SLIM COLUMN: SCHEDULES OF THE MONTH + DONUT STAT + CTA
-   ================================================================ */
-.mission-col-right {
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-}
-
-.schedules-card {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.schedule-symbol {
-  font-size: 18px;
-  color: var(--accent-warm);
-}
-
-.tab-toggle-pill {
-  display: flex;
-  align-items: center;
-  background: rgba(14, 10, 9, 0.65);
-  border-radius: var(--radius-pill);
-  padding: 2px;
-  border: 1px solid rgba(255, 230, 215, 0.08);
-}
-
-.tab-btn {
-  padding: 3px 10px;
-  border-radius: var(--radius-pill);
-  font-family: var(--font-display);
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--text-muted);
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.tab-btn.active {
-  background: var(--accent-warm);
-  color: #140e0d;
-  font-weight: 700;
-}
-
-/* Timeline Feed of Monthly Schedules */
-.schedules-timeline-feed {
-  flex: 1;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin: 10px 0;
-  padding-right: 4px;
-}
-
-.month-schedule-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 9px 10px;
-  background: rgba(38, 26, 22, 0.50);
-  border: 1px solid rgba(255, 230, 215, 0.06);
-  border-radius: var(--radius-sm);
-  transition: background 0.2s ease;
-}
-
-.month-schedule-item:hover {
-  background: rgba(48, 32, 28, 0.70);
-  border-color: rgba(255, 230, 215, 0.14);
-}
-
-.month-date-badge {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4px 8px;
-  border-radius: 6px;
-  background: rgba(252, 163, 17, 0.18);
-  border: 1px solid rgba(252, 163, 17, 0.35);
-  color: var(--accent-warm);
-  font-family: var(--font-display);
-  font-size: 10.5px;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  flex-shrink: 0;
-  white-space: nowrap;
-}
-
-.month-item-body {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  flex: 1;
-}
-
-.month-item-title {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-pure);
-  line-height: 1.25;
-}
-
-.month-item-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 4px;
-  font-size: 10.5px;
-  color: var(--text-muted);
-}
-
-.month-meta-venue {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  color: var(--text-secondary);
-}
-
-.month-meta-time {
-  color: var(--accent-warm);
-  font-weight: 600;
-  font-family: var(--font-display);
-}
-
-/* Metric Donut Section (Reference Matching) */
-.schedule-metric-section {
-  padding-top: 10px;
-  border-top: 1px solid rgba(255, 230, 215, 0.08);
-  margin-top: auto;
-}
-
-.metric-header-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 6px;
-}
-
-.metric-title {
-  font-family: var(--font-display);
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.metric-sub {
-  font-size: 10px;
-  color: var(--accent-warm);
-  font-weight: 600;
-}
-
-.donut-gauge-box {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 60px;
-}
-
-.donut-svg {
-  width: 130px;
-  height: 65px;
-}
-
-.donut-track {
-  stroke: rgba(255, 230, 215, 0.09);
-}
-
-.donut-fill {
-  stroke: var(--accent-warm);
-  filter: drop-shadow(0 0 6px rgba(252, 163, 17, 0.45));
-}
-
-.donut-center-val {
+/* Floating Slide Caption Badge */
+.carousel-slide-caption {
   position: absolute;
-  bottom: 6px;
-  display: flex;
-  flex-direction: column;
+  top: 20px;
+  left: 20px;
+  max-width: 80%;
+  display: inline-flex;
   align-items: center;
+  gap: 10px;
+  padding: 8px 18px;
+  background: rgba(24, 16, 14, 0.80);
+  backdrop-filter: var(--filter-blur-smooth);
+  -webkit-backdrop-filter: var(--filter-blur-smooth);
+  border: 1px solid rgba(255, 230, 215, 0.16);
+  border-radius: var(--radius-pill);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  z-index: 15;
 }
 
-.donut-number {
-  font-family: var(--font-display);
+.carousel-slide-caption .caption-icon {
   font-size: 18px;
-  font-weight: 700;
-  color: var(--text-pure);
-  line-height: 1;
+  color: var(--accent-warm);
 }
 
-.donut-label {
-  font-size: 8.5px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+.carousel-slide-caption .caption-text {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
 }
 
-.metric-legend-row {
+/* Floating Controls HUD */
+.carousel-hud {
+  position: absolute;
+  bottom: 14px;
+  left: 20px;
+  right: 20px;
+  z-index: 25;
+  background: rgba(24, 16, 14, 0.82);
+  backdrop-filter: var(--filter-blur-smooth);
+  -webkit-backdrop-filter: var(--filter-blur-smooth);
+  border: var(--border-glass);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-card), var(--inner-bevel-pill);
+  padding: 8px 20px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 16px;
-  margin-top: 4px;
-  font-size: 10px;
-  color: var(--text-muted);
+  justify-content: space-between;
 }
 
-.legend-item {
+.carousel-progress-track {
+  position: absolute;
+  top: 0;
+  left: 24px;
+  right: 24px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+.carousel-progress-bar {
+  height: 100%;
+  background: var(--accent-warm);
+  box-shadow: 0 0 10px var(--accent-warm);
+  width: 0%;
+  transition: width linear;
+}
+
+.carousel-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.carousel-indicators {
   display: flex;
   align-items: center;
   gap: 5px;
 }
 
-.legend-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
+.carousel-dot {
+  width: 8px;
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.20);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.legend-dot.orange { background: var(--accent-orange); }
-.legend-dot.warm { background: var(--accent-warm); }
+.carousel-dot.active {
+  width: 24px;
+  background: var(--accent-warm);
+  box-shadow: 0 0 8px var(--accent-warm);
+}
 
-/* Full-Width Mission CTA Button */
-.mission-cta-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  border-radius: var(--radius-sm);
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 230, 215, 0.14);
-  color: var(--text-primary);
+.carousel-meta-text {
   font-family: var(--font-display);
   font-size: 11px;
   font-weight: 700;
+  color: var(--text-secondary);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  text-decoration: none;
-  transition: all 0.2s ease;
+  letter-spacing: 0.1em;
 }
 
-.mission-cta-btn:hover {
-  background: rgba(252, 163, 17, 0.18);
-  border-color: var(--accent-warm);
-  color: var(--text-pure);
-  box-shadow: 0 0 12px rgba(252, 163, 17, 0.25);
-}
-
-.mission-cta-btn .material-symbols-outlined {
-  font-size: 16px;
+.carousel-meta-text.accent {
   color: var(--accent-warm);
 }
 
+.carousel-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.carousel-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-pure);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.carousel-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.carousel-btn .material-symbols-outlined {
+  font-size: 16px;
+}
+
 /* ================================================================
-   BOTTOM FLASH ANNOUNCEMENT TICKER
+   SITE FOOTER (75% Flash Ticker)
    ================================================================ */
-.mission-footer {
+.site-footer {
   height: var(--footer-height);
-  background: rgba(18, 12, 11, 0.85);
+  background: rgba(20, 14, 13, 0.88);
   backdrop-filter: var(--filter-blur-smooth);
   -webkit-backdrop-filter: var(--filter-blur-smooth);
-  border-top: var(--border-glass-subtle);
+  border-top: 1px solid rgba(255, 230, 215, 0.10);
   display: flex;
   align-items: center;
   padding: 0 20px;
@@ -1203,7 +546,7 @@ body.mission-dashboard {
   overflow: hidden;
 }
 
-.footer-flash-badge {
+.flash-label {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -1216,12 +559,12 @@ body.mission-dashboard {
   margin-right: 14px;
 }
 
-.flash-icon {
+.flash-label .material-symbols-outlined {
   font-size: 15px;
   animation: pulse-blink 1.5s ease-in-out infinite;
 }
 
-.flash-title {
+.flash-label-text {
   font-family: var(--font-display);
   font-size: 10px;
   font-weight: 800;
@@ -1229,7 +572,7 @@ body.mission-dashboard {
   letter-spacing: 0.1em;
 }
 
-.footer-ticker-viewport {
+.flash-ticker {
   flex: 1;
   overflow: hidden;
   height: 100%;
@@ -1269,16 +612,22 @@ body.mission-dashboard {
 .flash-ticker-dot.alt { background: var(--status-available); box-shadow: 0 0 6px var(--status-available); }
 .flash-ticker-dot.blue { background: var(--accent-orange); box-shadow: 0 0 6px var(--accent-orange); }
 
-.footer-live-status {
+.flash-status {
   display: flex;
   align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
+  gap: 6px;
+  height: 100%;
   padding-left: 14px;
   border-left: 1px solid rgba(255, 230, 215, 0.10);
+  flex-shrink: 0;
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--status-available);
+  letter-spacing: 0.12em;
 }
 
-.pulse-live-dot {
+.flash-status-dot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
@@ -1287,55 +636,355 @@ body.mission-dashboard {
   animation: pulse-blink 1.5s ease-in-out infinite;
 }
 
-.live-label {
+/* ================================================================
+   RIGHT 25% COLUMN: FULL-HEIGHT CARDS STACK
+   1. Weather & Time
+   2. Office Hours Today (no percentage)
+   3. Notice & Advisories
+   4. Schedules of the Month (no today sort)
+   ================================================================ */
+.tv-right-column {
+  flex: 0 0 25%;
+  width: 25%;
+  max-width: 25%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  background: rgba(20, 14, 13, 0.82);
+  backdrop-filter: var(--filter-blur-deep);
+  -webkit-backdrop-filter: var(--filter-blur-deep);
+  overflow: hidden;
+  box-shadow: -10px 0 35px rgba(0, 0, 0, 0.5);
+}
+
+/* Card Surfaces */
+.sidebar-panel {
+  background: var(--bg-surface-glass);
+  backdrop-filter: var(--filter-blur-smooth);
+  -webkit-backdrop-filter: var(--filter-blur-smooth);
+  border: var(--border-glass);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card), var(--inner-bevel-glass);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+  transition: border-color 0.25s ease;
+}
+
+.sidebar-panel:hover {
+  border-color: rgba(255, 235, 220, 0.22);
+}
+
+.sidebar-panel.flex-grow {
+  flex: 1;
+  min-height: 0;
+}
+
+/* Panel Headers */
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 230, 215, 0.08);
+}
+
+.panel-header-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.panel-header-left .material-symbols-outlined {
+  font-size: 17px;
+}
+
+.panel-header-left span:last-child {
+  font-family: var(--font-display);
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-primary);
+}
+
+.panel-header-left.gold .material-symbols-outlined { color: var(--accent-warm); }
+.panel-header-left.blue .material-symbols-outlined { color: #5ea8ff; }
+.panel-header-left.red .material-symbols-outlined { color: var(--status-alert); }
+
+/* Chips */
+.location-chip, .milestone-chip, .live-pill {
+  font-family: var(--font-display);
+  font-size: 9.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.location-chip {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-muted);
+}
+
+.milestone-chip {
+  background: rgba(94, 168, 255, 0.15);
+  color: #72b5ff;
+}
+
+.live-pill {
+  background: var(--status-alert-bg);
+  color: var(--status-alert);
+}
+
+/* CARD 1: Weather & Time Content */
+.weather-panel {
+  padding: 12px 14px;
+}
+
+.weather-temp-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+.weather-main-icon {
+  font-size: 26px;
+  color: var(--accent-warm);
+}
+
+.weather-temp-val {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 300;
+  color: var(--text-pure);
+  line-height: 1;
+}
+
+.weather-wind-val {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.weather-desc-text {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  margin-top: 4px;
+  line-height: 1.25;
+}
+
+/* CARD 2: Office Hours Today (Clean: Avatar + Info + Badge, No Ring) */
+.office-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 0;
+}
+
+.office-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  background: rgba(252, 163, 17, 0.16);
+  border: 1px solid rgba(252, 163, 17, 0.35);
+  color: var(--accent-warm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.office-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.office-name {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-pure);
+  line-height: 1.2;
+}
+
+.office-role {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.office-time {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent-warm);
+  margin-top: 1px;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.status-pill.available {
+  background: var(--status-available-bg);
+  border: 1px solid rgba(49, 210, 156, 0.40);
+  color: var(--status-available);
+}
+
+.status-pill.busy {
+  background: var(--status-busy-bg);
+  border: 1px solid rgba(252, 163, 17, 0.40);
+  color: var(--accent-warm);
+}
+
+.status-pill.closed {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: var(--text-muted);
+}
+
+.status-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: pulse-blink 1.5s ease-in-out infinite;
+}
+
+/* CARD 3: Notice & Advisories */
+.announcement-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
+  background: rgba(36, 24, 21, 0.50);
+  border: 1px solid rgba(255, 230, 215, 0.06);
+  border-left: 3px solid var(--status-alert);
+  border-radius: var(--radius-sm);
+}
+
+.announcement-item .material-symbols-outlined {
+  font-size: 15px;
+  color: var(--status-alert);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.announcement-text {
+  font-size: 11.5px;
+  line-height: 1.35;
+  color: var(--text-primary);
+}
+
+/* CARD 4: Schedules of the Month (No Today Sort) */
+.month-schedule-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
+  background: rgba(36, 24, 21, 0.50);
+  border: 1px solid rgba(255, 230, 215, 0.06);
+  border-radius: var(--radius-sm);
+  transition: background 0.2s ease;
+}
+
+.month-schedule-item:hover {
+  background: rgba(48, 32, 28, 0.70);
+  border-color: rgba(255, 230, 215, 0.14);
+}
+
+.month-date-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 6px;
+  border-radius: 4px;
+  background: rgba(252, 163, 17, 0.18);
+  border: 1px solid rgba(252, 163, 17, 0.35);
+  color: var(--accent-warm);
   font-family: var(--font-display);
   font-size: 10px;
   font-weight: 800;
-  color: var(--status-available);
-  letter-spacing: 0.12em;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
-.date-full-text {
+.month-item-body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.month-item-title {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-pure);
+  line-height: 1.25;
+}
+
+.month-item-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 3px;
   font-size: 10px;
   color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
 }
 
-/* Empty placeholder */
+.month-meta-venue {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--text-secondary);
+}
+
+.month-meta-time {
+  color: var(--accent-warm);
+  font-weight: 600;
+  font-family: var(--font-display);
+}
+
+/* Empty Placeholder */
 .panel-empty {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding: 20px;
   color: var(--text-muted);
   text-align: center;
-  gap: 6px;
+  gap: 4px;
 }
 
 .panel-empty .material-symbols-outlined {
-  font-size: 28px;
+  font-size: 26px;
   opacity: 0.4;
 }
 
 .panel-empty p {
-  font-size: 11.5px;
-}
-
-/* Standalone Header/Footer overrides for Admin Console */
-body.admin-body .site-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-}
-
-body.admin-body .site-footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  font-size: 11px;
 }
 
 

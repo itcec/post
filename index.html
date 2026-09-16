@@ -3,281 +3,194 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CEC College of Information Technology — Mission Control Signage</title>
-  <meta name="description" content="Mission control digital signage display for Cebu Eastern College — College of Information Technology. Live announcements, monthly schedules, and campus telemetry." />
+  <title>CEC College of Information Technology — Announcements</title>
+  <meta name="description" content="Digital signage display for Cebu Eastern College — College of Information Technology. Live announcements, monthly schedules, and campus updates." />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
-<body class="mission-dashboard">
+<body>
 
   <!-- Ambient Slide Backlight Glow -->
   <div class="screen-ambient-bg" id="screen-ambient-bg" aria-hidden="true"></div>
 
   <!-- ============================================================
-       TOP BAR: LOGO LOCKUP, MISSION CONTROL NAV LABELS, CLOCK & AVATAR
+       TV SIGNAGE CONTAINER (75% Left Column / 25% Right Column)
        ============================================================ -->
-  <header class="mission-topbar">
-    <div class="topbar-left">
-      <div class="header-logos">
-        <img src="assets/school_logo.png" alt="Cebu Eastern College" />
-        <img src="assets/it_departmentlogo.png" alt="College of Information Technology" />
-      </div>
-      <div class="mission-brand">
-        <span class="brand-title">CEC IT DEPT<span class="brand-mark">™</span></span>
-        <span class="brand-sub">CEBU EASTERN COLLEGE</span>
-      </div>
-    </div>
-
-    <!-- Center Nav-style Section Labels -->
-    <nav class="topbar-nav">
-      <span class="nav-link active">Overview</span>
-      <span class="nav-link">Schedules of the Month</span>
-      <span class="nav-link">Office Hours</span>
-      <span class="nav-link">Announcements</span>
-    </nav>
-
-    <!-- Right Live Telemetry & Avatar -->
-    <div class="topbar-right">
-      <div class="update-badge">
-        <span class="update-label">UPD:</span>
-        <span class="update-time" id="update-timer">Just now</span>
-      </div>
-      <div class="topbar-divider"></div>
-      
-      <!-- Live Clock -->
-      <div class="mission-clock">
-        <span id="clock-hours">12</span><span class="clock-colon">:</span><span id="clock-minutes">00</span>
-        <span class="clock-ampm" id="clock-ampm">AM</span>
-      </div>
-      
-      <!-- Notifications Bell -->
-      <div class="topbar-icon-btn" title="Live System Active">
-        <span class="material-symbols-outlined">notifications</span>
-        <span class="notif-dot"></span>
-      </div>
-
-      <!-- User Avatar with Online Dot -->
-      <div class="topbar-avatar" title="IT Department Online">
-        <img src="assets/school_logo.png" alt="Admin Avatar" />
-        <span class="avatar-online-dot"></span>
-      </div>
-    </div>
-  </header>
-
-  <!-- ============================================================
-       MAIN MISSION CONTROL DASHBOARD (3-COLUMN ARCHITECTURE)
-       Left: Slim Stat Columns | Center: Large Hero Slide | Right: Schedules
-       ============================================================ -->
-  <main class="mission-grid-container">
+  <div class="tv-screen-container">
 
     <!-- ============================================================
-         LEFT SLIM COLUMN: Weather Stat Cards & Radial Office Status
+         LEFT 75% COLUMN: Header, Media Carousel, Flash Footer
          ============================================================ -->
-    <aside class="mission-col-left">
+    <div class="tv-left-column">
 
-      <!-- Card 1: Dual-Stat Weather Card (Matching Cosmo Ref) -->
-      <div class="mission-card weather-card">
-        <div class="card-meta-top">
-          <span class="material-symbols-outlined weather-symbol" id="weather-icon">sunny</span>
-          <span class="location-tag" id="weather-location">Cebu City · Colon-Carbon</span>
+      <!-- HEADER (Clean: Time on Left, Logos & Title, No Tabs/Avatars) -->
+      <header class="site-header">
+        <div class="header-content">
+
+          <!-- LEFT: Live Time Display -->
+          <div class="header-time-block">
+            <div class="clock-display">
+              <span class="clock-time" id="clock-hours">12</span>
+              <span class="clock-colon">:</span>
+              <span class="clock-time" id="clock-minutes">00</span>
+              <span class="clock-ampm" id="clock-ampm">AM</span>
+            </div>
+            <div class="date-display">
+              <span class="date-day" id="date-day">Monday</span>
+              <span class="date-full" id="date-full">September 16, 2026</span>
+            </div>
+          </div>
+
+          <!-- BRANDING: Two Logos on the left, then College Title -->
+          <div class="header-branding">
+            <div class="header-logos">
+              <img src="assets/school_logo.png" alt="Cebu Eastern College Logo" />
+              <img src="assets/it_departmentlogo.png" alt="IT Department Logo" />
+            </div>
+            <div class="header-title-wrap">
+              <h1>College of Information Technology</h1>
+              <span class="subtitle">Cebu Eastern College, Inc.</span>
+            </div>
+          </div>
+
         </div>
-        
-        <div class="dual-stat-row">
-          <div class="stat-unit">
-            <span class="stat-number" id="weather-wind">16 KM/H</span>
-            <span class="stat-label">Wind Speed</span>
+      </header>
+
+      <!-- MIDDLE: IMAGE & VIDEO CAROUSEL -->
+      <main class="carousel-section">
+        <div class="carousel-viewport" id="carousel-viewport">
+          <!-- Slides rendered by JS -->
+        </div>
+
+        <!-- Floating Slide Title / Caption -->
+        <div class="carousel-slide-caption" id="carousel-slide-caption" style="display:none;">
+          <span class="material-symbols-outlined caption-icon">campaign</span>
+          <span class="caption-text" id="caption-text"></span>
+        </div>
+
+        <!-- Carousel Floating HUD Bar -->
+        <div class="carousel-hud">
+          <div class="carousel-progress-track">
+            <div class="carousel-progress-bar" id="carousel-progress"></div>
           </div>
-          <div class="stat-divider"></div>
-          <div class="stat-unit">
-            <span class="stat-number highlight" id="weather-temp">31°C</span>
-            <span class="stat-label" id="weather-desc">Day Temperature</span>
+
+          <div class="carousel-meta">
+            <div class="carousel-indicators" id="carousel-dots">
+              <!-- Dots rendered by JS -->
+            </div>
+            <span class="carousel-meta-text" id="carousel-count">No slides</span>
+            <span style="width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.3);"></span>
+            <span class="carousel-meta-text accent" id="carousel-timer-status">Auto</span>
           </div>
+
+          <div class="carousel-controls">
+            <button class="carousel-btn" onclick="window._togglePause()" title="Pause / Play">
+              <span class="material-symbols-outlined" id="pause-icon">pause</span>
+            </button>
+            <span id="pause-text" style="display:none;">Auto</span>
+            <button class="carousel-btn" onclick="window._prevSlide()" title="Previous">
+              <span class="material-symbols-outlined">arrow_back</span>
+            </button>
+            <button class="carousel-btn" onclick="window._nextSlide()" title="Next">
+              <span class="material-symbols-outlined">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+      </main>
+
+      <!-- BOTTOM: FLASH ANNOUNCEMENTS (75% width) -->
+      <footer class="site-footer">
+        <div class="flash-label">
+          <span class="material-symbols-outlined">campaign</span>
+          <span class="flash-label-text">Flash Announcement</span>
+        </div>
+        <div class="flash-ticker">
+          <div class="flash-ticker-track" id="flash-track">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+        <div class="flash-status">
+          <span class="flash-status-dot"></span>
+          <span>LIVE</span>
+        </div>
+      </footer>
+
+    </div>
+
+    <!-- ============================================================
+         RIGHT 25% COLUMN: Full-Height Cards Stack (100vh)
+         1. Weather & Time Card
+         2. Office Hours Today (no percentage)
+         3. Notice & Advisories
+         4. Schedules of the Month (no today sort)
+         ============================================================ -->
+    <aside class="tv-right-column">
+
+      <!-- CARD 1: Weather & Time -->
+      <div class="sidebar-panel weather-panel">
+        <div class="panel-header">
+          <div class="panel-header-left gold">
+            <span class="material-symbols-outlined">partly_cloudy_day</span>
+            <span>Weather & Conditions</span>
+          </div>
+          <span class="location-chip" id="weather-location">Cebu City</span>
+        </div>
+        <div class="weather-card-content">
+          <div class="weather-temp-row">
+            <span class="material-symbols-outlined weather-main-icon" id="weather-icon">sunny</span>
+            <div class="weather-temp-val" id="weather-temp">31°C</div>
+            <div class="weather-wind-val" id="weather-wind">16 KM/H</div>
+          </div>
+          <div class="weather-desc-text" id="weather-desc">Partly Cloudy · Colon-Carbon Area</div>
         </div>
       </div>
 
-      <!-- Card 2: Faculty & Office Hours Card with Radial Ring Indicator -->
-      <div class="mission-card office-status-card">
-        <div class="card-header-bar">
-          <span class="card-title-text">Office Hours Today</span>
+      <!-- CARD 2: Office Hours Today (Percentage Ring Removed) -->
+      <div class="sidebar-panel">
+        <div class="panel-header">
+          <div class="panel-header-left gold">
+            <span class="material-symbols-outlined">account_circle</span>
+            <span>Office Hours Today</span>
+          </div>
           <span class="status-pill available" id="office-status-pill">
             <span class="status-dot"></span>
             AVAILABLE
           </span>
         </div>
-
-        <div class="office-body-wrap">
-          <!-- Radial Ring Graphic -->
-          <div class="radial-ring-container">
-            <svg class="radial-ring-svg" viewBox="0 0 100 100">
-              <circle class="ring-bg" cx="50" cy="50" r="42"></circle>
-              <circle class="ring-fill glow-warm" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="40"></circle>
-            </svg>
-            <div class="radial-center-content">
-              <span class="radial-primary-val" id="office-status-pct">85%</span>
-              <span class="radial-sub-val">Walk-In</span>
-            </div>
-          </div>
-
-          <!-- Real Office Hours Data -->
-          <div id="office-hours-content">
-            <!-- Rendered by JS -->
-          </div>
+        <div id="office-hours-content">
+          <!-- Rendered by JS -->
         </div>
       </div>
 
-      <!-- Card 3: Important Announcements Pod -->
-      <div class="mission-card announcements-card">
-        <div class="card-header-bar">
-          <div class="card-header-left">
-            <span class="material-symbols-outlined alert-symbol">warning</span>
-            <span class="card-title-text">Notice & Advisories</span>
+      <!-- CARD 3: Notice & Advisories (Important Announcements) -->
+      <div class="sidebar-panel announcements-panel flex-grow">
+        <div class="panel-header">
+          <div class="panel-header-left red">
+            <span class="material-symbols-outlined">notification_important</span>
+            <span>Notice & Advisories</span>
           </div>
-          <span class="live-tag">LIVE</span>
+          <span class="live-pill">LIVE</span>
         </div>
+        <div id="announcements-content" style="display:flex;flex-direction:column;gap:6px;overflow-y:auto;">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
 
-        <div class="announcements-scroll-wrap" id="announcements-content">
+      <!-- CARD 4: Schedules of the Month (Today Sort Removed) -->
+      <div class="sidebar-panel schedules-panel flex-grow">
+        <div class="panel-header">
+          <div class="panel-header-left blue">
+            <span class="material-symbols-outlined">calendar_month</span>
+            <span>Schedules of the Month</span>
+          </div>
+          <span class="milestone-chip" id="schedule-counter-text">Events</span>
+        </div>
+        <div id="room-schedule-content" style="display:flex;flex-direction:column;gap:6px;overflow-y:auto;">
           <!-- Rendered by JS -->
         </div>
       </div>
 
     </aside>
 
-    <!-- ============================================================
-         CENTRAL HERO PANEL: Full-Bleed Media Slide with Pill Badge
-         ============================================================ -->
-    <section class="mission-col-center">
-      <div class="hero-carousel-frame">
-
-        <!-- Slide Media Viewport -->
-        <div class="carousel-viewport" id="carousel-viewport">
-          <!-- Rendered by JS -->
-        </div>
-
-        <!-- Floating Top Pill Badge (e.g. EXPEDITION / ANNOUNCEMENT) -->
-        <div class="hero-top-badge">
-          <span class="hero-pill-tag">Expedition · Update</span>
-        </div>
-
-        <!-- Central Prominent Headline & Caption Overlay -->
-        <div class="hero-headline-overlay">
-          <h1 class="hero-headline" id="hero-active-title">College of Information Technology</h1>
-          <p class="hero-subcaption" id="hero-active-caption">Digital Signage Display System · Cebu Eastern College</p>
-        </div>
-
-        <!-- Floating HUD Control Strip -->
-        <div class="hero-hud-dock">
-          <div class="hud-progress-track">
-            <div class="hud-progress-bar" id="carousel-progress"></div>
-          </div>
-
-          <div class="hud-meta">
-            <div class="hud-dots" id="carousel-dots">
-              <!-- Dots rendered by JS -->
-            </div>
-            <span class="hud-count-text" id="carousel-count">Slide 1 of 1</span>
-            <span class="hud-timer-status" id="carousel-timer-status">Auto</span>
-          </div>
-
-          <div class="hud-buttons">
-            <button class="hud-btn" onclick="window._togglePause()" title="Pause / Play">
-              <span class="material-symbols-outlined" id="pause-icon">pause</span>
-            </button>
-            <button class="hud-btn" onclick="window._prevSlide()" title="Previous">
-              <span class="material-symbols-outlined">arrow_back</span>
-            </button>
-            <button class="hud-btn" onclick="window._nextSlide()" title="Next">
-              <span class="material-symbols-outlined">arrow_forward</span>
-            </button>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ============================================================
-         RIGHT SLIM COLUMN: Schedules of the Month + Donut Stat + CTA
-         ============================================================ -->
-    <aside class="mission-col-right">
-
-      <!-- Schedules of the Month Card -->
-      <div class="mission-card schedules-card">
-        <div class="card-header-bar">
-          <div class="card-header-left">
-            <span class="material-symbols-outlined schedule-symbol">calendar_month</span>
-            <span class="card-title-text">Schedules of the Month</span>
-          </div>
-          <div class="tab-toggle-pill">
-            <button class="tab-btn active" id="tab-month" onclick="window._switchScheduleTab('month')">Month</button>
-            <button class="tab-btn" id="tab-today" onclick="window._switchScheduleTab('today')">Today</button>
-          </div>
-        </div>
-
-        <!-- Timeline List Container -->
-        <div class="schedules-timeline-feed" id="room-schedule-content">
-          <!-- Rendered by JS -->
-        </div>
-
-        <!-- Metric Donut Section (Space & Schedule Allocation Gauge) -->
-        <div class="schedule-metric-section">
-          <div class="metric-header-row">
-            <span class="metric-title">Monthly Capacity</span>
-            <span class="metric-sub" id="schedule-counter-text">4 Key Milestones</span>
-          </div>
-
-          <div class="donut-gauge-box">
-            <svg class="donut-svg" viewBox="0 0 120 70">
-              <path class="donut-track" d="M 15 60 A 45 45 0 0 1 105 60" fill="none" stroke-width="9" stroke-linecap="round"></path>
-              <path class="donut-fill" d="M 15 60 A 45 45 0 0 1 105 60" fill="none" stroke-width="9" stroke-linecap="round" stroke-dasharray="141" stroke-dashoffset="35"></path>
-            </svg>
-            <div class="donut-center-val">
-              <span class="donut-number">78%</span>
-              <span class="donut-label">Allocated</span>
-            </div>
-          </div>
-
-          <div class="metric-legend-row">
-            <div class="legend-item"><span class="legend-dot orange"></span> Lab Sessions</div>
-            <div class="legend-item"><span class="legend-dot warm"></span> Major Tests</div>
-          </div>
-        </div>
-
-        <!-- Full-Width CTA Button -->
-        <a href="admin.html" class="mission-cta-btn" title="Open Admin CMS">
-          <span class="material-symbols-outlined">tune</span>
-          <span>View Full Schedule / CMS</span>
-        </a>
-
-      </div>
-
-    </aside>
-
-  </main>
-
-  <!-- ============================================================
-       BOTTOM FLASH TICKER: Slim integrated bar with pulsing live dot
-       ============================================================ -->
-  <footer class="mission-footer">
-    <div class="footer-flash-badge">
-      <span class="material-symbols-outlined flash-icon">campaign</span>
-      <span class="flash-title">Flash Announcement</span>
-    </div>
-
-    <div class="footer-ticker-viewport">
-      <div class="flash-ticker-track" id="flash-track">
-        <!-- Rendered by JS -->
-      </div>
-    </div>
-
-    <div class="footer-live-status">
-      <span class="pulse-live-dot"></span>
-      <span class="live-label">LIVE FEED</span>
-      <span class="date-full-text" id="date-full">September 16, 2026</span>
-    </div>
-  </footer>
-
-  <!-- Hidden elements preserving backward compatibility for JS selectors -->
-  <div style="display:none;" aria-hidden="true">
-    <span id="date-day">Monday</span>
-    <span id="pause-text">Auto</span>
   </div>
 
   <!-- Scripts -->
