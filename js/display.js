@@ -57,6 +57,9 @@
     const keyMap = Object.entries(DATA_KEYS);
     for (const [name, storageKey] of keyMap) {
       if (e.key === storageKey) {
+        if (typeof invalidateDataCache === 'function') {
+          invalidateDataCache(name);
+        }
         switch (name) {
           case 'slides':
             renderSlides();
@@ -81,6 +84,53 @@
     }
   }
 
+  // ---- In-Memory Media Preload & Hardware Cache ----
+  // Keeps decoded image bitmaps permanently in RAM for instant, lag-free slide transitions on weak Wi-Fi
+  const slideMediaCache = new Map();
+  const weatherMediaCache = new Map();
+
+  function preloadAndCacheMedia(slides) {
+    if (!Array.isArray(slides)) return;
+
+    slides.forEach((slide) => {
+      const url = (slide && slide.url ? slide.url.trim() : '');
+      if (!url) return;
+
+      const isVideo = slide.type === 'video' || (typeof detectMediaType === 'function' && detectMediaType(url).includes('video'));
+      if (!isVideo) {
+        if (!slideMediaCache.has(url)) {
+          const img = new Image();
+          // Retain Image instance in Map so it is not garbage collected
+          slideMediaCache.set(url, img);
+          img.src = url;
+          // Decode off the main thread into GPU memory ahead of time
+          if (typeof img.decode === 'function') {
+            img.decode().catch(() => {});
+          }
+        }
+      }
+    });
+
+    // Also preload weather animation assets into RAM
+    const weatherGifs = [
+      'assets/weather/sunny.gif',
+      'assets/weather/partly-cloudy.gif',
+      'assets/weather/overcast.gif',
+      'assets/weather/rain.gif',
+      'assets/weather/thunderstorm.gif'
+    ];
+    weatherGifs.forEach((gifPath) => {
+      if (!weatherMediaCache.has(gifPath)) {
+        const img = new Image();
+        weatherMediaCache.set(gifPath, img);
+        img.src = gifPath;
+        if (typeof img.decode === 'function') {
+          img.decode().catch(() => {});
+        }
+      }
+    });
+  }
+
   // ---- Carousel ----
   function loadCarouselSettings() {
     const settings = getData('carouselSettings');
@@ -98,6 +148,7 @@
 
   function renderSlides() {
     const slides = getData('slides');
+    preloadAndCacheMedia(slides);
     const viewport = document.getElementById('carousel-viewport');
     const dotsContainer = document.getElementById('carousel-dots');
     const countText = document.getElementById('carousel-count');
@@ -496,12 +547,16 @@
     const container = document.getElementById('announcements-content');
     if (!container) return;
 
-    // Apply scaling class based on item count
-    container.classList.remove('few-1', 'few-2', 'normal');
+    // Apply dynamic scaling class based on notice count so items auto-fit without scrollbars
+    container.classList.remove('few-1', 'few-2', 'few-3', 'few-4', 'normal');
     if (data.length === 1) {
       container.classList.add('few-1');
     } else if (data.length === 2) {
       container.classList.add('few-2');
+    } else if (data.length === 3) {
+      container.classList.add('few-3');
+    } else if (data.length === 4) {
+      container.classList.add('few-4');
     } else {
       container.classList.add('normal');
     }

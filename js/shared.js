@@ -57,18 +57,39 @@ const DEFAULT_DATA = {
 const APPS_SCRIPT_ID = 'AKfycbxrc1f7iZjQJFGBGFPKL17YJ4ubV3WZ6ZwWC3zWSXALnSmWDPvnwyoOaLz5QXHheSSH';
 const APPS_SCRIPT_URL = `https://script.google.com/macros/s/${APPS_SCRIPT_ID}/exec`;
 
+// ---- In-Memory Fast Cache for Low-Connection / Smart TV Performance ----
+const memoryDataCache = new Map();
+
+function invalidateDataCache(key) {
+  if (key) {
+    memoryDataCache.delete(key);
+  } else {
+    memoryDataCache.clear();
+  }
+}
+
 // ---- Data Management ----
 function getData(key) {
+  if (memoryDataCache.has(key)) {
+    return memoryDataCache.get(key);
+  }
   try {
     const raw = localStorage.getItem(DATA_KEYS[key]);
-    if (raw) return JSON.parse(raw);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      memoryDataCache.set(key, parsed);
+      return parsed;
+    }
   } catch (e) {
     console.warn(`Error reading ${key} from localStorage:`, e);
   }
-  return DEFAULT_DATA[key];
+  const fallback = DEFAULT_DATA[key];
+  memoryDataCache.set(key, fallback);
+  return fallback;
 }
 
 function setData(key, value) {
+  memoryDataCache.set(key, value);
   try {
     localStorage.setItem(DATA_KEYS[key], JSON.stringify(value));
   } catch (e) {
@@ -148,6 +169,7 @@ async function fetchCloudData(onUpdatedCallback) {
           const hasCloudRecords = Array.isArray(cloudVal) ? cloudVal.length > 0 : (cloudVal && Object.keys(cloudVal).length > 0);
           
           if (hasCloudRecords) {
+            memoryDataCache.set(key, cloudVal);
             localStorage.setItem(storageKey, JSON.stringify(cloudVal));
             changed = true;
           } else {
