@@ -91,6 +91,10 @@
 
       <!-- NAV -->
       <nav class="header-nav">
+        <div id="cloud-sync-badge" style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:20px;background:rgba(49,210,156,0.12);border:1px solid rgba(49,210,156,0.25);font-size:11px;color:#31d29c;font-weight:600;">
+          <span class="material-symbols-outlined" id="cloud-sync-icon" style="font-size:14px;">cloud_done</span>
+          <span id="cloud-sync-text">Cloud Synced</span>
+        </div>
         <a href="index.html">Display</a>
         <a href="admin.html" class="active">Admin</a>
         <button class="btn-logout" onclick="logout()">
@@ -103,135 +107,78 @@
   </header>
 
   <!-- ============================================================
-       ADMIN CONTENT (hidden until authenticated)
+       MAIN ADMIN CONTENT (hidden until authenticated)
        ============================================================ -->
-  <div class="admin-container" id="admin-content" style="display:none;">
+  <main class="admin-container" id="admin-main" style="display:none;">
 
-    <!-- ======== SECTION 1: SLIDE MANAGER ======== -->
+    <!-- Flash message container -->
+    <div id="admin-alert" style="display:none;"></div>
+
+    <!-- ======== SECTION 1: SLIDES / MEDIA ======== -->
     <section class="admin-section">
       <div class="admin-section-header">
         <div class="admin-section-title">
-          <span class="material-symbols-outlined">photo_library</span>
-          <span>Slide Manager</span>
+          <span class="material-symbols-outlined">slideshow</span>
+          <span>Carousel Slides</span>
         </div>
-        <span style="font-size:12px;color:var(--text-muted);">Add or edit Image and Video slides (Facebook, YouTube, direct MP4)</span>
+        <span style="font-size:12px;color:var(--text-muted);">Manage full-screen images and videos</span>
       </div>
 
-      <!-- Add / Edit Slide Form -->
+      <!-- Add/Edit Slide Form -->
       <div id="slide-form-container" style="background:var(--bg-surface);padding:var(--space-md);border-radius:var(--radius-md);margin-bottom:var(--space-lg);border:1px solid var(--border-subtle);">
         <input type="hidden" id="slide-edit-id" value="" />
-        <div class="form-row" style="margin-bottom:var(--space-sm);">
+        <div class="form-row">
           <div class="form-group" style="flex:0 0 130px;">
             <label class="form-label" for="slide-type-select">Media Type</label>
             <select class="form-select" id="slide-type-select">
-              <option value="image">Image (FB / Web)</option>
-              <option value="video">Video (MP4 / YT)</option>
+              <option value="image">Image</option>
+              <option value="video">Video</option>
             </select>
           </div>
-          <div class="form-group" style="flex:3;">
-            <label class="form-label" for="slide-url-input">Media URL Address</label>
-            <input class="form-input" id="slide-url-input" type="url" placeholder="https://... image URL, MP4 link, or YouTube URL" />
+          <div class="form-group" style="flex:2;">
+            <label class="form-label" for="slide-url-input">Image / Video URL</label>
+            <input class="form-input" id="slide-url-input" type="url" placeholder="https://example.com/image.jpg or YouTube / MP4 URL" />
           </div>
           <div class="form-group" style="flex:1.5;">
-            <label class="form-label" for="slide-caption-input">Caption (optional)</label>
-            <input class="form-input" id="slide-caption-input" type="text" placeholder="e.g. IT Week 2026" />
+            <label class="form-label" for="slide-caption-input">Caption / Title (Optional)</label>
+            <input class="form-input" id="slide-caption-input" type="text" placeholder="Short description" />
           </div>
         </div>
-
-        <div class="form-row" style="align-items:flex-end;">
-          <div class="form-group" style="flex:0 0 140px;">
-            <label class="form-label" for="slide-pos-select">Position</label>
+        <div class="form-row">
+          <div class="form-group" style="flex:1;">
+            <label class="form-label" for="slide-pos-select">Image Alignment</label>
             <select class="form-select" id="slide-pos-select">
               <option value="center">Center</option>
-              <option value="top">Top Center</option>
-              <option value="bottom">Bottom Center</option>
-              <option value="left">Left</option>
-              <option value="right">Right</option>
+              <option value="top">Top</option>
+              <option value="bottom">Bottom</option>
             </select>
           </div>
-          <div class="form-group" style="flex:0 0 150px;">
-            <label class="form-label" for="slide-duration-input">Duration (Seconds)</label>
-            <input class="form-input" id="slide-duration-input" type="number" min="3" max="300" placeholder="Default (10s)" />
+          <div class="form-group" style="flex:1;">
+            <label class="form-label" for="slide-duration-input">Duration Override (seconds)</label>
+            <input class="form-input" id="slide-duration-input" type="number" min="3" max="120" placeholder="Default (global)" />
           </div>
-          <div class="form-group" id="slide-loop-group" style="flex:0 0 140px;padding-bottom:10px;">
-            <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-secondary);cursor:pointer;">
-              <input type="checkbox" id="slide-loop-input" checked style="accent-color:var(--accent-gold);width:16px;height:16px;cursor:pointer;" />
-              Loop Video
-            </label>
+          <div class="form-group" style="flex:1;">
+            <label class="form-label" for="slide-loop-input">Loop Video</label>
+            <select class="form-select" id="slide-loop-input">
+              <option value="true">Yes — Loop continuously</option>
+              <option value="false">No — Next slide on end</option>
+            </select>
           </div>
-          <div class="form-group" style="flex:1;display:flex;justify-content:flex-end;gap:var(--space-sm);">
-            <button class="btn btn-outline" id="cancel-slide-btn" style="display:none;">
+          <div class="form-group" style="flex:0 0 auto;display:flex;align-items:flex-end;gap:8px;">
+            <button class="btn btn-primary" id="save-slide-btn">
+              <span class="material-symbols-outlined" id="save-slide-icon">add</span>
+              <span id="save-slide-text">Add Slide</span>
+            </button>
+            <button class="btn btn-secondary" id="cancel-slide-btn" style="display:none;">
               Cancel
             </button>
-            <button class="btn btn-primary" id="add-slide-btn">
-              <span class="material-symbols-outlined" id="add-slide-icon">add</span>
-              <span id="add-slide-text">Add Slide</span>
-            </button>
           </div>
         </div>
       </div>
 
-      <!-- Tips -->
-      <div style="margin-bottom:var(--space-md);padding:var(--space-sm) var(--space-md);background:var(--bg-surface);border-radius:var(--radius-sm);border:1px solid var(--border-subtle);">
-        <p style="font-size:12px;font-weight:600;color:var(--accent-gold);margin-bottom:4px;">
-          <span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;">tips_and_updates</span>
-          Media URL Guidelines
-        </p>
-        <p style="font-size:12px;color:var(--text-muted);line-height:1.6;">
-          • <strong>Facebook Images</strong>: Open Facebook post → Click image → Right-click → "Copy image address" → Paste here.<br/>
-          • <strong>Videos</strong>: Accepts direct MP4/WebM video URLs or standard YouTube links (e.g. <code>https://www.youtube.com/watch?v=...</code>). Set duration to control when it slides.
-        </p>
-      </div>
-
-      <!-- Slides List -->
+      <!-- Slide List -->
       <div class="admin-list" id="slides-list">
         <!-- Rendered by JS -->
-      </div>
-    </section>
-
-    <!-- ======== SECTION 2: OFFICE HOURS ======== -->
-    <section class="admin-section">
-      <div class="admin-section-header">
-        <div class="admin-section-title">
-          <span class="material-symbols-outlined">account_circle</span>
-          <span>Office Hours Today</span>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group" style="flex:0 0 80px;">
-          <label class="form-label" for="office-initials-input">Initials</label>
-          <input class="form-input" id="office-initials-input" type="text" maxlength="3" placeholder="DO" />
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="office-name-input">Name / Office</label>
-          <input class="form-input" id="office-name-input" type="text" placeholder="e.g. Dean's Office" />
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="office-room-input">Location / Room</label>
-          <input class="form-input" id="office-room-input" type="text" placeholder="e.g. IT Building Room 201" />
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label" for="office-time-input">Hours</label>
-          <input class="form-input" id="office-time-input" type="text" placeholder="e.g. 8:00 AM – 5:00 PM" />
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="office-status-select">Status</label>
-          <select class="form-select" id="office-status-select">
-            <option value="available">Available (Walk-in Open)</option>
-            <option value="busy">In Meeting / Busy</option>
-            <option value="closed">Closed for Today</option>
-          </select>
-        </div>
-        <div class="form-group" style="flex:0 0 auto;">
-          <label class="form-label">&nbsp;</label>
-          <button class="btn btn-primary" id="save-office-btn">
-            <span class="material-symbols-outlined">save</span>
-            Save Office Hours
-          </button>
-        </div>
       </div>
     </section>
 

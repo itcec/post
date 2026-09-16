@@ -17,11 +17,19 @@
   // ---- Load All Sections ----
   function loadAllSections() {
     renderSlideList();
-    loadOfficeHoursForm();
     renderRoomList();
     renderAnnouncementList();
     renderFlashList();
     loadCarouselSettingsForm();
+
+    // Pull latest state from Apps Script
+    fetchCloudData(() => {
+      renderSlideList();
+      renderRoomList();
+      renderAnnouncementList();
+      renderFlashList();
+      loadCarouselSettingsForm();
+    });
   }
 
   // ================================================================
@@ -199,36 +207,6 @@
     resetSlideForm();
     renderSlideList();
     showSaveToast('Slide removed');
-  }
-
-  // ================================================================
-  // OFFICE HOURS EDITOR
-  // ================================================================
-  function loadOfficeHoursForm() {
-    const data = getData('officeHours');
-    const nameEl = document.getElementById('office-name-input');
-    const roomEl = document.getElementById('office-room-input');
-    const timeEl = document.getElementById('office-time-input');
-    const statusEl = document.getElementById('office-status-select');
-    const initialsEl = document.getElementById('office-initials-input');
-
-    if (nameEl) nameEl.value = data.name || '';
-    if (roomEl) roomEl.value = data.room || '';
-    if (timeEl) timeEl.value = data.time || '';
-    if (statusEl) statusEl.value = data.status || 'available';
-    if (initialsEl) initialsEl.value = data.initials || '';
-  }
-
-  function saveOfficeHours() {
-    const data = {
-      name: document.getElementById('office-name-input')?.value.trim() || 'Dean\'s Office',
-      room: document.getElementById('office-room-input')?.value.trim() || 'IT Building',
-      time: document.getElementById('office-time-input')?.value.trim() || '8:00 AM – 5:00 PM',
-      status: document.getElementById('office-status-select')?.value || 'available',
-      initials: document.getElementById('office-initials-input')?.value.trim() || 'DO'
-    };
-    setData('officeHours', data);
-    showSaveToast('Office hours updated and saved!');
   }
 
   // ================================================================
@@ -721,10 +699,6 @@
         }
       });
     }
-
-    // Office hours save
-    const saveOfficeBtn = document.getElementById('save-office-btn');
-    if (saveOfficeBtn) saveOfficeBtn.addEventListener('click', saveOfficeHours);
 
     // Schedules of the Month add / save
     const addRoomBtn = document.getElementById('save-room-btn') || document.getElementById('add-room-btn');

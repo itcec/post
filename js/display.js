@@ -27,6 +27,26 @@
     renderFlashTicker();
     startAutoRotate();
 
+    // Pull cloud data from Google Apps Script on startup
+    fetchCloudData(() => {
+      loadCarouselSettings();
+      renderSlides();
+      renderRoomSchedule();
+      renderAnnouncements();
+      renderFlashTicker();
+    });
+
+    // Check cloud for new announcements/schedules every 60 seconds
+    setInterval(() => {
+      fetchCloudData(() => {
+        loadCarouselSettings();
+        renderSlides();
+        renderRoomSchedule();
+        renderAnnouncements();
+        renderFlashTicker();
+      });
+    }, 60 * 1000);
+
     // Listen for storage changes from admin page
     window.addEventListener('storage', onStorageChange);
   }

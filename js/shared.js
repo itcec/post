@@ -53,6 +53,10 @@ const DEFAULT_DATA = {
   }
 };
 
+// ---- Google Apps Script Cloud Storage Endpoint ----
+const APPS_SCRIPT_ID = 'AKfycbxrc1f7iZjQJFGBGFPKL17YJ4ubV3WZ6ZwWC3zWSXALnSmWDPvnwyoOaLz5QXHheSSH';
+const APPS_SCRIPT_URL = `https://script.google.com/macros/s/${APPS_SCRIPT_ID}/exec`;
+
 // ---- Data Management ----
 function getData(key) {
   try {
@@ -69,6 +73,88 @@ function setData(key, value) {
     localStorage.setItem(DATA_KEYS[key], JSON.stringify(value));
   } catch (e) {
     console.warn(`Error writing ${key} to localStorage:`, e);
+  }
+  // Asynchronously synchronize changes to Google Apps Script cloud storage
+  syncKeyToCloud(key, value);
+}
+
+// Update UI sync badge if present
+function updateCloudBadge(status, text) {
+  const badge = document.getElementById('cloud-sync-badge');
+  const icon = document.getElementById('cloud-sync-icon');
+  const label = document.getElementById('cloud-sync-text');
+  if (!badge) return;
+
+  if (status === 'syncing') {
+    badge.style.background = 'rgba(252,163,17,0.14)';
+    badge.style.borderColor = 'rgba(252,163,17,0.30)';
+    badge.style.color = 'var(--accent-warm)';
+    if (icon) icon.textContent = 'sync';
+    if (label) label.textContent = text || 'Syncing to Cloud...';
+  } else if (status === 'error') {
+    badge.style.background = 'rgba(255,87,87,0.14)';
+    badge.style.borderColor = 'rgba(255,87,87,0.30)';
+    badge.style.color = 'var(--status-alert)';
+    if (icon) icon.textContent = 'cloud_off';
+    if (label) label.textContent = text || 'Sync Saved Locally';
+  } else {
+    badge.style.background = 'rgba(49,210,156,0.12)';
+    badge.style.borderColor = 'rgba(49,210,156,0.25)';
+    badge.style.color = '#31d29c';
+    if (icon) icon.textContent = 'cloud_done';
+    if (label) label.textContent = text || 'Cloud Synced';
+  }
+}
+
+// Sync single key change to Google Apps Script
+async function syncKeyToCloud(key, value) {
+  updateCloudBadge('syncing', 'Saving to Cloud...');
+  try {
+    const payload = {
+      action: 'save',
+      key: key,
+      data: value,
+      updatedAt: new Date().toISOString()
+    };
+
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors', // standard for Google Apps Script Web Apps
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    updateCloudBadge('synced', 'Cloud Synced');
+  } catch (err) {
+    console.warn('Apps Script cloud sync warning (saved in local cache):', err);
+    updateCloudBadge('error', 'Saved Locally');
+  }
+}
+
+// Fetch all site data from Google Apps Script on startup or interval
+async function fetchCloudData(onUpdatedCallback) {
+  try {
+    const res = await fetch(`${APPS_SCRIPT_URL}?action=getAll&t=${Date.now()}`);
+    if (!res.ok) return;
+    const json = await res.json();
+    if (json && typeof json === 'object') {
+      let changed = false;
+      for (const [key, storageKey] of Object.entries(DATA_KEYS)) {
+        if (json[key] !== undefined) {
+          localStorage.setItem(storageKey, JSON.stringify(json[key]));
+          changed = true;
+        }
+      }
+      if (changed && typeof onUpdatedCallback === 'function') {
+        onUpdatedCallback();
+      }
+      updateCloudBadge('synced', 'Cloud Synced');
+    }
+  } catch (e) {
+    // Apps Script may be initializing or network offline; graceful fallback to local storage
+    console.info('Using locally cached data (Apps Script endpoint standby).');
   }
 }
 
