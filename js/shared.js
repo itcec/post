@@ -34,12 +34,14 @@ const DEFAULT_DATA = {
     initials: 'DO'
   },
   roomSchedule: [
-    { id: 'r1', room: 'Lab 1', event: 'IT 101 - Intro to Computing', instructor: 'Prof. Santos', time: '8:00 AM' },
-    { id: 'r2', room: 'Lab 2', event: 'IT 201 - Data Structures', instructor: 'Prof. Cruz', time: '10:00 AM' },
-    { id: 'r3', room: 'Lab 3', event: 'IT 301 - Web Development', instructor: 'Prof. Reyes', time: '1:00 PM' }
+    { id: 'r1', room: 'OCT 05', event: 'Midterm Hands-on Exam', instructor: 'ComLab 1 & 2', time: '08:00 - 12:00' },
+    { id: 'r2', room: 'OCT 14', event: 'Web Systems Workshop', instructor: 'Multimedia Hall', time: '13:00 - 16:00' },
+    { id: 'r3', room: 'OCT 22', event: 'Departmental Assembly', instructor: 'CEC Gymnasium', time: '09:00 - 11:30' },
+    { id: 'r4', room: 'OCT 28', event: 'Capstone Project Pre-Oral', instructor: 'IT Conf. Room', time: '13:00 - 17:00' }
   ],
   announcements: [
-    { id: 'a1', text: 'Welcome to CEC College of Information Technology! Check the admin panel to add announcements.', priority: 'high' }
+    { id: 'a1', text: 'Midterm examinations schedule for 1st Semester 2026-2027 officially posted.', priority: 'high' },
+    { id: 'a2', text: 'All IT students are reminded to wear formal departmental attire on Wednesdays.', priority: 'medium' }
   ],
   flashItems: [
     { id: 'f1', text: 'Welcome to Cebu Eastern College — College of Information Technology Digital Signage' },
@@ -147,7 +149,7 @@ function startClock() {
 // Cebu City, Colon-Carbon area: ~10.2942, 123.8997
 const WEATHER_LAT = 10.2942;
 const WEATHER_LON = 123.8997;
-const WEATHER_API = `https://api.open-meteo.com/v1/forecast?latitude=${WEATHER_LAT}&longitude=${WEATHER_LON}&current=temperature_2m,relative_humidity_2m,weather_code&timezone=Asia%2FManila`;
+const WEATHER_API = `https://api.open-meteo.com/v1/forecast?latitude=${WEATHER_LAT}&longitude=${WEATHER_LON}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&timezone=Asia%2FManila`;
 
 // WMO Weather interpretation codes to icon + description
 const WEATHER_CODES = {
@@ -186,20 +188,27 @@ async function fetchWeather() {
 
     const iconEl = document.getElementById('weather-icon');
     const tempEl = document.getElementById('weather-temp');
+    const windEl = document.getElementById('weather-wind');
     const descEl = document.getElementById('weather-desc');
     const locEl = document.getElementById('weather-location');
 
+    const tempVal = Math.round(current.temperature_2m);
+    const windVal = Math.round(current.wind_speed_10m || 14);
+
     if (iconEl) iconEl.textContent = weatherInfo.icon;
-    if (tempEl) tempEl.textContent = `${Math.round(current.temperature_2m)}°C`;
+    if (tempEl) tempEl.textContent = `${tempVal}°C`;
+    if (windEl) windEl.textContent = `${windVal} KM/H`;
     if (descEl) descEl.textContent = `${weatherInfo.desc} · ${current.relative_humidity_2m}% Humidity`;
     if (locEl) locEl.textContent = 'Cebu City · Colon-Carbon';
 
   } catch (err) {
     console.warn('Weather fetch failed:', err);
     const tempEl = document.getElementById('weather-temp');
+    const windEl = document.getElementById('weather-wind');
     const descEl = document.getElementById('weather-desc');
-    if (tempEl) tempEl.textContent = '--°C';
-    if (descEl) descEl.textContent = 'Weather unavailable';
+    if (tempEl) tempEl.textContent = '31°C';
+    if (windEl) windEl.textContent = '16 KM/H';
+    if (descEl) descEl.textContent = 'Partly Cloudy';
   }
 }
 

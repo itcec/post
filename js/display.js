@@ -171,6 +171,7 @@
 
     const currSlideData = slides[currentSlide];
     syncAmbientBackground(currSlideData);
+    updateHeroHeadline(currSlideData);
     remainingTime = getSlideDuration(currSlideData);
     resetProgressBar();
   }
@@ -194,6 +195,7 @@
     const currSlideData = slides[currentSlide];
 
     syncAmbientBackground(currSlideData);
+    updateHeroHeadline(currSlideData);
 
     const allSlides = document.querySelectorAll('.carousel-slide');
     const allDots = document.querySelectorAll('.carousel-dot');
@@ -315,23 +317,52 @@
     }
   }
 
+  // ---- Update Hero Active Slide Headline ----
+  function updateHeroHeadline(slide) {
+    const titleEl = document.getElementById('hero-active-title');
+    const captionEl = document.getElementById('hero-active-caption');
+    if (slide && slide.caption) {
+      if (titleEl) titleEl.textContent = slide.caption;
+      if (captionEl) captionEl.textContent = 'College of Information Technology · Cebu Eastern College';
+    } else {
+      if (titleEl) titleEl.textContent = 'College of Information Technology';
+      if (captionEl) captionEl.textContent = 'Mission Control Information Display · Cebu Eastern College';
+    }
+  }
+
   // ---- Sidebar: Office Hours ----
   function renderOfficeHours() {
     const data = getData('officeHours');
     const container = document.getElementById('office-hours-content');
+    const pctEl = document.getElementById('office-status-pct');
     if (!container) return;
 
     let statusClass = 'available';
     let statusText = 'Available';
-    if (data.status === 'busy') { statusClass = 'busy'; statusText = 'In Meeting'; }
-    else if (data.status === 'closed') { statusClass = 'closed'; statusText = 'Closed'; }
-    else { statusText = 'Available'; }
+    let pctVal = '88%';
+    if (data.status === 'busy') { 
+      statusClass = 'busy'; 
+      statusText = 'In Meeting'; 
+      pctVal = '45%';
+    } else if (data.status === 'closed') { 
+      statusClass = 'closed'; 
+      statusText = 'Closed'; 
+      pctVal = '10%';
+    } else { 
+      statusText = 'Available'; 
+      pctVal = '90%';
+    }
 
-    document.getElementById('office-status-pill').className = `status-pill ${statusClass}`;
-    document.getElementById('office-status-pill').innerHTML = `
-      ${statusClass !== 'closed' ? '<span class="status-dot"></span>' : ''}
-      ${statusText.toUpperCase()}
-    `;
+    if (pctEl) pctEl.textContent = pctVal;
+
+    const pillEl = document.getElementById('office-status-pill');
+    if (pillEl) {
+      pillEl.className = `status-pill ${statusClass}`;
+      pillEl.innerHTML = `
+        ${statusClass !== 'closed' ? '<span class="status-dot"></span>' : ''}
+        ${statusText.toUpperCase()}
+      `;
+    }
 
     container.innerHTML = `
       <div class="office-card">
@@ -345,35 +376,66 @@
     `;
   }
 
-  // ---- Sidebar: Room Schedule ----
+  // ---- Schedules of the Month Feed ----
   function renderRoomSchedule() {
     const data = getData('roomSchedule');
     const container = document.getElementById('room-schedule-content');
+    const counterEl = document.getElementById('schedule-counter-text');
     if (!container) return;
+
+    if (counterEl) {
+      counterEl.textContent = `${data.length} Milestone${data.length === 1 ? '' : 's'}`;
+    }
 
     if (data.length === 0) {
       container.innerHTML = `
         <div class="panel-empty">
           <span class="material-symbols-outlined">event_busy</span>
-          <p>No room schedules set</p>
+          <p>No monthly schedules set</p>
         </div>
       `;
       return;
     }
 
-    container.innerHTML = data.map(item => `
-      <div class="room-item">
-        <div class="room-item-left">
-          <span class="room-badge">${escapeHtml(item.room)}</span>
-          <div class="room-details">
-            <span class="room-event truncate">${escapeHtml(item.event)}</span>
-            <span class="room-instructor">${escapeHtml(item.instructor)}</span>
+    container.innerHTML = data.map((item, idx) => `
+      <div class="month-schedule-item">
+        <div class="month-date-badge">
+          <span class="month-badge-day">${escapeHtml(item.room || `OCT 0${idx + 1}`)}</span>
+        </div>
+        <div class="month-item-body">
+          <div class="month-item-title truncate">${escapeHtml(item.event)}</div>
+          <div class="month-item-meta">
+            <span class="month-meta-venue">
+              <span class="material-symbols-outlined" style="font-size:12px;vertical-align:middle;">location_on</span>
+              ${escapeHtml(item.instructor || 'Campus')}
+            </span>
+            <span class="month-meta-time">${escapeHtml(item.time || 'All Day')}</span>
           </div>
         </div>
-        <span class="room-time">${escapeHtml(item.time)}</span>
       </div>
     `).join('');
   }
+
+  // Switch Schedule Tab (Month vs Today)
+  window._switchScheduleTab = function(tab) {
+    const btnMonth = document.getElementById('tab-month');
+    const btnToday = document.getElementById('tab-today');
+    if (tab === 'today') {
+      if (btnMonth) btnMonth.classList.remove('active');
+      if (btnToday) btnToday.classList.add('active');
+      // Filter or highlight today
+      const todayText = new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit' }).toUpperCase();
+      const allItems = document.querySelectorAll('.month-schedule-item');
+      allItems.forEach(el => {
+        el.style.opacity = el.textContent.includes(todayText) ? '1' : '0.6';
+      });
+    } else {
+      if (btnMonth) btnMonth.classList.add('active');
+      if (btnToday) btnToday.classList.remove('active');
+      const allItems = document.querySelectorAll('.month-schedule-item');
+      allItems.forEach(el => el.style.opacity = '1');
+    }
+  };
 
   // ---- Sidebar: Announcements ----
   function renderAnnouncements() {

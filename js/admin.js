@@ -560,11 +560,11 @@
     const saveOfficeBtn = document.getElementById('save-office-btn');
     if (saveOfficeBtn) saveOfficeBtn.addEventListener('click', saveOfficeHours);
 
-    // Room add / save
-    const addRoomBtn = document.getElementById('add-room-btn');
+    // Schedules of the Month add / save
+    const addRoomBtn = document.getElementById('save-room-btn') || document.getElementById('add-room-btn');
     if (addRoomBtn) addRoomBtn.addEventListener('click', saveOrAddRoom);
 
-    // Cancel room edit
+    // Cancel schedule edit
     const cancelRoomBtn = document.getElementById('cancel-room-btn');
     if (cancelRoomBtn) cancelRoomBtn.addEventListener('click', resetRoomForm);
 

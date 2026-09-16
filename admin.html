@@ -235,44 +235,44 @@
       </div>
     </section>
 
-    <!-- ======== SECTION 3: ROOM SCHEDULE ======== -->
+    <!-- ======== SECTION 3: SCHEDULES OF THE MONTH ======== -->
     <section class="admin-section">
       <div class="admin-section-header">
         <div class="admin-section-title">
-          <span class="material-symbols-outlined">meeting_room</span>
-          <span>Room Schedule</span>
+          <span class="material-symbols-outlined">calendar_month</span>
+          <span>Schedules of the Month</span>
         </div>
-        <span style="font-size:12px;color:var(--text-muted);">Add or edit room test/class schedules</span>
+        <span style="font-size:12px;color:var(--text-muted);">Add or edit monthly departmental events, milestone exams, and laboratory schedules</span>
       </div>
 
       <div id="room-form-container" style="background:var(--bg-surface);padding:var(--space-md);border-radius:var(--radius-md);margin-bottom:var(--space-lg);border:1px solid var(--border-subtle);">
         <input type="hidden" id="room-edit-id" value="" />
         <div class="form-row">
-          <div class="form-group" style="flex:0 0 110px;">
-            <label class="form-label" for="room-number-input">Room</label>
-            <input class="form-input" id="room-number-input" type="text" placeholder="Lab 1" />
+          <div class="form-group" style="flex:0 0 130px;">
+            <label class="form-label" for="room-number-input">Date / Month</label>
+            <input class="form-input" id="room-number-input" type="text" placeholder="e.g. OCT 05" />
           </div>
           <div class="form-group" style="flex:2;">
-            <label class="form-label" for="room-event-input">Subject / Event / Test</label>
-            <input class="form-input" id="room-event-input" type="text" placeholder="e.g. IT 101 - Intro to Computing" />
+            <label class="form-label" for="room-event-input">Event / Activity / Milestone</label>
+            <input class="form-input" id="room-event-input" type="text" placeholder="e.g. Midterm Hands-on Examination" />
           </div>
           <div class="form-group" style="flex:1.2;">
-            <label class="form-label" for="room-instructor-input">Instructor</label>
-            <input class="form-input" id="room-instructor-input" type="text" placeholder="e.g. Prof. Santos" />
+            <label class="form-label" for="room-instructor-input">Venue / Room / Lead</label>
+            <input class="form-input" id="room-instructor-input" type="text" placeholder="e.g. ComLab 1 & 2" />
           </div>
-          <div class="form-group" style="flex:0 0 130px;">
-            <label class="form-label" for="room-time-input">Time</label>
-            <input class="form-input" id="room-time-input" type="text" placeholder="8:00 AM" />
+          <div class="form-group" style="flex:1;">
+            <label class="form-label" for="room-time-input">Time / Period</label>
+            <input class="form-input" id="room-time-input" type="text" placeholder="e.g. 08:00 - 12:00" />
           </div>
-          <div class="form-group" style="flex:0 0 auto;display:flex;align-items:flex-end;gap:var(--space-xs);">
-            <button class="btn btn-outline" id="cancel-room-btn" style="display:none;">
-              Cancel
-            </button>
-            <button class="btn btn-primary" id="add-room-btn">
-              <span class="material-symbols-outlined" id="add-room-icon">add</span>
-              <span id="add-room-text">Add</span>
-            </button>
-          </div>
+        </div>
+        <div style="display:flex;gap:var(--space-sm);justify-content:flex-end;margin-top:var(--space-xs);">
+          <button class="btn btn-secondary" id="cancel-room-btn" style="display:none;" onclick="window._cancelRoomEdit()">
+            Cancel
+          </button>
+          <button class="btn btn-primary" id="save-room-btn">
+            <span class="material-symbols-outlined" id="save-room-icon">add</span>
+            <span id="save-room-text">Add to Month Schedule</span>
+          </button>
         </div>
       </div>
 
