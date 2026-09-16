@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CEC IT — Admin CMS Console</title>
+  <meta name="description" content="Content Management System for Cebu Eastern College IT Department Digital Signage." />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="admin-body">
+
+  <!-- ============================================================
+       HEADER (Same branding as display page)
+       ============================================================ -->
+  <header class="site-header">
+    <div class="header-content">
+
+      <!-- LEFT: Logos -->
+      <div class="header-logos">
+        <img src="assets/school_logo.jpg" alt="Cebu Eastern College Logo" />
+        <img src="assets/it_departmentlogo.png" alt="IT Department Logo" />
+      </div>
+
+      <!-- TITLE -->
+      <div class="header-title">
+        <h1>College of Information Technology</h1>
+        <span class="subtitle">Admin CMS Console</span>
+      </div>
+
+      <!-- WEATHER (shared) -->
+      <div class="header-weather">
+        <span class="material-symbols-outlined weather-icon" id="weather-icon">cloud</span>
+        <div class="weather-info">
+          <span class="weather-temp" id="weather-temp">--°C</span>
+          <span class="weather-desc" id="weather-desc">Loading...</span>
+          <span class="weather-location" id="weather-location">Cebu City</span>
+        </div>
+      </div>
+
+      <!-- DATE & CLOCK -->
+      <div class="header-datetime">
+        <div class="clock-display">
+          <span class="clock-time" id="clock-hours">12</span>
+          <span class="clock-colon">:</span>
+          <span class="clock-time" id="clock-minutes">00</span>
+          <span class="clock-ampm" id="clock-ampm">AM</span>
+        </div>
+        <div class="date-display">
+          <span class="date-day" id="date-day">Monday</span>
+          <span class="date-full" id="date-full">September 16, 2026</span>
+        </div>
+      </div>
+
+      <!-- NAV -->
+      <nav class="header-nav">
+        <a href="index.html">Display</a>
+        <a href="admin.html" class="active">Admin</a>
+      </nav>
+
+    </div>
+  </header>
+
+  <!-- ============================================================
+       ADMIN CONTENT
+       ============================================================ -->
+  <div class="admin-container">
+
+    <!-- ======== SECTION 1: SLIDE MANAGER ======== -->
+    <section class="admin-section">
+      <div class="admin-section-header">
+        <div class="admin-section-title">
+          <span class="material-symbols-outlined">photo_library</span>
+          <span>Slide Manager</span>
+        </div>
+        <span style="font-size:12px;color:var(--text-muted);">Paste image URLs from Facebook posts or any site</span>
+      </div>
+
+      <!-- Add Slide Form -->
+      <div class="form-row" style="margin-bottom:var(--space-lg);">
+        <div class="form-group" style="flex:3;">
+          <label class="form-label" for="slide-url-input">Image URL</label>
+          <input class="form-input" id="slide-url-input" type="url" placeholder="https://scontent.fceb2-2.fna.fbcdn.net/... or any image URL" />
+        </div>
+        <div class="form-group" style="flex:1.5;">
+          <label class="form-label" for="slide-caption-input">Caption (optional)</label>
+          <input class="form-input" id="slide-caption-input" type="text" placeholder="e.g. IT Week 2026" />
+        </div>
+        <div class="form-group" style="flex:0 0 auto;">
+          <label class="form-label">&nbsp;</label>
+          <button class="btn btn-primary" id="add-slide-btn">
+            <span class="material-symbols-outlined">add</span>
+            Add Slide
+          </button>
+        </div>
+      </div>
+
+      <!-- Tips -->
+      <div style="margin-bottom:var(--space-md);padding:var(--space-sm) var(--space-md);background:var(--bg-surface);border-radius:var(--radius-sm);border:1px solid var(--border-subtle);">
+        <p style="font-size:12px;font-weight:600;color:var(--accent-gold);margin-bottom:4px;">
+          <span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;">tips_and_updates</span>
+          How to get Facebook image URLs
+        </p>
+        <p style="font-size:12px;color:var(--text-muted);line-height:1.6;">
+          Open the Facebook post → Click the image to view full size → Right-click the image → Select "Copy image address" → Paste it here.
+          You can also use Imgur, Google Drive (public), or any direct image link.
+        </p>
+      </div>
+
+      <!-- Slides List -->
+      <div class="admin-list" id="slides-list">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- ======== SECTION 2: OFFICE HOURS ======== -->
+    <section class="admin-section">
+      <div class="admin-section-header">
+        <div class="admin-section-title">
+          <span class="material-symbols-outlined">account_circle</span>
+          <span>Office Hours Today</span>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group" style="flex:0 0 80px;">
+          <label class="form-label" for="office-initials-input">Initials</label>
+          <input class="form-input" id="office-initials-input" type="text" maxlength="3" placeholder="DO" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="office-name-input">Name / Office</label>
+          <input class="form-input" id="office-name-input" type="text" placeholder="e.g. Dean's Office" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="office-room-input">Location / Room</label>
+          <input class="form-input" id="office-room-input" type="text" placeholder="e.g. IT Building Room 201" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="office-time-input">Hours</label>
+          <input class="form-input" id="office-time-input" type="text" placeholder="e.g. 8:00 AM – 5:00 PM" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="office-status-select">Status</label>
+          <select class="form-select" id="office-status-select">
+            <option value="available">Available (Walk-in Open)</option>
+            <option value="busy">In Meeting / Busy</option>
+            <option value="closed">Closed for Today</option>
+          </select>
+        </div>
+        <div class="form-group" style="flex:0 0 auto;">
+          <label class="form-label">&nbsp;</label>
+          <button class="btn btn-primary" id="save-office-btn">
+            <span class="material-symbols-outlined">save</span>
+            Save
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======== SECTION 3: ROOM SCHEDULE ======== -->
+    <section class="admin-section">
+      <div class="admin-section-header">
+        <div class="admin-section-title">
+          <span class="material-symbols-outlined">meeting_room</span>
+          <span>Room Schedule</span>
+        </div>
+      </div>
+
+      <div class="form-row" style="margin-bottom:var(--space-lg);">
+        <div class="form-group" style="flex:0 0 100px;">
+          <label class="form-label" for="room-number-input">Room</label>
+          <input class="form-input" id="room-number-input" type="text" placeholder="Lab 1" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="room-event-input">Subject / Event</label>
+          <input class="form-input" id="room-event-input" type="text" placeholder="e.g. IT 101 - Intro to Computing" />
+        </div>
+        <div class="form-group" style="flex:0.8;">
+          <label class="form-label" for="room-instructor-input">Instructor</label>
+          <input class="form-input" id="room-instructor-input" type="text" placeholder="e.g. Prof. Santos" />
+        </div>
+        <div class="form-group" style="flex:0 0 120px;">
+          <label class="form-label" for="room-time-input">Time</label>
+          <input class="form-input" id="room-time-input" type="text" placeholder="8:00 AM" />
+        </div>
+        <div class="form-group" style="flex:0 0 auto;">
+          <label class="form-label">&nbsp;</label>
+          <button class="btn btn-primary" id="add-room-btn">
+            <span class="material-symbols-outlined">add</span>
+            Add
+          </button>
+        </div>
+      </div>
+
+      <div class="admin-list" id="rooms-list">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- ======== SECTION 4: IMPORTANT ANNOUNCEMENTS ======== -->
+    <section class="admin-section">
+      <div class="admin-section-header">
+        <div class="admin-section-title">
+          <span class="material-symbols-outlined">notification_important</span>
+          <span>Important Announcements</span>
+        </div>
+        <span style="font-size:12px;color:var(--text-muted);">Shown on the right sidebar of the display</span>
+      </div>
+
+      <div class="form-row" style="margin-bottom:var(--space-lg);">
+        <div class="form-group" style="flex:1;">
+          <label class="form-label" for="announcement-text-input">Announcement Text</label>
+          <input class="form-input" id="announcement-text-input" type="text" placeholder="e.g. No classes on September 20, 2026 — Declared holiday" />
+        </div>
+        <div class="form-group" style="flex:0 0 auto;">
+          <label class="form-label">&nbsp;</label>
+          <button class="btn btn-primary" id="add-announcement-btn">
+            <span class="material-symbols-outlined">add</span>
+            Add
+          </button>
+        </div>
+      </div>
+
+      <div class="admin-list" id="announcements-list">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- ======== SECTION 5: FLASH ANNOUNCEMENTS (Ticker) ======== -->
+    <section class="admin-section">
+      <div class="admin-section-header">
+        <div class="admin-section-title">
+          <span class="material-symbols-outlined">campaign</span>
+          <span>Flash Announcements (Scrolling Ticker)</span>
+        </div>
+        <span style="font-size:12px;color:var(--text-muted);">Shown at the bottom of the display as a scrolling marquee</span>
+      </div>
+
+      <div class="form-row" style="margin-bottom:var(--space-lg);">
+        <div class="form-group" style="flex:1;">
+          <label class="form-label" for="flash-text-input">Ticker Message</label>
+          <input class="form-input" id="flash-text-input" type="text" placeholder="e.g. IT Week 2026 starts on October 14 — All IT students are required to attend" />
+        </div>
+        <div class="form-group" style="flex:0 0 auto;">
+          <label class="form-label">&nbsp;</label>
+          <button class="btn btn-primary" id="add-flash-btn">
+            <span class="material-symbols-outlined">add</span>
+            Add
+          </button>
+        </div>
+      </div>
+
+      <div class="admin-list" id="flash-list">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- ======== SECTION 6: CAROUSEL SETTINGS ======== -->
+    <section class="admin-section">
+      <div class="admin-section-header">
+        <div class="admin-section-title">
+          <span class="material-symbols-outlined">tune</span>
+          <span>Carousel Settings</span>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group" style="flex:1;">
+          <label class="form-label" for="carousel-duration-input">Slide Duration</label>
+          <div style="display:flex;align-items:center;gap:var(--space-md);">
+            <input class="form-input" id="carousel-duration-input" type="range" min="3" max="30" value="10" style="flex:1;accent-color:var(--accent-gold);" />
+            <span id="carousel-duration-label" style="font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--accent-gold);min-width:48px;text-align:right;">10s</span>
+          </div>
+        </div>
+        <div class="form-group" style="flex:0 0 auto;">
+          <label class="form-label">&nbsp;</label>
+          <div style="display:flex;align-items:center;gap:var(--space-md);">
+            <label style="display:flex;align-items:center;gap:var(--space-sm);font-size:14px;color:var(--text-secondary);cursor:pointer;">
+              <input type="checkbox" id="carousel-auto-input" checked style="accent-color:var(--accent-gold);width:18px;height:18px;cursor:pointer;" />
+              Auto-Rotate
+            </label>
+            <button class="btn btn-primary" id="save-carousel-btn">
+              <span class="material-symbols-outlined">save</span>
+              Save Settings
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER SPACER -->
+    <div style="height:var(--space-2xl);"></div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/shared.js"></script>
+  <script src="js/admin.js"></script>
+
+</body>
+</html>
