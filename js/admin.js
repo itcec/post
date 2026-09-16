@@ -57,7 +57,8 @@
       const loopLabel = isVideo ? (slide.loop !== false ? ' · Loop: On' : ' · Loop: Off') : '';
 
       return `
-        <div class="admin-list-item anim-fade-in" style="animation-delay: ${idx * 0.05}s">
+        <div class="admin-list-item anim-fade-in" draggable="true" data-id="${slide.id}" data-index="${idx}" style="animation-delay: ${idx * 0.04}s">
+          <span class="material-symbols-outlined admin-drag-handle" title="Drag to reorder slide">drag_indicator</span>
           <div class="admin-list-item-content">
             ${isVideo ? `
               <div class="admin-list-item-thumb" style="display:flex;align-items:center;justify-content:center;background:rgba(239,71,111,0.15);color:var(--accent-red);border-radius:6px;">
@@ -69,7 +70,8 @@
             `}
             <div class="admin-list-item-text">
               <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-                <span class="admin-list-item-title">Slide ${idx + 1}${slide.caption ? ' — ' + escapeHtml(slide.caption) : ''}</span>
+                <span class="admin-list-item-title">${slide.caption ? escapeHtml(slide.caption) : `Slide ${idx + 1}`}</span>
+                <span style="font-size:10px;padding:2px 6px;border-radius:3px;background:rgba(49,210,156,0.15);color:var(--accent-green);font-weight:700;">#${idx + 1}</span>
                 <span style="font-size:11px;padding:2px 6px;border-radius:3px;background:rgba(255,255,255,0.08);color:var(--accent-gold);font-weight:700;text-transform:uppercase;">${type}</span>
                 <span style="font-size:11px;color:var(--text-muted);">Duration: ${duration}${loopLabel}</span>
               </div>
@@ -87,6 +89,8 @@
         </div>
       `;
     }).join('');
+
+    setupListDragAndDrop('slides-list', 'slides', renderSlideList, 'Slides reordered and saved!');
   }
 
   function saveOrAddSlide() {
