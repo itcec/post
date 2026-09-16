@@ -143,8 +143,20 @@ async function fetchCloudData(onUpdatedCallback) {
       let changed = false;
       for (const [key, storageKey] of Object.entries(DATA_KEYS)) {
         if (json[key] !== undefined) {
-          localStorage.setItem(storageKey, JSON.stringify(json[key]));
-          changed = true;
+          // If cloud has records, or if it's an object/array with values
+          const cloudVal = json[key];
+          const hasCloudRecords = Array.isArray(cloudVal) ? cloudVal.length > 0 : (cloudVal && Object.keys(cloudVal).length > 0);
+          
+          if (hasCloudRecords) {
+            localStorage.setItem(storageKey, JSON.stringify(cloudVal));
+            changed = true;
+          } else {
+            // Cloud is empty for this key; seed initial local default to cloud if present
+            const localVal = getData(key);
+            if (localVal && (Array.isArray(localVal) ? localVal.length > 0 : true)) {
+              syncKeyToCloud(key, localVal);
+            }
+          }
         }
       }
       if (changed && typeof onUpdatedCallback === 'function') {
@@ -153,7 +165,7 @@ async function fetchCloudData(onUpdatedCallback) {
       updateCloudBadge('synced', 'Cloud Synced');
     }
   } catch (e) {
-    // Apps Script may be initializing or network offline; graceful fallback to local storage
+    // Apps Script standby or offline; graceful fallback to local cache
     console.info('Using locally cached data (Apps Script endpoint standby).');
   }
 }
