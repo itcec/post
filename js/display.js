@@ -170,8 +170,21 @@
     }
 
     const currSlideData = slides[currentSlide];
+    syncAmbientBackground(currSlideData);
     remainingTime = getSlideDuration(currSlideData);
     resetProgressBar();
+  }
+
+  function syncAmbientBackground(slide) {
+    const ambientBg = document.getElementById('screen-ambient-bg');
+    if (!ambientBg) return;
+    if (slide && slide.url && slide.type !== 'video' && !detectMediaType(slide.url).includes('video')) {
+      ambientBg.style.backgroundImage = `url('${slide.url}')`;
+      ambientBg.style.opacity = '0.9';
+    } else {
+      ambientBg.style.backgroundImage = 'none';
+      ambientBg.style.opacity = '0.4';
+    }
   }
 
   function goToSlide(idx) {
@@ -179,6 +192,8 @@
     currentSlide = idx % slideCount;
     const slides = getData('slides');
     const currSlideData = slides[currentSlide];
+
+    syncAmbientBackground(currSlideData);
 
     const allSlides = document.querySelectorAll('.carousel-slide');
     const allDots = document.querySelectorAll('.carousel-dot');

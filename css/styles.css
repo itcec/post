@@ -7,59 +7,73 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap');
 
-/* ---------- CSS Custom Properties (Design Tokens — Futuristic Institutional Glass) ---------- */
+/* ---------- CSS Custom Properties (Design Tokens — 3D Glassmorphism & Cyber-Clean Aesthetics) ---------- */
 :root {
   /* Institutional Palette — CEC College of Information Technology */
-  --bg-primary: #07101f;
-  --bg-secondary: #09172e;
-  --bg-deep: #050d1a;
+  --bg-primary: #060d1a;
+  --bg-secondary: #081528;
+  --bg-deep: #030812;
   
-  /* Glassmorphism Layers */
-  --glass-bg: rgba(8, 20, 45, 0.68);
-  --glass-bg-hover: rgba(12, 28, 60, 0.78);
-  --glass-bg-subtle: rgba(8, 20, 45, 0.48);
-  --glass-bg-deep: rgba(5, 15, 34, 0.82);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-border-light: rgba(255, 255, 255, 0.18);
-  --glass-border-subtle: rgba(255, 255, 255, 0.08);
-  --glass-inner-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.10);
-  --glass-blur: blur(20px) saturate(125%);
-  --glass-blur-deep: blur(24px) saturate(130%);
+  /* 3D Glassmorphic Surfaces (Nexus 3.0 & Cosmo inspired) */
+  --glass-3d-bg: rgba(10, 22, 46, 0.62);
+  --glass-3d-bg-hover: rgba(14, 30, 62, 0.75);
+  --glass-3d-bg-elevated: rgba(12, 26, 54, 0.78);
+  --glass-3d-bg-subtle: rgba(8, 18, 38, 0.45);
+  --glass-3d-pill-bg: rgba(15, 30, 60, 0.68);
+
+  /* Multi-Tier Specular Rim Lighting (Creates physical 3D glass thickness) */
+  --glass-3d-border: 1px solid rgba(255, 255, 255, 0.16);
+  --glass-3d-border-light: 1px solid rgba(255, 255, 255, 0.28);
+  --glass-3d-border-subtle: 1px solid rgba(255, 255, 255, 0.09);
+  --glass-3d-inner-bevel: inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.22), 
+                         inset 0 -1.5px 1px 0 rgba(0, 0, 0, 0.45),
+                         inset 1px 0 1px 0 rgba(255, 255, 255, 0.08);
+  --glass-3d-pill-bevel: inset 0 1px 1px 0 rgba(255, 255, 255, 0.30),
+                         inset 0 -1px 1px 0 rgba(0, 0, 0, 0.50);
+
+  /* Frosted Glass Filters */
+  --glass-blur-smooth: blur(28px) saturate(140%);
+  --glass-blur-deep: blur(36px) saturate(150%);
+  --glass-blur-pill: blur(20px) saturate(135%);
 
   /* CEC Blue Accents */
   --accent-blue: #3385ff;
   --accent-blue-core: #1c6bff;
   --accent-blue-light: #6faaff;
   --accent-blue-dim: rgba(28, 107, 255, 0.22);
-  --accent-blue-glow: 0 0 24px rgba(45, 120, 255, 0.30);
-  --border-luminous-blue: rgba(51, 133, 255, 0.40);
+  --accent-blue-glow: 0 0 24px rgba(45, 120, 255, 0.35);
+  --border-luminous-blue: rgba(60, 140, 255, 0.45);
 
   /* CEC Gold Accents */
   --accent-gold: #ffb82e;
   --accent-gold-bright: #ffc759;
   --accent-gold-dim: #cca025;
-  --accent-gold-container: rgba(255, 184, 46, 0.14);
-  --accent-gold-glow: 0 0 18px rgba(255, 184, 46, 0.25);
-  --border-luminous-gold: rgba(255, 184, 46, 0.40);
+  --accent-gold-container: rgba(255, 184, 46, 0.16);
+  --accent-gold-glow: 0 0 20px rgba(255, 184, 46, 0.32);
+  --border-luminous-gold: rgba(255, 184, 46, 0.45);
 
   /* Status Colors */
   --status-success: #31d29c;
   --status-success-bg: rgba(49, 210, 156, 0.16);
-  --status-success-border: rgba(49, 210, 156, 0.35);
+  --status-success-border: rgba(49, 210, 156, 0.40);
   --status-alert: #ff5d68;
-  --status-alert-bg: rgba(255, 93, 104, 0.14);
-  --status-alert-border: rgba(255, 93, 104, 0.35);
+  --status-alert-bg: rgba(255, 93, 104, 0.16);
+  --status-alert-border: rgba(255, 93, 104, 0.40);
 
-  /* Text Colors */
-  --text-primary: #f7f9ff;
-  --text-secondary: #a6b3cc;
-  --text-muted: #6f7d99;
-  --text-dim: #4a5670;
+  /* High Legibility Text System */
+  --text-primary: #ffffff;
+  --text-secondary: #b0c0dc;
+  --text-muted: #7485a4;
+  --text-dim: #4d5b77;
 
-  /* Shadows */
-  --shadow-glass: 0 12px 36px rgba(0, 0, 0, 0.35);
-  --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.25);
-  --shadow-floating: 0 16px 40px rgba(0, 0, 0, 0.45);
+  /* 3D Floating Physical Elevations */
+  --shadow-3d-floating: 0 16px 36px -6px rgba(0, 0, 0, 0.55), 
+                        0 24px 50px -10px rgba(0, 0, 0, 0.40),
+                        0 4px 12px rgba(0, 0, 0, 0.35);
+  --shadow-3d-card: 0 12px 28px -4px rgba(0, 0, 0, 0.45), 
+                    0 6px 14px rgba(0, 0, 0, 0.30);
+  --shadow-3d-pill: 0 8px 20px rgba(0, 0, 0, 0.35);
+  --shadow-3d-hud: 0 20px 45px rgba(0, 0, 0, 0.65), 0 4px 15px rgba(0, 0, 0, 0.45);
 
   /* Spacing */
   --space-xs: 0.375rem;
@@ -69,18 +83,19 @@
   --space-xl: 2rem;
   --space-2xl: 3rem;
 
-  /* Radius */
+  /* Radius & Curves (Pill geometries) */
   --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 20px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 26px;
+  --radius-pill: 9999px;
   --radius-full: 9999px;
 
   /* Typography */
   --font-display: 'Outfit', 'Plus Jakarta Sans', sans-serif;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 
-  /* Layout Constants (strictly preserved) */
+  /* Layout Constants */
   --header-height: 72px;
   --footer-height: 57px;
 }
@@ -95,7 +110,7 @@
 html, body {
   width: 100%;
   height: 100%;
-  background: var(--bg-primary);
+  background: var(--bg-deep);
   color: var(--text-primary);
   font-family: var(--font-body);
   font-size: 15px;
@@ -111,8 +126,8 @@ body:not(.admin-body) {
 
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.16); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.3); }
+::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.18); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.35); }
 
 a { color: var(--accent-gold); text-decoration: none; }
 img { display: block; max-width: 100%; }
@@ -139,16 +154,36 @@ input, select, textarea { font: inherit; color: inherit; }
 }
 
 /* ================================================================
-   TV SIGNAGE CONTAINER (Strict Proportions)
-   75% Left (Header, Carousel, Ticker) | 25% Full-Height Right Sidebar
+   AMBIENT BACKGROUND ENGINE (Radiates active slide through glass)
+   ================================================================ */
+.screen-ambient-bg {
+  position: fixed;
+  inset: -20px;
+  width: calc(100vw + 40px);
+  height: calc(100vh + 40px);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(50px) brightness(0.40) saturate(160%);
+  transform: scale(1.05);
+  opacity: 0.85;
+  z-index: 0;
+  transition: background-image 1.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 1s ease;
+  pointer-events: none;
+}
+
+/* ================================================================
+   TV SIGNAGE CONTAINER (Strict Proportions: 75% / 25%)
+   All sections float over the immersive backdrop with 3D glass
    ================================================================ */
 .tv-screen-container {
+  position: relative;
   display: flex;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background: var(--bg-deep);
-  position: relative;
+  z-index: 1;
+  background: rgba(3, 8, 18, 0.45);
 }
 
 /* ---------- LEFT COLUMN (75% Width, 100% Height) ---------- */
@@ -161,12 +196,12 @@ input, select, textarea { font: inherit; color: inherit; }
   flex-direction: column;
   overflow: hidden;
   position: relative;
-  border-right: 1px solid var(--glass-border-subtle);
-  background: var(--bg-deep);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  background: transparent;
 }
 
 /* ================================================================
-   TOP HEADER (Sophisticated Glassmorphism Header)
+   TOP HEADER (Floating 3D Glass Bar)
    ================================================================ */
 .site-header {
   position: relative;
@@ -174,11 +209,11 @@ input, select, textarea { font: inherit; color: inherit; }
   flex-shrink: 0;
   width: 100%;
   z-index: 50;
-  background: var(--glass-bg-deep);
+  background: var(--glass-3d-bg);
   backdrop-filter: var(--glass-blur-deep);
   -webkit-backdrop-filter: var(--glass-blur-deep);
-  border-bottom: 1px solid var(--glass-border-subtle);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), var(--glass-3d-inner-bevel);
   display: flex;
   align-items: center;
   padding: 0 var(--space-lg);
@@ -201,10 +236,10 @@ input, select, textarea { font: inherit; color: inherit; }
 }
 
 .header-logos img {
-  height: 50px;
+  height: 48px;
   width: auto;
   object-fit: contain;
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.55));
 }
 
 /* Title & Institution */
@@ -224,43 +259,44 @@ input, select, textarea { font: inherit; color: inherit; }
   line-height: 1.15;
   color: var(--text-primary);
   white-space: nowrap;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.65);
 }
 
 .header-title .subtitle {
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--accent-blue-light);
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  opacity: 0.9;
+  letter-spacing: 0.14em;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 }
 
-/* Weather Widget (Floating Glass Utility Panel) */
+/* Weather Widget (Floating 3D Glass Pill) */
 .header-weather {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
-  padding: 6px 14px;
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-card), var(--glass-inner-highlight);
-  border-radius: var(--radius-md);
+  padding: 6px 16px;
+  background: var(--glass-3d-pill-bg);
+  backdrop-filter: var(--glass-blur-pill);
+  -webkit-backdrop-filter: var(--glass-blur-pill);
+  border: var(--glass-3d-border);
+  box-shadow: var(--shadow-3d-pill), var(--glass-3d-pill-bevel);
+  border-radius: var(--radius-pill);
   flex-shrink: 0;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
 }
 
 .header-weather:hover {
   border-color: var(--border-luminous-blue);
-  box-shadow: var(--accent-blue-glow);
+  box-shadow: var(--accent-blue-glow), var(--glass-3d-pill-bevel);
+  transform: translateY(-1px);
 }
 
 .weather-icon {
   font-size: 26px;
   color: var(--accent-gold);
-  filter: drop-shadow(0 0 6px rgba(255, 184, 46, 0.4));
+  filter: drop-shadow(0 0 8px rgba(255, 184, 46, 0.45));
 }
 
 .weather-info {
@@ -279,10 +315,10 @@ input, select, textarea { font: inherit; color: inherit; }
 
 .weather-desc {
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-secondary);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
 }
 
 .weather-location {
@@ -291,25 +327,26 @@ input, select, textarea { font: inherit; color: inherit; }
   letter-spacing: 0.03em;
 }
 
-/* Date & Clock (Floating Glass Utility Panel) */
+/* Date & Clock (Floating 3D Glass Capsule) */
 .header-datetime {
   display: flex;
   align-items: center;
   gap: var(--space-md);
-  padding: 6px 16px;
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-card), var(--glass-inner-highlight);
-  border-radius: var(--radius-md);
+  padding: 6px 18px;
+  background: var(--glass-3d-pill-bg);
+  backdrop-filter: var(--glass-blur-pill);
+  -webkit-backdrop-filter: var(--glass-blur-pill);
+  border: var(--glass-3d-border);
+  box-shadow: var(--shadow-3d-pill), var(--glass-3d-pill-bevel);
+  border-radius: var(--radius-pill);
   flex-shrink: 0;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
 }
 
 .header-datetime:hover {
   border-color: var(--border-luminous-gold);
-  box-shadow: var(--accent-gold-glow);
+  box-shadow: var(--accent-gold-glow), var(--glass-3d-pill-bevel);
+  transform: translateY(-1px);
 }
 
 .clock-display {
@@ -325,7 +362,7 @@ input, select, textarea { font: inherit; color: inherit; }
   color: #ffffff;
   line-height: 1;
   letter-spacing: -0.03em;
-  text-shadow: 0 0 16px rgba(255, 255, 255, 0.25);
+  text-shadow: 0 2px 14px rgba(255, 255, 255, 0.30);
 }
 
 .clock-colon {
@@ -335,7 +372,7 @@ input, select, textarea { font: inherit; color: inherit; }
   line-height: 1;
   animation: pulse-blink 1.5s ease-in-out infinite;
   margin: 0 2px;
-  text-shadow: 0 0 12px rgba(255, 184, 46, 0.4);
+  text-shadow: 0 0 14px rgba(255, 184, 46, 0.5);
 }
 
 .clock-ampm {
@@ -349,7 +386,7 @@ input, select, textarea { font: inherit; color: inherit; }
 .date-display {
   display: flex;
   flex-direction: column;
-  border-left: 1px solid var(--glass-border);
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
   padding-left: var(--space-md);
 }
 
@@ -372,14 +409,14 @@ input, select, textarea { font: inherit; color: inherit; }
 }
 
 /* ================================================================
-   MAIN ANNOUNCEMENT AREA (Background Integration & Readability)
+   MAIN ANNOUNCEMENT AREA (Background Image Canvas & Floating Controls)
    ================================================================ */
 .carousel-section {
   flex: 1;
   min-height: 0;
   position: relative;
   overflow: hidden;
-  background: #000;
+  background: #030812;
 }
 
 .carousel-viewport {
@@ -394,13 +431,13 @@ input, select, textarea { font: inherit; color: inherit; }
   width: 100%;
   height: 100%;
   opacity: 0;
-  transition: opacity 1s ease-in-out;
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: #040914;
+  background: #030812;
 }
 
 .carousel-slide.active {
@@ -408,7 +445,7 @@ input, select, textarea { font: inherit; color: inherit; }
   pointer-events: auto;
 }
 
-/* Active Announcement Image as Living Background */
+/* Active Announcement Image as Main Background */
 .slide-bg-cover {
   position: absolute;
   inset: 0;
@@ -423,17 +460,18 @@ input, select, textarea { font: inherit; color: inherit; }
 }
 
 .carousel-slide.active .slide-bg-cover {
-  transform: scale(1.025);
+  transform: scale(1.035);
 }
 
-/* Subtle Cinematic Readability Layer (15–25% Overlay Gradient) */
+/* Cinematic Readability Gradients (Enhances floating cards & text) */
 .slide-readability-overlay {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at center, rgba(7, 16, 31, 0.10) 0%, rgba(5, 13, 26, 0.35) 100%),
-              linear-gradient(180deg, rgba(5, 15, 34, 0.40) 0%, rgba(7, 16, 31, 0.05) 25%, rgba(7, 16, 31, 0.15) 75%, rgba(5, 14, 32, 0.65) 100%);
+  background: 
+    radial-gradient(ellipse at center, rgba(3, 8, 18, 0.08) 0%, rgba(3, 8, 18, 0.35) 100%),
+    linear-gradient(180deg, rgba(3, 8, 18, 0.40) 0%, rgba(3, 8, 18, 0.02) 20%, rgba(3, 8, 18, 0.10) 70%, rgba(3, 8, 18, 0.65) 100%);
   pointer-events: none;
   z-index: 2;
 }
@@ -463,42 +501,48 @@ input, select, textarea { font: inherit; color: inherit; }
   pointer-events: none;
 }
 
-/* Floating Glass Announcement Pill / Caption */
+/* Floating 3D Glass Announcement Capsule / Caption */
 .carousel-slide-caption {
   position: absolute;
   top: var(--space-lg);
   left: var(--space-lg);
-  max-width: 82%;
+  max-width: 85%;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 8px 18px;
-  background: rgba(8, 20, 45, 0.76);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--border-luminous-blue);
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4), var(--accent-blue-glow), var(--glass-inner-highlight);
-  border-radius: var(--radius-full);
+  gap: 12px;
+  padding: 10px 22px;
+  background: rgba(8, 20, 45, 0.75);
+  backdrop-filter: var(--glass-blur-deep);
+  -webkit-backdrop-filter: var(--glass-blur-deep);
+  border: var(--glass-3d-border-light);
+  box-shadow: var(--shadow-3d-floating), var(--glass-3d-pill-bevel);
+  border-radius: var(--radius-pill);
   z-index: 10;
-  animation: slide-right-fade 0.5s ease-out;
+  animation: float-pill-appear 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes float-pill-appear {
+  0% { opacity: 0; transform: translateY(-12px) scale(0.96); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .carousel-slide-caption .caption-icon {
-  font-size: 18px;
+  font-size: 20px;
   color: var(--accent-gold);
-  filter: drop-shadow(0 0 6px rgba(255, 184, 46, 0.5));
+  filter: drop-shadow(0 0 8px rgba(255, 184, 46, 0.6));
   flex-shrink: 0;
 }
 
 .carousel-slide-caption .caption-text {
   font-family: var(--font-display);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   color: #ffffff;
   letter-spacing: 0.03em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
 }
 
 /* Empty Placeholder */
@@ -519,38 +563,44 @@ input, select, textarea { font: inherit; color: inherit; }
 }
 
 /* ================================================================
-   SLIDESHOW CONTROL HUD (Dark Translucent Glass Strip)
+   SLIDESHOW CONTROL HUD (Floating 3D Glass Pill Dock)
+   Suspended above the bottom edge with 3D bevels and glowing track
    ================================================================ */
 .carousel-hud {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  bottom: 14px;
+  left: 20px;
+  right: 20px;
   z-index: 20;
-  background: rgba(5, 15, 34, 0.84);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border-top: 1px solid var(--glass-border-subtle);
-  padding: 10px var(--space-lg);
+  background: rgba(8, 20, 44, 0.78);
+  backdrop-filter: var(--glass-blur-deep);
+  -webkit-backdrop-filter: var(--glass-blur-deep);
+  border: var(--glass-3d-border);
+  box-shadow: var(--shadow-3d-hud), var(--glass-3d-inner-bevel);
+  border-radius: var(--radius-pill);
+  padding: 10px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  transition: all 0.3s ease;
 }
 
-/* Gold Progress Line */
+/* Gold Progress Line Inside HUD */
 .carousel-progress-track {
   position: absolute;
   top: 0;
-  left: 0;
-  right: 0;
+  left: 30px;
+  right: 30px;
   height: 3px;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  overflow: hidden;
 }
 
 .carousel-progress-bar {
   height: 100%;
-  background: linear-gradient(90deg, var(--accent-gold-dim), var(--accent-gold));
-  box-shadow: 0 0 10px rgba(255, 184, 46, 0.5);
+  background: linear-gradient(90deg, var(--accent-gold-dim), var(--accent-gold), var(--accent-gold-bright));
+  box-shadow: 0 0 12px rgba(255, 184, 46, 0.7);
   width: 0%;
   transition: width linear;
 }
@@ -568,33 +618,33 @@ input, select, textarea { font: inherit; color: inherit; }
 }
 
 .carousel-dot {
-  width: 8px;
+  width: 9px;
   height: 6px;
   border-radius: 3px;
-  background: rgba(255, 255, 255, 0.20);
+  background: rgba(255, 255, 255, 0.22);
   border: none;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
 }
 
 .carousel-dot.active {
-  width: 26px;
+  width: 28px;
   background: var(--accent-gold);
-  box-shadow: 0 0 8px rgba(255, 184, 46, 0.6);
+  box-shadow: 0 0 10px rgba(255, 184, 46, 0.7);
 }
 
 .carousel-meta-text {
   font-family: var(--font-display);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-secondary);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
 }
 
 .carousel-meta-text.accent {
   color: var(--accent-gold);
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .carousel-controls {
@@ -604,25 +654,24 @@ input, select, textarea { font: inherit; color: inherit; }
 }
 
 .carousel-btn {
-  width: 32px;
-  height: 32px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: rgba(8, 20, 45, 0.70);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-sm);
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
   color: var(--text-primary);
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
 }
 
 .carousel-btn:hover {
-  background: rgba(28, 107, 255, 0.25);
-  border-color: var(--border-luminous-blue);
-  box-shadow: var(--accent-blue-glow);
-  color: #ffffff;
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
 }
 
 .carousel-btn .material-symbols-outlined {
@@ -630,7 +679,7 @@ input, select, textarea { font: inherit; color: inherit; }
 }
 
 /* ================================================================
-   BOTTOM INFORMATION TICKER (Integrated Translucent Glass)
+   BOTTOM FLASH ANNOUNCEMENTS (Floating 3D Glass Bar)
    ================================================================ */
 .site-footer {
   position: relative;
@@ -638,11 +687,11 @@ input, select, textarea { font: inherit; color: inherit; }
   flex-shrink: 0;
   width: 100%;
   z-index: 50;
-  background: rgba(5, 14, 32, 0.90);
+  background: var(--glass-3d-bg);
   backdrop-filter: var(--glass-blur-deep);
   -webkit-backdrop-filter: var(--glass-blur-deep);
-  border-top: 1px solid var(--glass-border-subtle);
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.45), inset 0 1.5px 1px rgba(255, 255, 255, 0.18);
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -651,19 +700,19 @@ input, select, textarea { font: inherit; color: inherit; }
 .flash-label {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   height: 100%;
-  padding: 0 16px;
-  background: linear-gradient(135deg, rgba(255, 184, 46, 0.18) 0%, rgba(255, 184, 46, 0.08) 100%);
-  border-right: 1px solid rgba(255, 184, 46, 0.25);
+  padding: 0 18px;
+  background: linear-gradient(135deg, rgba(255, 184, 46, 0.24) 0%, rgba(255, 184, 46, 0.08) 100%);
+  border-right: 1px solid rgba(255, 184, 46, 0.35);
   color: var(--accent-gold);
   flex-shrink: 0;
   z-index: 2;
-  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 2px 0 16px rgba(0, 0, 0, 0.4);
 }
 
 .flash-label .material-symbols-outlined {
-  font-size: 16px;
+  font-size: 17px;
   color: var(--accent-gold);
   animation: pulse-blink 1.5s ease-in-out infinite;
 }
@@ -672,7 +721,7 @@ input, select, textarea { font: inherit; color: inherit; }
   font-family: var(--font-display);
   font-size: 11px;
   font-weight: 800;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   white-space: nowrap;
 }
@@ -703,10 +752,11 @@ input, select, textarea { font: inherit; color: inherit; }
   align-items: center;
   gap: 8px;
   font-family: var(--font-body);
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 13.5px;
+  font-weight: 600;
   letter-spacing: 0.02em;
   color: var(--text-primary);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 }
 
 .flash-ticker-dot {
@@ -714,28 +764,28 @@ input, select, textarea { font: inherit; color: inherit; }
   height: 6px;
   border-radius: 50%;
   background: var(--accent-gold);
-  box-shadow: 0 0 6px rgba(255, 184, 46, 0.6);
+  box-shadow: 0 0 8px rgba(255, 184, 46, 0.8);
   flex-shrink: 0;
 }
 
-.flash-ticker-dot.alt { background: var(--status-success); box-shadow: 0 0 6px rgba(49, 210, 156, 0.6); }
-.flash-ticker-dot.blue { background: var(--accent-blue-light); box-shadow: 0 0 6px rgba(111, 170, 255, 0.6); }
+.flash-ticker-dot.alt { background: var(--status-success); box-shadow: 0 0 8px rgba(49, 210, 156, 0.8); }
+.flash-ticker-dot.blue { background: var(--accent-blue-light); box-shadow: 0 0 8px rgba(111, 170, 255, 0.8); }
 
 .flash-status {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   height: 100%;
-  padding: 0 16px;
-  background: rgba(8, 20, 45, 0.60);
-  border-left: 1px solid var(--glass-border-subtle);
+  padding: 0 18px;
+  background: rgba(8, 20, 45, 0.65);
+  border-left: 1px solid rgba(255, 255, 255, 0.10);
   flex-shrink: 0;
   font-family: var(--font-display);
   font-size: 10px;
   font-weight: 800;
   color: var(--status-success);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
 }
 
 .flash-status-dot {
@@ -743,12 +793,13 @@ input, select, textarea { font: inherit; color: inherit; }
   height: 6px;
   border-radius: 50%;
   background: var(--status-success);
-  box-shadow: 0 0 8px rgba(49, 210, 156, 0.8);
+  box-shadow: 0 0 10px rgba(49, 210, 156, 0.9);
   animation: pulse-blink 1.5s ease-in-out infinite;
 }
 
 /* ================================================================
-   RIGHT SIDEBAR: FULL-HEIGHT GLASS INFORMATION SYSTEM (25%)
+   RIGHT SIDEBAR: FULL-HEIGHT 3D GLASS INFORMATION SYSTEM (25%)
+   Floating over the ambient background like the Cosmo & Nexus cards
    ================================================================ */
 .tv-right-column,
 .sidebar-section {
@@ -758,34 +809,36 @@ input, select, textarea { font: inherit; color: inherit; }
   height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 14px;
-  background: linear-gradient(180deg, rgba(8, 20, 45, 0.88) 0%, rgba(5, 13, 28, 0.94) 100%);
+  gap: 14px;
+  padding: 16px;
+  background: rgba(6, 15, 32, 0.72);
   backdrop-filter: var(--glass-blur-deep);
   -webkit-backdrop-filter: var(--glass-blur-deep);
-  border-left: 1px solid var(--glass-border-subtle);
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
   overflow: hidden;
+  box-shadow: -10px 0 35px rgba(0, 0, 0, 0.45);
 }
 
-/* Sidebar Glass Panel Base */
+/* 3D Glass Sidebar Panel Base */
 .sidebar-panel {
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-card), var(--glass-inner-highlight);
+  background: var(--glass-3d-bg);
+  backdrop-filter: var(--glass-blur-smooth);
+  -webkit-backdrop-filter: var(--glass-blur-smooth);
+  border: var(--glass-3d-border);
+  box-shadow: var(--shadow-3d-card), var(--glass-3d-inner-bevel);
   border-radius: var(--radius-lg);
   padding: 14px 16px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
   position: relative;
 }
 
 .sidebar-panel:hover {
-  border-color: var(--glass-border-light);
-  box-shadow: var(--shadow-glass), var(--glass-inner-highlight);
+  border-color: rgba(255, 255, 255, 0.26);
+  box-shadow: var(--shadow-3d-floating), var(--glass-3d-inner-bevel);
+  transform: translateY(-1px);
 }
 
 .sidebar-panel.flex-grow {
@@ -801,7 +854,7 @@ input, select, textarea { font: inherit; color: inherit; }
   justify-content: space-between;
   gap: var(--space-sm);
   padding-bottom: 8px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .panel-header-left {
@@ -811,7 +864,7 @@ input, select, textarea { font: inherit; color: inherit; }
 }
 
 .panel-header-left .material-symbols-outlined {
-  font-size: 18px;
+  font-size: 19px;
 }
 
 .panel-header-left span:last-child {
@@ -821,25 +874,26 @@ input, select, textarea { font: inherit; color: inherit; }
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--text-primary);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
 }
 
-.panel-header-left.gold .material-symbols-outlined { color: var(--accent-gold); }
-.panel-header-left.blue .material-symbols-outlined { color: var(--accent-blue-light); }
-.panel-header-left.red .material-symbols-outlined { color: var(--status-alert); }
+.panel-header-left.gold .material-symbols-outlined { color: var(--accent-gold); filter: drop-shadow(0 0 6px rgba(255, 184, 46, 0.4)); }
+.panel-header-left.blue .material-symbols-outlined { color: var(--accent-blue-light); filter: drop-shadow(0 0 6px rgba(111, 170, 255, 0.4)); }
+.panel-header-left.red .material-symbols-outlined { color: var(--status-alert); filter: drop-shadow(0 0 6px rgba(255, 93, 104, 0.4)); }
 
-/* Status Pill (Green Glass Status Badge) */
+/* Status Pill (3D Glass Capsule) */
 .status-pill {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 3px 9px;
-  border-radius: var(--radius-full);
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
   font-family: var(--font-display);
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
 .status-pill.available {
@@ -849,14 +903,14 @@ input, select, textarea { font: inherit; color: inherit; }
 }
 
 .status-pill.busy {
-  background: rgba(255, 184, 46, 0.16);
-  border: 1px solid rgba(255, 184, 46, 0.35);
+  background: rgba(255, 184, 46, 0.18);
+  border: 1px solid rgba(255, 184, 46, 0.45);
   color: var(--accent-gold);
 }
 
 .status-pill.closed {
   background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   color: var(--text-muted);
 }
 
@@ -868,7 +922,7 @@ input, select, textarea { font: inherit; color: inherit; }
   animation: pulse-blink 1.5s ease-in-out infinite;
 }
 
-/* Office Hours Card */
+/* Office Hours Card (3D Floating Avatar & Data) */
 .office-card {
   display: flex;
   align-items: center;
@@ -877,12 +931,12 @@ input, select, textarea { font: inherit; color: inherit; }
 }
 
 .office-avatar {
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   border-radius: var(--radius-md);
-  background: linear-gradient(135deg, rgba(28, 107, 255, 0.24) 0%, rgba(28, 107, 255, 0.10) 100%);
+  background: linear-gradient(135deg, rgba(28, 107, 255, 0.30) 0%, rgba(28, 107, 255, 0.12) 100%);
   border: 1px solid var(--border-luminous-blue);
-  box-shadow: var(--accent-blue-glow);
+  box-shadow: var(--accent-blue-glow), inset 0 1px 1px rgba(255, 255, 255, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -905,6 +959,7 @@ input, select, textarea { font: inherit; color: inherit; }
   font-weight: 700;
   color: var(--text-primary);
   line-height: 1.2;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 }
 
 .office-role {
@@ -920,24 +975,22 @@ input, select, textarea { font: inherit; color: inherit; }
   letter-spacing: 0.02em;
 }
 
-/* Room Schedule Items (Subtle Dividers & Blue Translucent Chips) */
+/* Room Schedule Items (Frosted Sub-Panels with 3D Chips) */
 .room-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 6px;
-  background: transparent;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  transition: background 0.2s ease;
-}
-
-.room-item:last-child {
-  border-bottom: none;
+  padding: 8px 10px;
+  background: rgba(12, 26, 54, 0.40);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-sm);
+  margin-bottom: 4px;
+  transition: all 0.2s ease;
 }
 
 .room-item:hover {
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: var(--radius-sm);
+  background: rgba(18, 38, 76, 0.55);
+  border-color: rgba(255, 255, 255, 0.14);
 }
 
 .room-item-left {
@@ -956,8 +1009,9 @@ input, select, textarea { font: inherit; color: inherit; }
   font-family: var(--font-display);
   font-size: 11px;
   font-weight: 800;
-  background: rgba(28, 107, 255, 0.20);
-  border: 1px solid rgba(51, 133, 255, 0.30);
+  background: rgba(28, 107, 255, 0.22);
+  border: 1px solid rgba(51, 133, 255, 0.35);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
   color: var(--accent-blue-light);
   flex-shrink: 0;
   letter-spacing: 0.03em;
@@ -995,24 +1049,35 @@ input, select, textarea { font: inherit; color: inherit; }
   color: var(--status-success);
 }
 
-/* Important Announcements (Subtle Red Priority Accent) */
+/* Important Announcements (3D Glass Tiles with Red Priority Glow) */
 .announcement-item {
   display: flex;
   align-items: flex-start;
   gap: 10px;
   padding: 10px 12px;
-  background: rgba(12, 24, 50, 0.60);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(16, 28, 56, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-left: 3px solid var(--status-alert);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 4px 14px rgba(0, 0, 0, 0.25);
   border-radius: var(--radius-sm);
   margin-bottom: 6px;
+  transition: all 0.2s ease;
+}
+
+.announcement-item:hover {
+  background: rgba(22, 38, 74, 0.70);
+  border-color: rgba(255, 255, 255, 0.16);
+  border-left-color: var(--status-alert);
 }
 
 .announcement-item .material-symbols-outlined {
-  font-size: 16px;
+  font-size: 17px;
   color: var(--status-alert);
   flex-shrink: 0;
-  margin-top: 2px;
+  margin-top: 1px;
+  filter: drop-shadow(0 0 6px rgba(255, 93, 104, 0.5));
 }
 
 .announcement-text {
