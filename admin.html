@@ -114,25 +114,50 @@
           <span class="material-symbols-outlined">photo_library</span>
           <span>Slide Manager</span>
         </div>
-        <span style="font-size:12px;color:var(--text-muted);">Paste image URLs from Facebook posts or any site</span>
+        <span style="font-size:12px;color:var(--text-muted);">Add or edit Image and Video slides (Facebook, YouTube, direct MP4)</span>
       </div>
 
-      <!-- Add Slide Form -->
-      <div class="form-row" style="margin-bottom:var(--space-lg);">
-        <div class="form-group" style="flex:3;">
-          <label class="form-label" for="slide-url-input">Image URL</label>
-          <input class="form-input" id="slide-url-input" type="url" placeholder="https://scontent.fceb2-2.fna.fbcdn.net/... or any image URL" />
+      <!-- Add / Edit Slide Form -->
+      <div id="slide-form-container" style="background:var(--bg-surface);padding:var(--space-md);border-radius:var(--radius-md);margin-bottom:var(--space-lg);border:1px solid var(--border-subtle);">
+        <input type="hidden" id="slide-edit-id" value="" />
+        <div class="form-row" style="margin-bottom:var(--space-sm);">
+          <div class="form-group" style="flex:0 0 130px;">
+            <label class="form-label" for="slide-type-select">Media Type</label>
+            <select class="form-select" id="slide-type-select">
+              <option value="image">Image (FB / Web)</option>
+              <option value="video">Video (MP4 / YT)</option>
+            </select>
+          </div>
+          <div class="form-group" style="flex:3;">
+            <label class="form-label" for="slide-url-input">Media URL Address</label>
+            <input class="form-input" id="slide-url-input" type="url" placeholder="https://... image URL, MP4 link, or YouTube URL" />
+          </div>
+          <div class="form-group" style="flex:1.5;">
+            <label class="form-label" for="slide-caption-input">Caption (optional)</label>
+            <input class="form-input" id="slide-caption-input" type="text" placeholder="e.g. IT Week 2026" />
+          </div>
         </div>
-        <div class="form-group" style="flex:1.5;">
-          <label class="form-label" for="slide-caption-input">Caption (optional)</label>
-          <input class="form-input" id="slide-caption-input" type="text" placeholder="e.g. IT Week 2026" />
-        </div>
-        <div class="form-group" style="flex:0 0 auto;">
-          <label class="form-label">&nbsp;</label>
-          <button class="btn btn-primary" id="add-slide-btn">
-            <span class="material-symbols-outlined">add</span>
-            Add Slide
-          </button>
+
+        <div class="form-row" style="align-items:flex-end;">
+          <div class="form-group" style="flex:0 0 160px;">
+            <label class="form-label" for="slide-duration-input">Duration (Seconds)</label>
+            <input class="form-input" id="slide-duration-input" type="number" min="3" max="300" placeholder="Default (10s)" />
+          </div>
+          <div class="form-group" id="slide-loop-group" style="flex:0 0 160px;padding-bottom:10px;">
+            <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-secondary);cursor:pointer;">
+              <input type="checkbox" id="slide-loop-input" checked style="accent-color:var(--accent-gold);width:16px;height:16px;cursor:pointer;" />
+              Loop Video
+            </label>
+          </div>
+          <div class="form-group" style="flex:1;display:flex;justify-content:flex-end;gap:var(--space-sm);">
+            <button class="btn btn-outline" id="cancel-slide-btn" style="display:none;">
+              Cancel
+            </button>
+            <button class="btn btn-primary" id="add-slide-btn">
+              <span class="material-symbols-outlined" id="add-slide-icon">add</span>
+              <span id="add-slide-text">Add Slide</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -140,11 +165,11 @@
       <div style="margin-bottom:var(--space-md);padding:var(--space-sm) var(--space-md);background:var(--bg-surface);border-radius:var(--radius-sm);border:1px solid var(--border-subtle);">
         <p style="font-size:12px;font-weight:600;color:var(--accent-gold);margin-bottom:4px;">
           <span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;">tips_and_updates</span>
-          How to get Facebook image URLs
+          Media URL Guidelines
         </p>
         <p style="font-size:12px;color:var(--text-muted);line-height:1.6;">
-          Open the Facebook post → Click the image to view full size → Right-click the image → Select "Copy image address" → Paste it here.
-          You can also use Imgur, Google Drive (public), or any direct image link.
+          • <strong>Facebook Images</strong>: Open Facebook post → Click image → Right-click → "Copy image address" → Paste here.<br/>
+          • <strong>Videos</strong>: Accepts direct MP4/WebM video URLs or standard YouTube links (e.g. <code>https://www.youtube.com/watch?v=...</code>). Set duration to control when it slides.
         </p>
       </div>
 
@@ -194,7 +219,7 @@
           <label class="form-label">&nbsp;</label>
           <button class="btn btn-primary" id="save-office-btn">
             <span class="material-symbols-outlined">save</span>
-            Save
+            Save Office Hours
           </button>
         </div>
       </div>
@@ -207,31 +232,37 @@
           <span class="material-symbols-outlined">meeting_room</span>
           <span>Room Schedule</span>
         </div>
+        <span style="font-size:12px;color:var(--text-muted);">Add or edit room test/class schedules</span>
       </div>
 
-      <div class="form-row" style="margin-bottom:var(--space-lg);">
-        <div class="form-group" style="flex:0 0 100px;">
-          <label class="form-label" for="room-number-input">Room</label>
-          <input class="form-input" id="room-number-input" type="text" placeholder="Lab 1" />
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="room-event-input">Subject / Event</label>
-          <input class="form-input" id="room-event-input" type="text" placeholder="e.g. IT 101 - Intro to Computing" />
-        </div>
-        <div class="form-group" style="flex:0.8;">
-          <label class="form-label" for="room-instructor-input">Instructor</label>
-          <input class="form-input" id="room-instructor-input" type="text" placeholder="e.g. Prof. Santos" />
-        </div>
-        <div class="form-group" style="flex:0 0 120px;">
-          <label class="form-label" for="room-time-input">Time</label>
-          <input class="form-input" id="room-time-input" type="text" placeholder="8:00 AM" />
-        </div>
-        <div class="form-group" style="flex:0 0 auto;">
-          <label class="form-label">&nbsp;</label>
-          <button class="btn btn-primary" id="add-room-btn">
-            <span class="material-symbols-outlined">add</span>
-            Add
-          </button>
+      <div id="room-form-container" style="background:var(--bg-surface);padding:var(--space-md);border-radius:var(--radius-md);margin-bottom:var(--space-lg);border:1px solid var(--border-subtle);">
+        <input type="hidden" id="room-edit-id" value="" />
+        <div class="form-row">
+          <div class="form-group" style="flex:0 0 110px;">
+            <label class="form-label" for="room-number-input">Room</label>
+            <input class="form-input" id="room-number-input" type="text" placeholder="Lab 1" />
+          </div>
+          <div class="form-group" style="flex:2;">
+            <label class="form-label" for="room-event-input">Subject / Event / Test</label>
+            <input class="form-input" id="room-event-input" type="text" placeholder="e.g. IT 101 - Intro to Computing" />
+          </div>
+          <div class="form-group" style="flex:1.2;">
+            <label class="form-label" for="room-instructor-input">Instructor</label>
+            <input class="form-input" id="room-instructor-input" type="text" placeholder="e.g. Prof. Santos" />
+          </div>
+          <div class="form-group" style="flex:0 0 130px;">
+            <label class="form-label" for="room-time-input">Time</label>
+            <input class="form-input" id="room-time-input" type="text" placeholder="8:00 AM" />
+          </div>
+          <div class="form-group" style="flex:0 0 auto;display:flex;align-items:flex-end;gap:var(--space-xs);">
+            <button class="btn btn-outline" id="cancel-room-btn" style="display:none;">
+              Cancel
+            </button>
+            <button class="btn btn-primary" id="add-room-btn">
+              <span class="material-symbols-outlined" id="add-room-icon">add</span>
+              <span id="add-room-text">Add</span>
+            </button>
+          </div>
         </div>
       </div>
 

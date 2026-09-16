@@ -358,11 +358,49 @@ input, select, textarea { font: inherit; color: inherit; }
   pointer-events: auto;
 }
 
-.carousel-slide img {
+.carousel-slide img,
+.carousel-slide video {
   width: 100%;
   height: 100%;
   object-fit: contain;
   background: var(--bg-primary);
+}
+
+.carousel-video-wrap {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+
+.carousel-video-frame {
+  width: 100%;
+  height: 100%;
+  border: none;
+  pointer-events: none;
+}
+
+.carousel-slide-caption {
+  position: absolute;
+  top: var(--space-md);
+  left: var(--space-md);
+  max-width: 80%;
+  padding: 6px 14px;
+  background: rgba(10, 17, 40, 0.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  z-index: 5;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 }
 
 /* Carousel HUD Bar */
@@ -777,26 +815,26 @@ input, select, textarea { font: inherit; color: inherit; }
 .flash-label {
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
+  gap: 5px;
   height: 100%;
-  padding: 0 var(--space-lg);
+  padding: 0 var(--space-sm);
   background: var(--accent-gold-container);
   color: var(--accent-gold);
   flex-shrink: 0;
   z-index: 2;
-  box-shadow: 4px 0 16px rgba(0, 0, 0, 0.4);
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
 }
 
 .flash-label .material-symbols-outlined {
-  font-size: 20px;
+  font-size: 16px;
   animation: pulse-blink 1.5s ease-in-out infinite;
 }
 
 .flash-label-text {
   font-family: var(--font-display);
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   white-space: nowrap;
 }
@@ -815,7 +853,7 @@ input, select, textarea { font: inherit; color: inherit; }
   white-space: nowrap;
   animation: marquee-scroll 40s linear infinite;
   align-items: center;
-  gap: var(--space-2xl);
+  gap: var(--space-xl);
 }
 
 .flash-ticker-track:hover {
@@ -825,17 +863,17 @@ input, select, textarea { font: inherit; color: inherit; }
 .flash-ticker-item {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-sm);
+  gap: 6px;
   font-family: var(--font-display);
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   color: var(--text-primary);
 }
 
 .flash-ticker-dot {
-  width: 7px;
-  height: 7px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: var(--accent-gold);
   flex-shrink: 0;
@@ -847,21 +885,21 @@ input, select, textarea { font: inherit; color: inherit; }
 .flash-status {
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
+  gap: 4px;
   height: 100%;
-  padding: 0 var(--space-lg);
+  padding: 0 var(--space-sm);
   background: var(--bg-card);
   flex-shrink: 0;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--accent-green);
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
 }
 
 .flash-status-dot {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: var(--accent-green);
   animation: pulse-blink 1.5s ease-in-out infinite;

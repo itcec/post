@@ -67,6 +67,13 @@
     isPaused = !settings.autoRotate;
   }
 
+  function getSlideDuration(slide) {
+    if (slide && slide.duration && parseInt(slide.duration) > 0) {
+      return parseInt(slide.duration);
+    }
+    return slideDuration || 10;
+  }
+
   function renderSlides() {
     const slides = getData('slides');
     const viewport = document.getElementById('carousel-viewport');
@@ -80,9 +87,9 @@
     if (slideCount === 0) {
       viewport.innerHTML = `
         <div class="carousel-empty">
-          <span class="material-symbols-outlined">image</span>
+          <span class="material-symbols-outlined">perm_media</span>
           <p>No slides yet</p>
-          <small>Open the Admin CMS to add image slides</small>
+          <small>Open the Admin CMS to add image or video slides</small>
         </div>
       `;
       if (dotsContainer) dotsContainer.innerHTML = '';
@@ -94,12 +101,53 @@
     if (currentSlide >= slideCount) currentSlide = 0;
 
     // Build slide elements
-    viewport.innerHTML = slides.map((slide, idx) => `
-      <div class="carousel-slide ${idx === currentSlide ? 'active' : ''}" data-idx="${idx}">
-        <img src="${escapeHtml(slide.url)}" alt="${escapeHtml(slide.caption || 'Slide ' + (idx + 1))}" 
-             onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\\'carousel-empty\\'><span class=\\'material-symbols-outlined\\'>broken_image</span><p>Image failed to load</p><small>${escapeHtml(slide.url)}</small></div>';" />
-      </div>
-    `).join('');
+    viewport.innerHTML = slides.map((slide, idx) => {
+      const type = slide.type || detectMediaType(slide.url);
+      const isCurrent = idx === currentSlide;
+      const isVideo = type === 'video';
+
+      let mediaHtml = '';
+      if (isVideo) {
+        const u = (slide.url || '').trim();
+        const isEmbed = u.includes('youtube.com/') || u.includes('youtu.be/') || u.includes('vimeo.com/');
+        if (isEmbed) {
+          const embedUrl = parseVideoEmbedUrl(u, isCurrent, slide.loop !== false);
+          mediaHtml = `
+            <div class="carousel-video-wrap">
+              <iframe src="${embedUrl}" 
+                      allow="autoplay; encrypted-media; picture-in-picture" 
+                      allowfullscreen 
+                      class="carousel-video-frame"></iframe>
+            </div>
+          `;
+        } else {
+          // Direct video file (mp4, webm, etc.)
+          mediaHtml = `
+            <video class="carousel-video" 
+                   src="${escapeHtml(slide.url)}" 
+                   ${isCurrent ? 'autoplay' : ''} 
+                   muted 
+                   playsinline 
+                   ${slide.loop !== false ? 'loop' : ''}
+                   onended="window._onVideoEnded(${idx})"
+                   onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\\'carousel-empty\\'><span class=\\'material-symbols-outlined\\'>videocam_off</span><p>Video failed to load</p><small>${escapeHtml(slide.url)}</small></div>';"></video>
+          `;
+        }
+      } else {
+        // Image
+        mediaHtml = `
+          <img src="${escapeHtml(slide.url)}" alt="${escapeHtml(slide.caption || 'Slide ' + (idx + 1))}" 
+               onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\\'carousel-empty\\'><span class=\\'material-symbols-outlined\\'>broken_image</span><p>Image failed to load</p><small>${escapeHtml(slide.url)}</small></div>';" />
+        `;
+      }
+
+      return `
+        <div class="carousel-slide ${isCurrent ? 'active' : ''}" data-idx="${idx}">
+          ${mediaHtml}
+          ${slide.caption ? `<div class="carousel-slide-caption">${escapeHtml(slide.caption)}</div>` : ''}
+        </div>
+      `;
+    }).join('');
 
     // Build dots
     if (dotsContainer) {
@@ -114,19 +162,42 @@
       countText.textContent = `Slide ${currentSlide + 1} of ${slideCount}`;
     }
 
+    const currSlideData = slides[currentSlide];
+    remainingTime = getSlideDuration(currSlideData);
     resetProgressBar();
   }
 
   function goToSlide(idx) {
     if (slideCount === 0) return;
     currentSlide = idx % slideCount;
+    const slides = getData('slides');
+    const currSlideData = slides[currentSlide];
 
     const allSlides = document.querySelectorAll('.carousel-slide');
     const allDots = document.querySelectorAll('.carousel-dot');
     const countText = document.getElementById('carousel-count');
 
     allSlides.forEach((s, i) => {
-      s.classList.toggle('active', i === currentSlide);
+      const isActive = i === currentSlide;
+      s.classList.toggle('active', isActive);
+
+      // Manage video playback
+      const vid = s.querySelector('video');
+      if (vid) {
+        if (isActive) {
+          vid.currentTime = 0;
+          vid.play().catch(() => {});
+        } else {
+          vid.pause();
+        }
+      }
+      const iframe = s.querySelector('iframe');
+      if (iframe) {
+        const slideItem = slides[i];
+        if (slideItem) {
+          iframe.src = parseVideoEmbedUrl(slideItem.url, isActive, slideItem.loop !== false);
+        }
+      }
     });
 
     allDots.forEach((d, i) => {
@@ -137,7 +208,7 @@
       countText.textContent = `Slide ${currentSlide + 1} of ${slideCount}`;
     }
 
-    remainingTime = slideDuration;
+    remainingTime = getSlideDuration(currSlideData);
     resetProgressBar();
   }
 
@@ -152,12 +223,16 @@
   function resetProgressBar() {
     const bar = document.getElementById('carousel-progress');
     if (!bar) return;
+    const slides = getData('slides');
+    const currSlideData = slides[currentSlide];
+    const duration = getSlideDuration(currSlideData);
+
     bar.style.transition = 'none';
     bar.style.width = '0%';
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         if (!isPaused) {
-          bar.style.transition = `width ${slideDuration}s linear`;
+          bar.style.transition = `width ${duration}s linear`;
           bar.style.width = '100%';
         }
       });
@@ -170,13 +245,24 @@
       if (!isPaused && slideCount > 1) {
         remainingTime -= 1;
         const statusEl = document.getElementById('carousel-timer-status');
-        if (statusEl) statusEl.textContent = `Next in ${remainingTime}s`;
+        if (statusEl) statusEl.textContent = `Next in ${Math.max(remainingTime, 0)}s`;
 
         if (remainingTime <= 0) {
           nextSlide();
         }
       }
     }, 1000);
+  }
+
+  function onVideoEnded(slideIdx) {
+    if (slideIdx === currentSlide) {
+      const slides = getData('slides');
+      const slide = slides[slideIdx];
+      // If loop is not explicitly true or duration has passed, proceed
+      if (slide && !slide.loop) {
+        nextSlide();
+      }
+    }
   }
 
   function togglePause() {
@@ -195,9 +281,14 @@
         bar.style.transition = 'none';
         bar.style.width = pct + '%';
       }
+      // Pause current slide video if any
+      const activeVideo = document.querySelector('.carousel-slide.active video');
+      if (activeVideo) activeVideo.pause();
     } else {
       if (icon) icon.textContent = 'pause';
       if (text) text.textContent = 'Auto';
+      const activeVideo = document.querySelector('.carousel-slide.active video');
+      if (activeVideo) activeVideo.play().catch(() => {});
       resetProgressBar();
     }
   }
@@ -329,6 +420,8 @@
   window._nextSlide = nextSlide;
   window._prevSlide = prevSlide;
   window._togglePause = togglePause;
+  window._onVideoEnded = onVideoEnded;
+
 
   // ---- Boot ----
   if (document.readyState === 'loading') {

@@ -25,7 +25,7 @@
   }
 
   // ================================================================
-  // SLIDES MANAGER
+  // SLIDES MANAGER (Images & Videos with Custom Duration & Looping)
   // ================================================================
   function renderSlideList() {
     const slides = getData('slides');
@@ -35,35 +35,60 @@
     if (slides.length === 0) {
       container.innerHTML = `
         <div class="panel-empty">
-          <span class="material-symbols-outlined">image</span>
-          <p>No slides added yet. Paste an image URL above to add one.</p>
+          <span class="material-symbols-outlined">perm_media</span>
+          <p>No slides added yet. Add an image or video URL above.</p>
         </div>
       `;
       return;
     }
 
-    container.innerHTML = slides.map((slide, idx) => `
-      <div class="admin-list-item anim-fade-in" style="animation-delay: ${idx * 0.05}s">
-        <div class="admin-list-item-content">
-          <img class="admin-list-item-thumb" src="${escapeHtml(slide.url)}" alt="Slide thumbnail" 
-               onerror="this.style.background='var(--accent-red-container)'; this.alt='Failed to load';" />
-          <div class="admin-list-item-text">
-            <span class="admin-list-item-title">Slide ${idx + 1}${slide.caption ? ' — ' + escapeHtml(slide.caption) : ''}</span>
-            <span class="admin-list-item-subtitle truncate" style="max-width:400px">${escapeHtml(slide.url)}</span>
+    container.innerHTML = slides.map((slide, idx) => {
+      const type = slide.type || detectMediaType(slide.url);
+      const isVideo = type === 'video';
+      const duration = slide.duration ? `${slide.duration}s` : 'Global (10s)';
+      const loopLabel = isVideo ? (slide.loop !== false ? ' · Loop: On' : ' · Loop: Off') : '';
+
+      return `
+        <div class="admin-list-item anim-fade-in" style="animation-delay: ${idx * 0.05}s">
+          <div class="admin-list-item-content">
+            ${isVideo ? `
+              <div class="admin-list-item-thumb" style="display:flex;align-items:center;justify-content:center;background:rgba(239,71,111,0.15);color:var(--accent-red);border-radius:6px;">
+                <span class="material-symbols-outlined" style="font-size:24px;">videocam</span>
+              </div>
+            ` : `
+              <img class="admin-list-item-thumb" src="${escapeHtml(slide.url)}" alt="Slide thumbnail" 
+                   onerror="this.style.background='var(--accent-red-container)'; this.alt='Failed to load';" />
+            `}
+            <div class="admin-list-item-text">
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                <span class="admin-list-item-title">Slide ${idx + 1}${slide.caption ? ' — ' + escapeHtml(slide.caption) : ''}</span>
+                <span style="font-size:11px;padding:2px 6px;border-radius:3px;background:rgba(255,255,255,0.08);color:var(--accent-gold);font-weight:700;text-transform:uppercase;">${type}</span>
+                <span style="font-size:11px;color:var(--text-muted);">Duration: ${duration}${loopLabel}</span>
+              </div>
+              <span class="admin-list-item-subtitle truncate" style="max-width:460px">${escapeHtml(slide.url)}</span>
+            </div>
+          </div>
+          <div class="admin-list-item-actions">
+            <button class="btn-icon" onclick="window._editSlide('${slide.id}')" title="Edit Slide">
+              <span class="material-symbols-outlined">edit</span>
+            </button>
+            <button class="btn-icon" onclick="window._removeSlide('${slide.id}')" title="Remove Slide">
+              <span class="material-symbols-outlined">delete</span>
+            </button>
           </div>
         </div>
-        <div class="admin-list-item-actions">
-          <button class="btn-icon" onclick="window._removeSlide('${slide.id}')" title="Remove Slide">
-            <span class="material-symbols-outlined">delete</span>
-          </button>
-        </div>
-      </div>
-    `).join('');
+      `;
+    }).join('');
   }
 
-  function addSlide() {
+  function saveOrAddSlide() {
+    const editIdEl = document.getElementById('slide-edit-id');
+    const typeEl = document.getElementById('slide-type-select');
     const urlInput = document.getElementById('slide-url-input');
     const captionInput = document.getElementById('slide-caption-input');
+    const durationInput = document.getElementById('slide-duration-input');
+    const loopInput = document.getElementById('slide-loop-input');
+
     if (!urlInput) return;
 
     const url = urlInput.value.trim();
@@ -74,24 +99,99 @@
       return;
     }
 
-    const slides = getData('slides');
-    slides.push({
-      id: generateId(),
-      url: url,
-      caption: captionInput ? captionInput.value.trim() : ''
-    });
-    setData('slides', slides);
+    const type = typeEl ? typeEl.value : detectMediaType(url);
+    const duration = durationInput && durationInput.value ? parseInt(durationInput.value) : 10;
+    const loop = loopInput ? loopInput.checked : true;
+    const caption = captionInput ? captionInput.value.trim() : '';
 
-    urlInput.value = '';
-    if (captionInput) captionInput.value = '';
+    let slides = getData('slides');
+    const editId = editIdEl ? editIdEl.value : '';
+
+    if (editId) {
+      // Update existing slide
+      slides = slides.map(s => {
+        if (s.id === editId) {
+          return { ...s, type, url, caption, duration, loop };
+        }
+        return s;
+      });
+      showSaveToast('Slide updated successfully!');
+    } else {
+      // Add new slide
+      slides.push({
+        id: generateId(),
+        type,
+        url,
+        caption,
+        duration,
+        loop
+      });
+      showSaveToast('Slide added successfully!');
+    }
+
+    setData('slides', slides);
+    resetSlideForm();
     renderSlideList();
+  }
+
+  function editSlide(id) {
+    const slides = getData('slides');
+    const slide = slides.find(s => s.id === id);
+    if (!slide) return;
+
+    const editIdEl = document.getElementById('slide-edit-id');
+    const typeEl = document.getElementById('slide-type-select');
+    const urlInput = document.getElementById('slide-url-input');
+    const captionInput = document.getElementById('slide-caption-input');
+    const durationInput = document.getElementById('slide-duration-input');
+    const loopInput = document.getElementById('slide-loop-input');
+    const addBtnText = document.getElementById('add-slide-text');
+    const addBtnIcon = document.getElementById('add-slide-icon');
+    const cancelBtn = document.getElementById('cancel-slide-btn');
+
+    if (editIdEl) editIdEl.value = slide.id;
+    if (typeEl) typeEl.value = slide.type || detectMediaType(slide.url);
+    if (urlInput) urlInput.value = slide.url || '';
+    if (captionInput) captionInput.value = slide.caption || '';
+    if (durationInput) durationInput.value = slide.duration || 10;
+    if (loopInput) loopInput.checked = slide.loop !== false;
+
+    if (addBtnText) addBtnText.textContent = 'Update Slide';
+    if (addBtnIcon) addBtnIcon.textContent = 'check';
+    if (cancelBtn) cancelBtn.style.display = 'inline-flex';
+
+    urlInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    urlInput.focus();
+  }
+
+  function resetSlideForm() {
+    const editIdEl = document.getElementById('slide-edit-id');
+    const urlInput = document.getElementById('slide-url-input');
+    const captionInput = document.getElementById('slide-caption-input');
+    const durationInput = document.getElementById('slide-duration-input');
+    const loopInput = document.getElementById('slide-loop-input');
+    const addBtnText = document.getElementById('add-slide-text');
+    const addBtnIcon = document.getElementById('add-slide-icon');
+    const cancelBtn = document.getElementById('cancel-slide-btn');
+
+    if (editIdEl) editIdEl.value = '';
+    if (urlInput) urlInput.value = '';
+    if (captionInput) captionInput.value = '';
+    if (durationInput) durationInput.value = '';
+    if (loopInput) loopInput.checked = true;
+
+    if (addBtnText) addBtnText.textContent = 'Add Slide';
+    if (addBtnIcon) addBtnIcon.textContent = 'add';
+    if (cancelBtn) cancelBtn.style.display = 'none';
   }
 
   function removeSlide(id) {
     let slides = getData('slides');
     slides = slides.filter(s => s.id !== id);
     setData('slides', slides);
+    resetSlideForm();
     renderSlideList();
+    showSaveToast('Slide removed');
   }
 
   // ================================================================
@@ -121,11 +221,11 @@
       initials: document.getElementById('office-initials-input')?.value.trim() || 'DO'
     };
     setData('officeHours', data);
-    showSaveToast('Office hours saved!');
+    showSaveToast('Office hours updated and saved!');
   }
 
   // ================================================================
-  // ROOM SCHEDULE EDITOR
+  // ROOM SCHEDULE EDITOR (Add & Edit Support)
   // ================================================================
   function renderRoomList() {
     const rooms = getData('roomSchedule');
@@ -145,13 +245,16 @@
     container.innerHTML = rooms.map((room, idx) => `
       <div class="admin-list-item anim-fade-in" style="animation-delay: ${idx * 0.05}s">
         <div class="admin-list-item-content">
-          <span style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:32px;border-radius:4px;background:rgba(91,141,239,0.15);color:var(--accent-blue);font-family:var(--font-display);font-weight:700;font-size:13px;flex-shrink:0">${escapeHtml(room.room)}</span>
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:48px;height:32px;border-radius:4px;background:rgba(91,141,239,0.15);color:var(--accent-blue);font-family:var(--font-display);font-weight:700;font-size:13px;flex-shrink:0">${escapeHtml(room.room)}</span>
           <div class="admin-list-item-text">
             <span class="admin-list-item-title">${escapeHtml(room.event)}</span>
             <span class="admin-list-item-subtitle">${escapeHtml(room.instructor)} · ${escapeHtml(room.time)}</span>
           </div>
         </div>
         <div class="admin-list-item-actions">
+          <button class="btn-icon" onclick="window._editRoom('${room.id}')" title="Edit Schedule">
+            <span class="material-symbols-outlined">edit</span>
+          </button>
           <button class="btn-icon" onclick="window._removeRoom('${room.id}')" title="Remove Room">
             <span class="material-symbols-outlined">delete</span>
           </button>
@@ -160,7 +263,8 @@
     `).join('');
   }
 
-  function addRoom() {
+  function saveOrAddRoom() {
+    const editIdEl = document.getElementById('room-edit-id');
     const roomEl = document.getElementById('room-number-input');
     const eventEl = document.getElementById('room-event-input');
     const instructorEl = document.getElementById('room-instructor-input');
@@ -177,28 +281,95 @@
       return;
     }
 
-    const rooms = getData('roomSchedule');
-    rooms.push({
-      id: generateId(),
-      room: roomNum,
-      event: event,
-      instructor: instructorEl ? instructorEl.value.trim() : '',
-      time: timeEl ? timeEl.value.trim() : ''
-    });
-    setData('roomSchedule', rooms);
+    let rooms = getData('roomSchedule');
+    const editId = editIdEl ? editIdEl.value : '';
 
-    roomEl.value = '';
-    eventEl.value = '';
+    if (editId) {
+      rooms = rooms.map(r => {
+        if (r.id === editId) {
+          return {
+            ...r,
+            room: roomNum,
+            event: event,
+            instructor: instructorEl ? instructorEl.value.trim() : '',
+            time: timeEl ? timeEl.value.trim() : ''
+          };
+        }
+        return r;
+      });
+      showSaveToast('Room schedule updated!');
+    } else {
+      rooms.push({
+        id: generateId(),
+        room: roomNum,
+        event: event,
+        instructor: instructorEl ? instructorEl.value.trim() : '',
+        time: timeEl ? timeEl.value.trim() : ''
+      });
+      showSaveToast('Room schedule added!');
+    }
+
+    setData('roomSchedule', rooms);
+    resetRoomForm();
+    renderRoomList();
+  }
+
+  function editRoom(id) {
+    const rooms = getData('roomSchedule');
+    const room = rooms.find(r => r.id === id);
+    if (!room) return;
+
+    const editIdEl = document.getElementById('room-edit-id');
+    const roomEl = document.getElementById('room-number-input');
+    const eventEl = document.getElementById('room-event-input');
+    const instructorEl = document.getElementById('room-instructor-input');
+    const timeEl = document.getElementById('room-time-input');
+    const addBtnText = document.getElementById('add-room-text');
+    const addBtnIcon = document.getElementById('add-room-icon');
+    const cancelBtn = document.getElementById('cancel-room-btn');
+
+    if (editIdEl) editIdEl.value = room.id;
+    if (roomEl) roomEl.value = room.room || '';
+    if (eventEl) eventEl.value = room.event || '';
+    if (instructorEl) instructorEl.value = room.instructor || '';
+    if (timeEl) timeEl.value = room.time || '';
+
+    if (addBtnText) addBtnText.textContent = 'Update';
+    if (addBtnIcon) addBtnIcon.textContent = 'check';
+    if (cancelBtn) cancelBtn.style.display = 'inline-flex';
+
+    roomEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    roomEl.focus();
+  }
+
+  function resetRoomForm() {
+    const editIdEl = document.getElementById('room-edit-id');
+    const roomEl = document.getElementById('room-number-input');
+    const eventEl = document.getElementById('room-event-input');
+    const instructorEl = document.getElementById('room-instructor-input');
+    const timeEl = document.getElementById('room-time-input');
+    const addBtnText = document.getElementById('add-room-text');
+    const addBtnIcon = document.getElementById('add-room-icon');
+    const cancelBtn = document.getElementById('cancel-room-btn');
+
+    if (editIdEl) editIdEl.value = '';
+    if (roomEl) roomEl.value = '';
+    if (eventEl) eventEl.value = '';
     if (instructorEl) instructorEl.value = '';
     if (timeEl) timeEl.value = '';
-    renderRoomList();
+
+    if (addBtnText) addBtnText.textContent = 'Add';
+    if (addBtnIcon) addBtnIcon.textContent = 'add';
+    if (cancelBtn) cancelBtn.style.display = 'none';
   }
 
   function removeRoom(id) {
     let rooms = getData('roomSchedule');
     rooms = rooms.filter(r => r.id !== id);
     setData('roomSchedule', rooms);
+    resetRoomForm();
     renderRoomList();
+    showSaveToast('Room schedule removed');
   }
 
   // ================================================================
@@ -353,23 +524,42 @@
   // FORM BINDINGS
   // ================================================================
   function bindFormEvents() {
-    // Slide add
+    // Slide add / save
     const addSlideBtn = document.getElementById('add-slide-btn');
-    if (addSlideBtn) addSlideBtn.addEventListener('click', addSlide);
+    if (addSlideBtn) addSlideBtn.addEventListener('click', saveOrAddSlide);
+
+    // Cancel slide edit
+    const cancelSlideBtn = document.getElementById('cancel-slide-btn');
+    if (cancelSlideBtn) cancelSlideBtn.addEventListener('click', resetSlideForm);
 
     // Slide URL — Enter key
     const slideUrlInput = document.getElementById('slide-url-input');
     if (slideUrlInput) slideUrlInput.addEventListener('keydown', e => {
-      if (e.key === 'Enter') addSlide();
+      if (e.key === 'Enter') saveOrAddSlide();
     });
+
+    // Auto switch media type on URL change if video detected
+    if (slideUrlInput) {
+      slideUrlInput.addEventListener('input', () => {
+        const detected = detectMediaType(slideUrlInput.value);
+        const typeSelect = document.getElementById('slide-type-select');
+        if (typeSelect && detected === 'video') {
+          typeSelect.value = 'video';
+        }
+      });
+    }
 
     // Office hours save
     const saveOfficeBtn = document.getElementById('save-office-btn');
     if (saveOfficeBtn) saveOfficeBtn.addEventListener('click', saveOfficeHours);
 
-    // Room add
+    // Room add / save
     const addRoomBtn = document.getElementById('add-room-btn');
-    if (addRoomBtn) addRoomBtn.addEventListener('click', addRoom);
+    if (addRoomBtn) addRoomBtn.addEventListener('click', saveOrAddRoom);
+
+    // Cancel room edit
+    const cancelRoomBtn = document.getElementById('cancel-room-btn');
+    if (cancelRoomBtn) cancelRoomBtn.addEventListener('click', resetRoomForm);
 
     // Announcement add
     const addAnnouncementBtn = document.getElementById('add-announcement-btn');
@@ -448,9 +638,12 @@
 
   // ---- Expose global functions ----
   window._removeSlide = removeSlide;
+  window._editSlide = editSlide;
   window._removeRoom = removeRoom;
+  window._editRoom = editRoom;
   window._removeAnnouncement = removeAnnouncement;
   window._removeFlash = removeFlash;
+
 
   // ---- Boot ----
   if (document.readyState === 'loading') {

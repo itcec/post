@@ -19,8 +19,11 @@ const DEFAULT_DATA = {
     // Example slide — admin can add more
     {
       id: 'default-1',
+      type: 'image',
       url: 'https://scontent.fceb2-2.fna.fbcdn.net/v/t39.30808-6/461898993_122183102274116912_7784866127457844260_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=127cfc&_nc_ohc=xyz&_nc_oc=xyz&_nc_ht=scontent.fceb2-2.fna&oh=00_AYAAAA&oe=66FF',
-      caption: 'Welcome to CEC IT Department'
+      caption: 'Welcome to CEC IT Department',
+      duration: 10,
+      loop: true
     }
   ],
   officeHours: {
@@ -69,6 +72,43 @@ function setData(key, value) {
 
 function generateId() {
   return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+}
+
+// Helper: Determine media type from URL or explicit type
+function detectMediaType(url) {
+  if (!url) return 'image';
+  const clean = url.trim().toLowerCase();
+  if (clean.includes('youtube.com/') || clean.includes('youtu.be/') || clean.includes('vimeo.com/')) {
+    return 'video';
+  }
+  if (clean.endsWith('.mp4') || clean.endsWith('.webm') || clean.endsWith('.ogg') || clean.endsWith('.mov') || clean.includes('.mp4?') || clean.includes('.webm?')) {
+    return 'video';
+  }
+  return 'image';
+}
+
+// Helper: Convert video URL to embed URL if YouTube or Vimeo
+function parseVideoEmbedUrl(url, autoplay = true, loop = true) {
+  if (!url) return '';
+  const u = url.trim();
+
+  // YouTube match
+  // https://www.youtube.com/watch?v=VIDEO_ID or https://youtu.be/VIDEO_ID or embed
+  const ytMatch = u.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  if (ytMatch && ytMatch[1]) {
+    const vidId = ytMatch[1];
+    const loopParam = loop ? `&loop=1&playlist=${vidId}` : '';
+    return `https://www.youtube.com/embed/${vidId}?autoplay=${autoplay ? 1 : 0}&mute=1&controls=0&modestbranding=1&rel=0${loopParam}`;
+  }
+
+  // Vimeo match
+  const vimeoMatch = u.match(/vimeo\.com\/(?:video\/)?([0-9]+)/);
+  if (vimeoMatch && vimeoMatch[1]) {
+    const vId = vimeoMatch[1];
+    return `https://player.vimeo.com/video/${vId}?autoplay=${autoplay ? 1 : 0}&muted=1&loop=${loop ? 1 : 0}&autopause=0&controls=0`;
+  }
+
+  return u;
 }
 
 // ---- Clock ----
