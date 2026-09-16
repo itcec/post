@@ -1,210 +1,206 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CEC College of Information Technology — Announcements</title>
-  <meta name="description" content="Digital signage display for Cebu Eastern College — College of Information Technology. Live announcements, monthly schedules, and campus updates." />
-  <link rel="stylesheet" href="css/styles.css" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CEC College of Information Technology — Announcements</title>
+    <meta name="description"
+        content="Digital signage display for Cebu Eastern College — College of Information Technology. Live announcements, monthly schedules, and campus updates." />
+    <link rel="stylesheet" href="css/styles.css" />
 </head>
+
 <body>
 
-  <!-- Ambient Slide Backlight Glow -->
-  <div class="screen-ambient-bg" id="screen-ambient-bg" aria-hidden="true"></div>
+    <!-- Ambient Slide Backlight Glow -->
+    <div class="screen-ambient-bg" id="screen-ambient-bg" aria-hidden="true"></div>
 
-  <!-- ============================================================
+    <!-- ============================================================
        TV SIGNAGE CONTAINER (75% Left Column / 25% Right Column)
        ============================================================ -->
-  <div class="tv-screen-container">
+    <div class="tv-screen-container">
 
-    <!-- ============================================================
+        <!-- ============================================================
          LEFT 75% COLUMN: Header, Media Carousel, Flash Footer
          ============================================================ -->
-    <div class="tv-left-column">
+        <div class="tv-left-column">
 
-      <!-- HEADER (Clean: Time on Left, Logos & Title, No Tabs/Avatars) -->
-      <header class="site-header">
-        <div class="header-content">
+            <!-- HEADER (Clean: Time on Left, Logos & Title, No Tabs/Avatars) -->
+            <header class="site-header">
+                <div class="header-content">
 
-          <!-- LEFT: Live Time Display -->
-          <div class="header-time-block">
-            <div class="clock-display">
-              <span class="clock-time" id="clock-hours">12</span>
-              <span class="clock-colon">:</span>
-              <span class="clock-time" id="clock-minutes">00</span>
-              <span class="clock-ampm" id="clock-ampm">AM</span>
-            </div>
-            <div class="date-display">
-              <span class="date-day" id="date-day">Monday</span>
-              <span class="date-full" id="date-full">September 16, 2026</span>
-            </div>
-          </div>
+                    <!-- LEFT: Live Time Display -->
+                    <div class="header-time-block">
+                        <div class="clock-display">
+                            <span class="clock-time" id="clock-hours">12</span>
+                            <span class="clock-colon">:</span>
+                            <span class="clock-time" id="clock-minutes">00</span>
+                            <span class="clock-ampm" id="clock-ampm">AM</span>
+                        </div>
+                        <div class="date-display">
+                            <span class="date-day" id="date-day">Monday</span>
+                            <span class="date-full" id="date-full">September 16, 2026</span>
+                        </div>
+                    </div>
 
-          <!-- BRANDING: Two Logos on the left, then College Title -->
-          <div class="header-branding">
-            <div class="header-logos">
-              <img src="assets/school_logo.png" alt="Cebu Eastern College Logo" />
-              <img src="assets/it_departmentlogo.png" alt="IT Department Logo" />
-            </div>
-            <div class="header-title-wrap">
-              <h1>College of Information Technology</h1>
-              <span class="subtitle">Cebu Eastern College, Inc.</span>
-            </div>
-          </div>
+                    <!-- BRANDING: Two Logos on the left, then College Title -->
+                    <div class="header-branding">
+                        <div class="header-logos">
+                            <img src="assets/school_logo.png" alt="Cebu Eastern College Logo" />
+                            <img src="assets/it_departmentlogo.png" alt="IT Department Logo" />
+                        </div>
+                        <div class="header-title-wrap">
+                            <h1>College of Information Technology</h1>
+                            <span class="subtitle">Cebu Eastern College, Inc.</span>
+                        </div>
+                    </div>
+
+                </div>
+            </header>
+
+            <!-- MIDDLE: IMAGE & VIDEO CAROUSEL -->
+            <main class="carousel-section">
+                <div class="carousel-viewport" id="carousel-viewport">
+                    <!-- Slides rendered by JS -->
+                </div>
+
+                <!-- Floating Slide Title / Caption -->
+                <div class="carousel-slide-caption" id="carousel-slide-caption" style="display:none;">
+                    <span class="material-symbols-outlined caption-icon">campaign</span>
+                    <span class="caption-text" id="caption-text"></span>
+                </div>
+
+                <!-- Carousel Floating HUD Bar -->
+                <div class="carousel-hud">
+                    <div class="carousel-progress-track">
+                        <div class="carousel-progress-bar" id="carousel-progress"></div>
+                    </div>
+
+                    <div class="carousel-meta">
+                        <div class="carousel-indicators" id="carousel-dots">
+                            <!-- Dots rendered by JS -->
+                        </div>
+                        <span class="carousel-meta-text" id="carousel-count">No slides</span>
+                        <span style="width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.3);"></span>
+                        <span class="carousel-meta-text accent" id="carousel-timer-status">Auto</span>
+                    </div>
+
+                    <div class="carousel-controls">
+                        <button class="carousel-btn" onclick="window._togglePause()" title="Pause / Play">
+                            <span class="material-symbols-outlined" id="pause-icon">pause</span>
+                        </button>
+                        <span id="pause-text" style="display:none;">Auto</span>
+                        <button class="carousel-btn" onclick="window._prevSlide()" title="Previous">
+                            <span class="material-symbols-outlined">arrow_back</span>
+                        </button>
+                        <button class="carousel-btn" onclick="window._nextSlide()" title="Next">
+                            <span class="material-symbols-outlined">arrow_forward</span>
+                        </button>
+                    </div>
+                </div>
+            </main>
+
+            <!-- BOTTOM: FLASH ANNOUNCEMENTS (75% width) -->
+            <footer class="site-footer">
+                <div class="flash-label">
+                    <span class="material-symbols-outlined">campaign</span>
+                    <span class="flash-label-text">Flash Announcement</span>
+                </div>
+                <div class="flash-ticker">
+                    <div class="flash-ticker-track" id="flash-track">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+                <div class="flash-status">
+                    <span class="flash-status-dot"></span>
+                    <span>LIVE</span>
+                </div>
+            </footer>
 
         </div>
-      </header>
 
-      <!-- MIDDLE: IMAGE & VIDEO CAROUSEL -->
-      <main class="carousel-section">
-        <div class="carousel-viewport" id="carousel-viewport">
-          <!-- Slides rendered by JS -->
-        </div>
-
-        <!-- Floating Slide Title / Caption -->
-        <div class="carousel-slide-caption" id="carousel-slide-caption" style="display:none;">
-          <span class="material-symbols-outlined caption-icon">campaign</span>
-          <span class="caption-text" id="caption-text"></span>
-        </div>
-
-        <!-- Carousel Floating HUD Bar -->
-        <div class="carousel-hud">
-          <div class="carousel-progress-track">
-            <div class="carousel-progress-bar" id="carousel-progress"></div>
-          </div>
-
-          <div class="carousel-meta">
-            <div class="carousel-indicators" id="carousel-dots">
-              <!-- Dots rendered by JS -->
-            </div>
-            <span class="carousel-meta-text" id="carousel-count">No slides</span>
-            <span style="width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.3);"></span>
-            <span class="carousel-meta-text accent" id="carousel-timer-status">Auto</span>
-          </div>
-
-          <div class="carousel-controls">
-            <button class="carousel-btn" onclick="window._togglePause()" title="Pause / Play">
-              <span class="material-symbols-outlined" id="pause-icon">pause</span>
-            </button>
-            <span id="pause-text" style="display:none;">Auto</span>
-            <button class="carousel-btn" onclick="window._prevSlide()" title="Previous">
-              <span class="material-symbols-outlined">arrow_back</span>
-            </button>
-            <button class="carousel-btn" onclick="window._nextSlide()" title="Next">
-              <span class="material-symbols-outlined">arrow_forward</span>
-            </button>
-          </div>
-        </div>
-      </main>
-
-      <!-- BOTTOM: FLASH ANNOUNCEMENTS (75% width) -->
-      <footer class="site-footer">
-        <div class="flash-label">
-          <span class="material-symbols-outlined">campaign</span>
-          <span class="flash-label-text">Flash Announcement</span>
-        </div>
-        <div class="flash-ticker">
-          <div class="flash-ticker-track" id="flash-track">
-            <!-- Rendered by JS -->
-          </div>
-        </div>
-        <div class="flash-status">
-          <span class="flash-status-dot"></span>
-          <span>LIVE</span>
-        </div>
-      </footer>
-
-    </div>
-
-    <!-- ============================================================
+        <!-- ============================================================
          RIGHT 25% COLUMN: Full-Height Cards Stack (100vh)
          1. Weather & Time Card
          2. Office Hours Today (no percentage)
          3. Notice & Advisories
          4. Schedules of the Month (no today sort)
          ============================================================ -->
-    <aside class="tv-right-column">
+        <aside class="tv-right-column">
 
-      <!-- CARD 1: Weather & Conditions (Exact Reference Layout) -->
-      <div class="sidebar-panel weather-panel">
-        <div class="panel-header weather-panel-header">
-          <div class="panel-header-left gold">
-            <span class="material-symbols-outlined">wb_twilight</span>
-            <span>WEATHER &amp; CONDITIONS</span>
-          </div>
-        </div>
-        <div class="weather-card-content">
-          <div class="weather-crop-grid">
-            <div class="weather-col-icon">
-              <span class="material-symbols-outlined weather-main-icon" id="weather-icon">thunderstorm</span>
+            <!-- CARD 1: Maximized Animated Weather & Conditions Card -->
+            <div class="sidebar-panel weather-hero-card" id="weather-hero-card">
+                <!-- Animated Weather GIF Background -->
+                <div class="weather-animated-bg" id="weather-animated-bg"></div>
+                <div class="weather-vignette-overlay"></div>
+
+                <!-- Floating Frosted Glass Header -->
+                <div class="weather-floating-header">
+                    <div class="weather-title-chip">
+                        <span class="material-symbols-outlined" id="weather-icon">thunderstorm</span>
+                        <span>WEATHER &amp; CONDITIONS</span>
+                    </div>
+                    <span class="weather-location-chip" id="weather-location">CEBU CITY · LEON KILAT ST.</span>
+                </div>
+
+                <!-- Floating Frosted Glass Telemetry Footer -->
+                <div class="weather-telemetry-dock">
+                    <div class="weather-temp-block">
+                        <span class="weather-hero-temp" id="weather-temp">28°C</span>
+                    </div>
+                    <div class="weather-details-block">
+                        <div class="weather-hero-desc" id="weather-desc">Thunderstorm · 86% Humidity</div>
+                        <div class="weather-sub-metrics">
+                            <span class="weather-metric-pill">
+                                <span class="material-symbols-outlined">air</span>
+                                <span id="weather-wind">14 KM/H</span>
+                            </span>
+                            <span class="weather-metric-pill live">
+                                <span class="weather-live-dot"></span>
+                                LIVE RADAR
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="weather-col-temp">
-              <span class="weather-temp-val" id="weather-temp">28°C</span>
+
+            <!-- CARD 3: Notice & Advisories (Dynamic Whole-Card Usage) -->
+            <div class="sidebar-panel announcements-panel flex-grow">
+                <div class="panel-header">
+                    <div class="panel-header-left red">
+                        <span class="material-symbols-outlined">notification_important</span>
+                        <span>NOTICE &amp; ADVISORIES</span>
+                    </div>
+                    <span class="live-pill">LIVE</span>
+                </div>
+                <div class="announcements-container" id="announcements-content">
+                    <!-- Rendered by JS -->
+                </div>
             </div>
-            <div class="weather-col-meta">
-              <div class="weather-location-pill" id="weather-location">CEBU CITY · COLON-CARBON</div>
-              <div class="weather-desc-text" id="weather-desc">Thunderstorm · 86% Humidity</div>
+
+            <!-- CARD 4: Schedules of the Month (Smooth Auto-Scroll if > 5) -->
+            <div class="sidebar-panel schedules-panel flex-grow">
+                <div class="panel-header">
+                    <div class="panel-header-left blue">
+                        <span class="material-symbols-outlined">calendar_month</span>
+                        <span>SCHEDULES OF THE MONTH</span>
+                    </div>
+                    <span class="milestone-chip" id="schedule-counter-text">Events</span>
+                </div>
+                <div class="schedules-scroll-wrapper" id="schedules-scroll-wrapper">
+                    <div class="schedules-scroll-track" id="room-schedule-content">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
             </div>
-            <div class="weather-col-wind">
-              <span class="weather-wind-val" id="weather-wind">14 KM/H</span>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- CARD 2: Office Hours Today (Exact Reference Layout) -->
-      <div class="sidebar-panel office-hours-panel">
-        <div class="panel-header">
-          <div class="panel-header-left gold">
-            <span class="material-symbols-outlined">account_circle</span>
-            <span>OFFICE HOURS TODAY</span>
-          </div>
-          <span class="status-pill available" id="office-status-pill">
-            <span class="status-dot"></span>
-            AVAILABLE
-          </span>
-        </div>
-        <div id="office-hours-content">
-          <!-- Rendered by JS -->
-        </div>
-      </div>
+        </aside>
 
-      <!-- CARD 3: Notice & Advisories (Dynamic Whole-Card Usage) -->
-      <div class="sidebar-panel announcements-panel flex-grow">
-        <div class="panel-header">
-          <div class="panel-header-left red">
-            <span class="material-symbols-outlined">notification_important</span>
-            <span>NOTICE &amp; ADVISORIES</span>
-          </div>
-          <span class="live-pill">LIVE</span>
-        </div>
-        <div class="announcements-container" id="announcements-content">
-          <!-- Rendered by JS -->
-        </div>
-      </div>
+    </div>
 
-      <!-- CARD 4: Schedules of the Month (Smooth Auto-Scroll if > 5) -->
-      <div class="sidebar-panel schedules-panel flex-grow">
-        <div class="panel-header">
-          <div class="panel-header-left blue">
-            <span class="material-symbols-outlined">calendar_month</span>
-            <span>SCHEDULES OF THE MONTH</span>
-          </div>
-          <span class="milestone-chip" id="schedule-counter-text">Events</span>
-        </div>
-        <div class="schedules-scroll-wrapper" id="schedules-scroll-wrapper">
-          <div class="schedules-scroll-track" id="room-schedule-content">
-            <!-- Rendered by JS -->
-          </div>
-        </div>
-      </div>
-
-    </aside>
-
-  </div>
-
-  <!-- Scripts -->
-  <script src="js/shared.js"></script>
-  <script src="js/display.js"></script>
+    <!-- Scripts -->
+    <script src="js/shared.js"></script>
+    <script src="js/display.js"></script>
 </body>
+
 </html>

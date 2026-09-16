@@ -151,32 +151,39 @@ const WEATHER_LAT = 10.2942;
 const WEATHER_LON = 123.8997;
 const WEATHER_API = `https://api.open-meteo.com/v1/forecast?latitude=${WEATHER_LAT}&longitude=${WEATHER_LON}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&timezone=Asia%2FManila`;
 
-// WMO Weather interpretation codes to icon + description
+// WMO Weather interpretation codes to icon + description + animated GIF
 const WEATHER_CODES = {
-  0: { icon: 'sunny', desc: 'Clear Sky' },
-  1: { icon: 'sunny', desc: 'Mainly Clear' },
-  2: { icon: 'partly_cloudy_day', desc: 'Partly Cloudy' },
-  3: { icon: 'cloud', desc: 'Overcast' },
-  45: { icon: 'foggy', desc: 'Fog' },
-  48: { icon: 'foggy', desc: 'Rime Fog' },
-  51: { icon: 'rainy', desc: 'Light Drizzle' },
-  53: { icon: 'rainy', desc: 'Moderate Drizzle' },
-  55: { icon: 'rainy', desc: 'Dense Drizzle' },
-  61: { icon: 'rainy', desc: 'Light Rain' },
-  63: { icon: 'rainy', desc: 'Moderate Rain' },
-  65: { icon: 'rainy', desc: 'Heavy Rain' },
-  71: { icon: 'weather_snowy', desc: 'Light Snow' },
-  73: { icon: 'weather_snowy', desc: 'Moderate Snow' },
-  75: { icon: 'weather_snowy', desc: 'Heavy Snow' },
-  80: { icon: 'rainy', desc: 'Light Showers' },
-  81: { icon: 'rainy', desc: 'Moderate Showers' },
-  82: { icon: 'thunderstorm', desc: 'Heavy Showers' },
-  95: { icon: 'thunderstorm', desc: 'Thunderstorm' },
-  96: { icon: 'thunderstorm', desc: 'Thunderstorm + Hail' },
-  99: { icon: 'thunderstorm', desc: 'Severe Thunderstorm' }
+  0: { icon: 'sunny', desc: 'Clear Sky', gif: 'assets/weather/sunny.gif' },
+  1: { icon: 'sunny', desc: 'Mainly Clear', gif: 'assets/weather/sunny.gif' },
+  2: { icon: 'partly_cloudy_day', desc: 'Partly Cloudy', gif: 'assets/weather/partly-cloudy.gif' },
+  3: { icon: 'cloud', desc: 'Overcast', gif: 'assets/weather/overcast.gif' },
+  45: { icon: 'foggy', desc: 'Fog', gif: 'assets/weather/overcast.gif' },
+  48: { icon: 'foggy', desc: 'Rime Fog', gif: 'assets/weather/overcast.gif' },
+  51: { icon: 'rainy', desc: 'Light Drizzle', gif: 'assets/weather/rain.gif' },
+  53: { icon: 'rainy', desc: 'Moderate Drizzle', gif: 'assets/weather/rain.gif' },
+  55: { icon: 'rainy', desc: 'Dense Drizzle', gif: 'assets/weather/rain.gif' },
+  61: { icon: 'rainy', desc: 'Light Rain', gif: 'assets/weather/rain.gif' },
+  63: { icon: 'rainy', desc: 'Moderate Rain', gif: 'assets/weather/rain.gif' },
+  65: { icon: 'rainy', desc: 'Heavy Rain', gif: 'assets/weather/rain.gif' },
+  71: { icon: 'weather_snowy', desc: 'Light Snow', gif: 'assets/weather/overcast.gif' },
+  73: { icon: 'weather_snowy', desc: 'Moderate Snow', gif: 'assets/weather/overcast.gif' },
+  75: { icon: 'weather_snowy', desc: 'Heavy Snow', gif: 'assets/weather/overcast.gif' },
+  80: { icon: 'rainy', desc: 'Light Showers', gif: 'assets/weather/rain.gif' },
+  81: { icon: 'rainy', desc: 'Moderate Showers', gif: 'assets/weather/rain.gif' },
+  82: { icon: 'thunderstorm', desc: 'Heavy Showers', gif: 'assets/weather/rain.gif' },
+  95: { icon: 'thunderstorm', desc: 'Thunderstorm', gif: 'assets/weather/thunderstorm.gif' },
+  96: { icon: 'thunderstorm', desc: 'Thunderstorm + Hail', gif: 'assets/weather/thunderstorm.gif' },
+  99: { icon: 'thunderstorm', desc: 'Severe Thunderstorm', gif: 'assets/weather/thunderstorm.gif' }
 };
 
 async function fetchWeather() {
+  const bgEl = document.getElementById('weather-animated-bg');
+  const iconEl = document.getElementById('weather-icon');
+  const tempEl = document.getElementById('weather-temp');
+  const windEl = document.getElementById('weather-wind');
+  const descEl = document.getElementById('weather-desc');
+  const locEl = document.getElementById('weather-location');
+
   try {
     const res = await fetch(WEATHER_API);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -184,13 +191,7 @@ async function fetchWeather() {
     const current = data.current;
 
     const code = current.weather_code;
-    const weatherInfo = WEATHER_CODES[code] || { icon: 'cloud', desc: 'Unknown' };
-
-    const iconEl = document.getElementById('weather-icon');
-    const tempEl = document.getElementById('weather-temp');
-    const windEl = document.getElementById('weather-wind');
-    const descEl = document.getElementById('weather-desc');
-    const locEl = document.getElementById('weather-location');
+    const weatherInfo = WEATHER_CODES[code] || { icon: 'cloud', desc: 'Partly Cloudy', gif: 'assets/weather/partly-cloudy.gif' };
 
     const tempVal = Math.round(current.temperature_2m);
     const windVal = Math.round(current.wind_speed_10m || 14);
@@ -199,18 +200,19 @@ async function fetchWeather() {
     if (tempEl) tempEl.textContent = `${tempVal}°C`;
     if (windEl) windEl.textContent = `${windVal} KM/H`;
     if (descEl) descEl.textContent = `${weatherInfo.desc} · ${current.relative_humidity_2m}% Humidity`;
-    if (locEl) locEl.textContent = 'CEBU CITY · COLON-CARBON';
+    if (locEl) locEl.textContent = 'CEBU CITY · LEON KILAT ST.';
+
+    if (bgEl && weatherInfo.gif) {
+      bgEl.style.backgroundImage = `url('${weatherInfo.gif}')`;
+    }
 
   } catch (err) {
     console.warn('Weather fetch failed:', err);
-    const tempEl = document.getElementById('weather-temp');
-    const windEl = document.getElementById('weather-wind');
-    const descEl = document.getElementById('weather-desc');
-    const locEl = document.getElementById('weather-location');
     if (tempEl) tempEl.textContent = '28°C';
     if (windEl) windEl.textContent = '14 KM/H';
     if (descEl) descEl.textContent = 'Thunderstorm · 86% Humidity';
-    if (locEl) locEl.textContent = 'CEBU CITY · COLON-CARBON';
+    if (locEl) locEl.textContent = 'CEBU CITY · LEON KILAT ST.';
+    if (bgEl) bgEl.style.backgroundImage = "url('assets/weather/thunderstorm.gif')";
   }
 }
 

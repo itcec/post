@@ -750,201 +750,190 @@ body:not(.admin-body) {
   background: var(--status-alert-bg);
   color: var(--status-alert);
 }/* ================================================================
-   CARD 1: WEATHER & CONDITIONS (Exact Reference Match)
+   CARD 1: MAXIMIZED ANIMATED WEATHER & CONDITIONS CARD
    ================================================================ */
-.weather-panel {
-  padding: 10px 14px 12px;
-}
-
-.weather-panel .panel-header-left span:last-child {
-  font-family: var(--font-display);
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  color: #f1f2f6;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
-}
-
-.weather-crop-grid {
-  display: grid;
-  grid-template-columns: 46px 66px 1fr 68px;
-  align-items: center;
-  margin-top: 6px;
-  background: rgba(16, 11, 10, 0.45);
-  border-radius: var(--radius-sm);
-  border: 1px solid rgba(255, 230, 215, 0.06);
-  min-height: 52px;
-}
-
-.weather-col-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4px;
-}
-
-.weather-col-icon .weather-main-icon {
-  font-size: 32px;
-  color: var(--accent-warm);
-  filter: drop-shadow(0 2px 6px rgba(252, 163, 17, 0.4));
-}
-
-.weather-col-temp {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-left: 1px solid rgba(255, 230, 215, 0.12);
-  border-right: 1px solid rgba(255, 230, 215, 0.12);
-  height: 100%;
-  padding: 0 4px;
-}
-
-.weather-col-temp .weather-temp-val {
-  font-family: var(--font-display);
-  font-size: 25px;
-  font-weight: 600;
-  color: var(--text-pure);
-  letter-spacing: -0.02em;
-}
-
-.weather-col-meta {
+.weather-hero-card {
+  height: 225px;
+  min-height: 210px;
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  border-radius: var(--radius-card);
+  border: var(--border-glass-light);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.65), inset 0 1px 1px rgba(255, 255, 255, 0.25);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 4px 8px;
-  min-width: 0;
-  overflow: hidden;
+  justify-content: space-between;
 }
 
-.weather-location-pill {
+/* Background animated weather GIF (Full bleed inside card) */
+.weather-animated-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center right;
+  background-repeat: no-repeat;
+  transition: background-image 1s ease-in-out;
+  z-index: 1;
+}
+
+/* Gradient vignette ensuring high contrast over building animation */
+.weather-vignette-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    linear-gradient(180deg, rgba(16, 11, 10, 0.70) 0%, rgba(16, 11, 10, 0.15) 45%, rgba(16, 11, 10, 0.88) 100%),
+    linear-gradient(90deg, rgba(16, 11, 10, 0.85) 0%, rgba(16, 11, 10, 0.35) 60%, rgba(16, 11, 10, 0.1) 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Floating Frosted Glass Header */
+.weather-floating-header {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px 0;
+}
+
+.weather-title-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: rgba(22, 14, 12, 0.72);
+  backdrop-filter: var(--filter-blur-smooth);
+  -webkit-backdrop-filter: var(--filter-blur-smooth);
+  border: 1px solid rgba(255, 230, 215, 0.16);
+  border-radius: var(--radius-pill);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.weather-title-chip .material-symbols-outlined {
+  font-size: 16px;
+  color: var(--accent-warm);
+  filter: drop-shadow(0 0 6px rgba(252, 163, 17, 0.5));
+}
+
+.weather-title-chip span:last-child {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+}
+
+.weather-location-chip {
   display: inline-block;
-  align-self: flex-start;
-  padding: 2px 7px;
-  background: rgba(45, 32, 28, 0.85);
-  border: 1px solid rgba(255, 230, 215, 0.08);
-  border-radius: 4px;
+  padding: 3px 8px;
+  background: rgba(28, 18, 16, 0.75);
+  backdrop-filter: var(--filter-blur-smooth);
+  -webkit-backdrop-filter: var(--filter-blur-smooth);
+  border: 1px solid rgba(255, 230, 215, 0.12);
+  border-radius: var(--radius-pill);
   font-family: var(--font-display);
   font-size: 8.5px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #baa8a0;
-  margin-bottom: 3px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
 }
 
-.weather-col-meta .weather-desc-text {
-  font-size: 9.5px;
-  color: #8f7d75;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 1.2;
-}
-
-.weather-col-wind {
+/* Floating Telemetry Dock at bottom */
+.weather-telemetry-dock {
+  position: relative;
+  z-index: 5;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  border-left: 1px solid rgba(255, 230, 215, 0.12);
-  height: 100%;
-  padding: 0 4px;
-}
-
-.weather-col-wind .weather-wind-val {
-  font-family: var(--font-display);
-  font-size: 12px;
-  font-weight: 800;
-  color: #ece5e2;
-  letter-spacing: 0.02em;
-  white-space: nowrap;
-}
-
-/* ================================================================
-   CARD 2: OFFICE HOURS TODAY (Exact Reference Match)
-   ================================================================ */
-.office-hours-panel {
-  padding: 10px 14px 12px;
-}
-
-.office-hours-panel .panel-header {
-  border-bottom: none;
-  padding-bottom: 2px;
-}
-
-.office-hours-panel .panel-header-left span:last-child {
-  font-family: var(--font-display);
-  font-size: 11.5px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-}
-
-.office-crop-card {
-  display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   gap: 12px;
-  padding-top: 4px;
+  padding: 12px 16px 14px;
 }
 
-.office-crop-left {
+.weather-temp-block {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  min-width: 0;
+  align-items: baseline;
 }
 
-.office-crop-avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 8px;
-  background: #1c1410;
-  border: 1.5px solid rgba(252, 163, 17, 0.65);
-  color: var(--accent-warm);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.weather-hero-temp {
   font-family: var(--font-display);
-  font-size: 17px;
-  font-weight: 900;
-  letter-spacing: 0.02em;
-  flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  font-size: 46px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.75);
 }
 
-.office-crop-info {
+.weather-details-block {
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
   min-width: 0;
 }
 
-.office-crop-name {
+.weather-hero-desc {
   font-family: var(--font-display);
-  font-size: 17px;
-  font-weight: 900;
+  font-size: 11.5px;
+  font-weight: 700;
   color: #ffffff;
-  line-height: 1.15;
-  letter-spacing: 0.01em;
-}
-
-.office-crop-room {
-  font-size: 12px;
-  color: #a3928a;
-  font-weight: 500;
-  margin-top: 2px;
-}
-
-.office-crop-time {
-  font-family: var(--font-display);
-  font-size: 15px;
-  font-weight: 800;
-  color: var(--accent-warm);
-  letter-spacing: 0.02em;
+  text-align: right;
+  line-height: 1.25;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
   white-space: nowrap;
-  flex-shrink: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+.weather-sub-metrics {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.weather-metric-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  background: rgba(22, 14, 12, 0.78);
+  backdrop-filter: var(--filter-blur-smooth);
+  -webkit-backdrop-filter: var(--filter-blur-smooth);
+  border: 1px solid rgba(255, 230, 215, 0.15);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.04em;
+}
+
+.weather-metric-pill .material-symbols-outlined {
+  font-size: 13px;
+  color: var(--accent-warm);
+}
+
+.weather-metric-pill.live {
+  border-color: rgba(49, 210, 156, 0.40);
+  color: #31d29c;
+}
+
+.weather-live-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #31d29c;
+  box-shadow: 0 0 8px #31d29c;
+  animation: pulse-blink 1.5s ease-in-out infinite;
 }
 
 .status-pill {

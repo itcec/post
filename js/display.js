@@ -19,7 +19,9 @@
     startWeather();
     loadCarouselSettings();
     renderSlides();
-    renderOfficeHours();
+    if (document.getElementById('office-hours-content')) {
+      renderOfficeHours();
+    }
     renderRoomSchedule();
     renderAnnouncements();
     renderFlashTicker();
