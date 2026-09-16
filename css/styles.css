@@ -605,6 +605,9 @@ body:not(.admin-body) {
   animation: marquee-scroll 45s linear infinite;
   align-items: center;
   gap: 36px;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
 
 .flash-ticker-track:hover {
@@ -1812,8 +1815,8 @@ body.admin-body {
 }
 
 @keyframes marquee-scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
 }
 
 @keyframes fade-in {

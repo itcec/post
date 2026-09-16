@@ -188,8 +188,29 @@ async function fetchCloudData(onUpdatedCallback) {
     }
   } catch (e) {
     // Apps Script standby or offline; graceful fallback to local cache
-    console.info('Using locally cached data (Apps Script endpoint standby).');
+    console.info('Using locally cached data (Apps Script endpoint standby or offline).');
+    if (typeof navigator !== 'undefined' && !navigator.onLine) {
+      updateCloudBadge('error', 'Offline (Using Cache)');
+    }
   }
+}
+
+// ---- Progressive Offline Resilience & Network Listeners ----
+if (typeof window !== 'undefined') {
+  window.addEventListener('offline', () => {
+    console.info('Network connection lost. TV Signage continues cycling smoothly from memory and local storage.');
+    updateCloudBadge('error', 'Offline (Using Cache)');
+  });
+
+  window.addEventListener('online', () => {
+    console.info('Network connection restored. Silently syncing with cloud...');
+    updateCloudBadge('syncing', 'Reconnected · Syncing...');
+    fetchCloudData(() => {
+      if (typeof window._onCloudUpdate === 'function') {
+        window._onCloudUpdate();
+      }
+    });
+  });
 }
 
 function generateId() {

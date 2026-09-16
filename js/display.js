@@ -27,24 +27,21 @@
     renderFlashTicker();
     startAutoRotate();
 
-    // Pull cloud data from Google Apps Script on startup
-    fetchCloudData(() => {
+    // Register live cloud update handler
+    window._onCloudUpdate = () => {
       loadCarouselSettings();
       renderSlides();
       renderRoomSchedule();
       renderAnnouncements();
       renderFlashTicker();
-    });
+    };
+
+    // Pull cloud data from Google Apps Script on startup
+    fetchCloudData(window._onCloudUpdate);
 
     // Check cloud for new announcements/schedules every 60 seconds
     setInterval(() => {
-      fetchCloudData(() => {
-        loadCarouselSettings();
-        renderSlides();
-        renderRoomSchedule();
-        renderAnnouncements();
-        renderFlashTicker();
-      });
+      fetchCloudData(window._onCloudUpdate);
     }, 60 * 1000);
 
     // Listen for storage changes from admin page
@@ -487,10 +484,10 @@
             scheduleScrollState.pauseTimer = 150; // pause 2.5s at top
           }
 
-          track.style.transform = `translateY(-${scheduleScrollState.pos}px)`;
+          track.style.transform = `translate3d(0, -${scheduleScrollState.pos}px, 0)`;
         }
       } else {
-        track.style.transform = 'translateY(0px)';
+        track.style.transform = 'translate3d(0, 0, 0)';
       }
       scheduleScrollAnimationId = requestAnimationFrame(step);
     }
