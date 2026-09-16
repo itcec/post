@@ -676,7 +676,7 @@
   // ================================================================
   function bindFormEvents() {
     // Slide add / save
-    const addSlideBtn = document.getElementById('add-slide-btn');
+    const addSlideBtn = document.getElementById('save-slide-btn') || document.getElementById('add-slide-btn');
     if (addSlideBtn) addSlideBtn.addEventListener('click', saveOrAddSlide);
 
     // Cancel slide edit
