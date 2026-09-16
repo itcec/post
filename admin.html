@@ -281,30 +281,103 @@
       </div>
     </section>
 
-    <!-- ======== SECTION 4: IMPORTANT ANNOUNCEMENTS ======== -->
+    <!-- ======== SECTION 4: NOTICE & ADVISORIES (Content & Typography CMS) ======== -->
     <section class="admin-section">
       <div class="admin-section-header">
         <div class="admin-section-title">
           <span class="material-symbols-outlined">notification_important</span>
-          <span>Important Announcements</span>
+          <span>Notice &amp; Advisories Management</span>
         </div>
-        <span style="font-size:12px;color:var(--text-muted);">Shown on the right sidebar of the display</span>
+        <span style="font-size:12px;color:var(--text-muted);">Configure text, typography style, font family &amp; preview before saving</span>
       </div>
 
-      <div class="form-row" style="margin-bottom:var(--space-lg);">
-        <div class="form-group" style="flex:1;">
-          <label class="form-label" for="announcement-text-input">Announcement Text</label>
-          <input class="form-input" id="announcement-text-input" type="text" placeholder="e.g. No classes on September 20, 2026 — Declared holiday" />
+      <!-- Add / Edit Announcement Form -->
+      <div id="announcement-form-container" style="background:var(--bg-surface);padding:var(--space-md);border-radius:var(--radius-md);margin-bottom:var(--space-lg);border:1px solid var(--border-subtle);">
+        <input type="hidden" id="announcement-edit-id" value="" />
+        
+        <div class="form-group">
+          <label class="form-label" for="announcement-text-input">Notice Content / Text</label>
+          <textarea class="form-textarea" id="announcement-text-input" placeholder="Enter notice, advisory, or holiday announcement text..." style="min-height:75px;font-size:14px;line-height:1.4;"></textarea>
         </div>
-        <div class="form-group" style="flex:0 0 auto;">
-          <label class="form-label">&nbsp;</label>
+
+        <div class="form-row" style="margin-bottom:var(--space-md);">
+          <div class="form-group" style="flex:1;">
+            <label class="form-label" for="announcement-family-select">Font Family</label>
+            <select class="form-select" id="announcement-family-select">
+              <option value="'Inter', sans-serif">Inter (Modern Clean Sans)</option>
+              <option value="'Space Grotesk', sans-serif">Space Grotesk (Tech / Display)</option>
+              <option value="'Outfit', sans-serif">Outfit (Editorial Clean)</option>
+              <option value="Georgia, serif">Georgia (Classic Serif)</option>
+              <option value="'Courier New', monospace">Monospace (Code / Terminal)</option>
+            </select>
+          </div>
+
+          <div class="form-group" style="flex:1;">
+            <label class="form-label" for="announcement-size-select">Font Size</label>
+            <select class="form-select" id="announcement-size-select">
+              <option value="auto">Auto / Scale with Card</option>
+              <option value="12px">Small (12px)</option>
+              <option value="14px">Standard (14px)</option>
+              <option value="16px">Medium (16px)</option>
+              <option value="18px">Large (18px)</option>
+              <option value="22px">Extra Large (22px)</option>
+            </select>
+          </div>
+
+          <div class="form-group" style="flex:1;">
+            <label class="form-label" for="announcement-style-select">Font Style &amp; Weight</label>
+            <select class="form-select" id="announcement-style-select">
+              <option value="normal-600">Semi-Bold (600)</option>
+              <option value="normal-400">Regular (400)</option>
+              <option value="normal-700">Bold (700)</option>
+              <option value="italic-400">Italic (400)</option>
+              <option value="italic-700">Bold Italic (700)</option>
+            </select>
+          </div>
+
+          <div class="form-group" style="flex:1;">
+            <label class="form-label" for="announcement-accent-select">Accent &amp; Priority</label>
+            <select class="form-select" id="announcement-accent-select">
+              <option value="alert">Crimson Alert (High)</option>
+              <option value="warm">Amber Warning (Important)</option>
+              <option value="available">Emerald Advisory (Notice)</option>
+              <option value="info">Sky Blue Information</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Live Preview Card Section -->
+        <div style="margin-bottom:var(--space-md);">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+            <label class="form-label" style="margin-bottom:0;">
+              <span class="material-symbols-outlined" style="font-size:13px;vertical-align:middle;color:var(--accent-warm);">visibility</span>
+              Live Card Preview (How it will render on TV screen):
+            </label>
+            <span style="font-size:11px;color:var(--text-muted);">Real-time preview</span>
+          </div>
+
+          <div id="announcement-preview-box" style="background:rgba(20, 14, 13, 0.85);border:1px solid rgba(255, 230, 215, 0.12);border-radius:14px;padding:14px 16px;min-height:90px;display:flex;flex-direction:column;justify-content:center;">
+            <div id="announcement-preview-item" style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:rgba(36, 24, 21, 0.50);border:1px solid rgba(255, 230, 215, 0.08);border-left:4px solid #ff5757;border-radius:8px;transition:all 0.2s ease;">
+              <span class="material-symbols-outlined" id="announcement-preview-icon" style="font-size:20px;color:#ff5757;flex-shrink:0;margin-top:1px;">priority_high</span>
+              <div id="announcement-preview-text" style="font-family:'Inter', sans-serif;font-size:14px;font-weight:600;line-height:1.4;color:#ffffff;">
+                Type an announcement above to see the live preview...
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:var(--space-sm);justify-content:flex-end;">
+          <button class="btn btn-secondary" id="cancel-announcement-btn" style="display:none;" onclick="window._cancelAnnouncementEdit()">
+            Cancel
+          </button>
           <button class="btn btn-primary" id="add-announcement-btn">
-            <span class="material-symbols-outlined">add</span>
-            Add
+            <span class="material-symbols-outlined" id="add-announcement-icon">add</span>
+            <span id="add-announcement-text">Add Notice</span>
           </button>
         </div>
       </div>
 
+      <!-- Announcements List -->
       <div class="admin-list" id="announcements-list">
         <!-- Rendered by JS -->
       </div>

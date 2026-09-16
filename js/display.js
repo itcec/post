@@ -494,14 +494,41 @@
       return;
     }
 
-    container.innerHTML = data.map(item => `
-      <div class="announcement-item">
-        <span class="material-symbols-outlined">priority_high</span>
-        <div style="flex:1;">
-          <div class="announcement-text">${escapeHtml(item.text)}</div>
+    const ACCENT_COLORS = {
+      alert: '#ff5757',
+      warm: '#fca311',
+      available: '#31d29c',
+      info: '#5ea8ff'
+    };
+
+    const ACCENT_ICONS = {
+      alert: 'priority_high',
+      warm: 'warning',
+      available: 'check_circle',
+      info: 'info'
+    };
+
+    container.innerHTML = data.map(item => {
+      const accent = item.accent || item.priority || 'alert';
+      const colorHex = ACCENT_COLORS[accent] || ACCENT_COLORS.alert;
+      const iconName = ACCENT_ICONS[accent] || 'priority_high';
+      
+      const customStyle = [];
+      if (item.fontFamily) customStyle.push(`font-family: ${item.fontFamily}`);
+      if (item.fontSize && item.fontSize !== 'auto') customStyle.push(`font-size: ${item.fontSize}`);
+      if (item.fontStyle) customStyle.push(`font-style: ${item.fontStyle}`);
+      if (item.fontWeight) customStyle.push(`font-weight: ${item.fontWeight}`);
+      const inlineStyle = customStyle.length ? `style="${customStyle.join('; ')}"` : '';
+
+      return `
+        <div class="announcement-item" style="border-left-color: ${colorHex};">
+          <span class="material-symbols-outlined" style="color: ${colorHex};">${iconName}</span>
+          <div style="flex:1;">
+            <div class="announcement-text" ${inlineStyle}>${escapeHtml(item.text)}</div>
+          </div>
         </div>
-      </div>
-    `).join('');
+      `;
+    }).join('');
   }
 
   // ---- Footer: Flash Ticker ----

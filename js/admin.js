@@ -380,8 +380,56 @@
   }
 
   // ================================================================
-  // ANNOUNCEMENTS EDITOR
+  // ANNOUNCEMENTS & ADVISORIES EDITOR (Typography & Live Preview)
   // ================================================================
+  const ACCENT_COLORS = {
+    alert: '#ff5757',
+    warm: '#fca311',
+    available: '#31d29c',
+    info: '#5ea8ff'
+  };
+
+  const ACCENT_ICONS = {
+    alert: 'priority_high',
+    warm: 'warning',
+    available: 'check_circle',
+    info: 'info'
+  };
+
+  function updateAnnouncementLivePreview() {
+    const textEl = document.getElementById('announcement-text-input');
+    const familyEl = document.getElementById('announcement-family-select');
+    const sizeEl = document.getElementById('announcement-size-select');
+    const styleEl = document.getElementById('announcement-style-select');
+    const accentEl = document.getElementById('announcement-accent-select');
+
+    const previewItem = document.getElementById('announcement-preview-item');
+    const previewText = document.getElementById('announcement-preview-text');
+    const previewIcon = document.getElementById('announcement-preview-icon');
+
+    if (!previewItem || !previewText || !previewIcon) return;
+
+    const rawText = textEl ? textEl.value.trim() : '';
+    const family = familyEl ? familyEl.value : "'Inter', sans-serif";
+    const size = sizeEl ? sizeEl.value : 'auto';
+    const styleVal = styleEl ? styleEl.value : 'normal-600';
+    const accentVal = accentEl ? accentEl.value : 'alert';
+
+    const [fontStyle, fontWeight] = styleVal.split('-');
+    const colorHex = ACCENT_COLORS[accentVal] || ACCENT_COLORS.alert;
+    const iconName = ACCENT_ICONS[accentVal] || 'priority_high';
+
+    previewText.textContent = rawText || 'Type an announcement above to see the live preview...';
+    previewText.style.fontFamily = family;
+    previewText.style.fontSize = size === 'auto' ? '14.5px' : size;
+    previewText.style.fontStyle = fontStyle || 'normal';
+    previewText.style.fontWeight = fontWeight || '600';
+
+    previewItem.style.borderLeftColor = colorHex;
+    previewIcon.style.color = colorHex;
+    previewIcon.textContent = iconName;
+  }
+
   function renderAnnouncementList() {
     const items = getData('announcements');
     const container = document.getElementById('announcements-list');
@@ -397,25 +445,47 @@
       return;
     }
 
-    container.innerHTML = items.map((item, idx) => `
-      <div class="admin-list-item anim-fade-in" style="animation-delay: ${idx * 0.05}s">
-        <div class="admin-list-item-content">
-          <span class="material-symbols-outlined" style="color:var(--accent-red);font-size:20px;flex-shrink:0">priority_high</span>
-          <div class="admin-list-item-text">
-            <span class="admin-list-item-title">${escapeHtml(item.text)}</span>
+    container.innerHTML = items.map((item, idx) => {
+      const accent = item.accent || item.priority || 'alert';
+      const colorHex = ACCENT_COLORS[accent] || ACCENT_COLORS.alert;
+      const iconName = ACCENT_ICONS[accent] || 'priority_high';
+      const fontDisplay = item.fontFamily ? item.fontFamily.split(',')[0].replace(/['"]/g, '') : 'Default';
+      const sizeDisplay = item.fontSize && item.fontSize !== 'auto' ? item.fontSize : 'Auto';
+
+      return `
+        <div class="admin-list-item anim-fade-in" style="animation-delay: ${idx * 0.05}s">
+          <div class="admin-list-item-content">
+            <span class="material-symbols-outlined" style="color:${colorHex};font-size:22px;flex-shrink:0">${iconName}</span>
+            <div class="admin-list-item-text">
+              <span class="admin-list-item-title" style="font-family:${item.fontFamily || 'inherit'};font-size:14px;font-style:${item.fontStyle || 'normal'};font-weight:${item.fontWeight || '600'};">${escapeHtml(item.text)}</span>
+              <span class="admin-list-item-subtitle" style="display:flex;gap:12px;margin-top:2px;font-size:11px;">
+                <span>Family: <strong>${fontDisplay}</strong></span>
+                <span>Size: <strong>${sizeDisplay}</strong></span>
+                <span>Accent: <strong style="color:${colorHex};text-transform:capitalize;">${accent}</strong></span>
+              </span>
+            </div>
+          </div>
+          <div class="admin-list-item-actions">
+            <button class="btn-icon" onclick="window._editAnnouncement('${item.id}')" title="Edit Announcement" style="color:var(--accent-warm);">
+              <span class="material-symbols-outlined">edit</span>
+            </button>
+            <button class="btn-icon" onclick="window._removeAnnouncement('${item.id}')" title="Remove Announcement">
+              <span class="material-symbols-outlined">delete</span>
+            </button>
           </div>
         </div>
-        <div class="admin-list-item-actions">
-          <button class="btn-icon" onclick="window._removeAnnouncement('${item.id}')" title="Remove">
-            <span class="material-symbols-outlined">delete</span>
-          </button>
-        </div>
-      </div>
-    `).join('');
+      `;
+    }).join('');
   }
 
   function addAnnouncement() {
+    const editIdEl = document.getElementById('announcement-edit-id');
     const textEl = document.getElementById('announcement-text-input');
+    const familyEl = document.getElementById('announcement-family-select');
+    const sizeEl = document.getElementById('announcement-size-select');
+    const styleEl = document.getElementById('announcement-style-select');
+    const accentEl = document.getElementById('announcement-accent-select');
+
     if (!textEl) return;
     const text = textEl.value.trim();
     if (!text) {
@@ -425,19 +495,115 @@
       return;
     }
 
-    const items = getData('announcements');
-    items.push({ id: generateId(), text: text, priority: 'high' });
+    const editId = editIdEl ? editIdEl.value : '';
+    const family = familyEl ? familyEl.value : "'Inter', sans-serif";
+    const size = sizeEl ? sizeEl.value : 'auto';
+    const styleVal = styleEl ? styleEl.value : 'normal-600';
+    const [fontStyle, fontWeight] = styleVal.split('-');
+    const accent = accentEl ? accentEl.value : 'alert';
+
+    let items = getData('announcements');
+
+    if (editId) {
+      items = items.map(item => {
+        if (item.id === editId) {
+          return {
+            ...item,
+            text,
+            fontFamily: family,
+            fontSize: size,
+            fontStyle: fontStyle || 'normal',
+            fontWeight: fontWeight || '600',
+            accent: accent
+          };
+        }
+        return item;
+      });
+      showSaveToast('Notice updated!');
+    } else {
+      items.push({
+        id: generateId(),
+        text,
+        fontFamily: family,
+        fontSize: size,
+        fontStyle: fontStyle || 'normal',
+        fontWeight: fontWeight || '600',
+        accent: accent
+      });
+      showSaveToast('Notice added!');
+    }
+
     setData('announcements', items);
-    textEl.value = '';
+    resetAnnouncementForm();
     renderAnnouncementList();
+  }
+
+  function editAnnouncement(id) {
+    const items = getData('announcements');
+    const item = items.find(a => a.id === id);
+    if (!item) return;
+
+    const editIdEl = document.getElementById('announcement-edit-id');
+    const textEl = document.getElementById('announcement-text-input');
+    const familyEl = document.getElementById('announcement-family-select');
+    const sizeEl = document.getElementById('announcement-size-select');
+    const styleEl = document.getElementById('announcement-style-select');
+    const accentEl = document.getElementById('announcement-accent-select');
+    const addBtnText = document.getElementById('add-announcement-text');
+    const addBtnIcon = document.getElementById('add-announcement-icon');
+    const cancelBtn = document.getElementById('cancel-announcement-btn');
+
+    if (editIdEl) editIdEl.value = item.id;
+    if (textEl) textEl.value = item.text || '';
+    if (familyEl) familyEl.value = item.fontFamily || "'Inter', sans-serif";
+    if (sizeEl) sizeEl.value = item.fontSize || 'auto';
+    if (styleEl) styleEl.value = `${item.fontStyle || 'normal'}-${item.fontWeight || '600'}`;
+    if (accentEl) accentEl.value = item.accent || item.priority || 'alert';
+
+    if (addBtnText) addBtnText.textContent = 'Update Notice';
+    if (addBtnIcon) addBtnIcon.textContent = 'save';
+    if (cancelBtn) cancelBtn.style.display = '';
+
+    updateAnnouncementLivePreview();
+    textEl.focus();
+  }
+
+  function resetAnnouncementForm() {
+    const editIdEl = document.getElementById('announcement-edit-id');
+    const textEl = document.getElementById('announcement-text-input');
+    const familyEl = document.getElementById('announcement-family-select');
+    const sizeEl = document.getElementById('announcement-size-select');
+    const styleEl = document.getElementById('announcement-style-select');
+    const accentEl = document.getElementById('announcement-accent-select');
+    const addBtnText = document.getElementById('add-announcement-text');
+    const addBtnIcon = document.getElementById('add-announcement-icon');
+    const cancelBtn = document.getElementById('cancel-announcement-btn');
+
+    if (editIdEl) editIdEl.value = '';
+    if (textEl) textEl.value = '';
+    if (familyEl) familyEl.value = "'Inter', sans-serif";
+    if (sizeEl) sizeEl.value = 'auto';
+    if (styleEl) styleEl.value = 'normal-600';
+    if (accentEl) accentEl.value = 'alert';
+
+    if (addBtnText) addBtnText.textContent = 'Add Notice';
+    if (addBtnIcon) addBtnIcon.textContent = 'add';
+    if (cancelBtn) cancelBtn.style.display = 'none';
+
+    updateAnnouncementLivePreview();
   }
 
   function removeAnnouncement(id) {
     let items = getData('announcements');
     items = items.filter(a => a.id !== id);
     setData('announcements', items);
+    resetAnnouncementForm();
     renderAnnouncementList();
+    showSaveToast('Notice removed');
   }
+
+  window._editAnnouncement = editAnnouncement;
+  window._cancelAnnouncementEdit = resetAnnouncementForm;
 
   // ================================================================
   // FLASH ANNOUNCEMENTS EDITOR
@@ -568,15 +734,32 @@
     const cancelRoomBtn = document.getElementById('cancel-room-btn');
     if (cancelRoomBtn) cancelRoomBtn.addEventListener('click', resetRoomForm);
 
-    // Announcement add
+    // Announcement add / save
     const addAnnouncementBtn = document.getElementById('add-announcement-btn');
     if (addAnnouncementBtn) addAnnouncementBtn.addEventListener('click', addAnnouncement);
 
-    // Announcement text — Enter key
+    // Announcement inputs — live preview updates
     const announcementInput = document.getElementById('announcement-text-input');
-    if (announcementInput) announcementInput.addEventListener('keydown', e => {
-      if (e.key === 'Enter') addAnnouncement();
-    });
+    const announcementFamily = document.getElementById('announcement-family-select');
+    const announcementSize = document.getElementById('announcement-size-select');
+    const announcementStyle = document.getElementById('announcement-style-select');
+    const announcementAccent = document.getElementById('announcement-accent-select');
+
+    if (announcementInput) {
+      announcementInput.addEventListener('input', updateAnnouncementLivePreview);
+    }
+    if (announcementFamily) {
+      announcementFamily.addEventListener('change', updateAnnouncementLivePreview);
+    }
+    if (announcementSize) {
+      announcementSize.addEventListener('change', updateAnnouncementLivePreview);
+    }
+    if (announcementStyle) {
+      announcementStyle.addEventListener('change', updateAnnouncementLivePreview);
+    }
+    if (announcementAccent) {
+      announcementAccent.addEventListener('change', updateAnnouncementLivePreview);
+    }
 
     // Flash add
     const addFlashBtn = document.getElementById('add-flash-btn');

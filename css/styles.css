@@ -180,21 +180,23 @@ body:not(.admin-body) {
 }
 
 /* ================================================================
-   SITE HEADER (Clean 75% Header: Time on Left, Title & Logos on Right)
+   SITE HEADER (Floating Frosted Glassmorphism Overlay on Slides)
    ================================================================ */
 .site-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   height: 72px;
-  flex-shrink: 0;
   width: 100%;
   padding: 0 24px;
   display: flex;
   align-items: center;
-  background: rgba(24, 16, 14, 0.78);
+  background: rgba(18, 12, 11, 0.62);
   backdrop-filter: var(--filter-blur-smooth);
   -webkit-backdrop-filter: var(--filter-blur-smooth);
-  border-bottom: 1px solid rgba(255, 230, 215, 0.10);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
-  position: relative;
+  border-bottom: 1px solid rgba(255, 230, 215, 0.14);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.55), inset 0 1px 1px rgba(255, 255, 255, 0.15);
   z-index: 30;
 }
 
@@ -310,14 +312,16 @@ body:not(.admin-body) {
 }
 
 /* ================================================================
-   CAROUSEL SECTION (75% Middle)
+   CAROUSEL SECTION (Full-bleed 100vh behind glassmorphism overlays)
    ================================================================ */
 .carousel-section {
-  flex: 1;
-  min-height: 0;
-  position: relative;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   background: #080505;
+  z-index: 1;
 }
 
 .carousel-viewport {
@@ -392,14 +396,14 @@ body:not(.admin-body) {
 /* Floating Slide Caption Badge */
 .carousel-slide-caption {
   position: absolute;
-  top: 20px;
-  left: 20px;
+  top: 86px;
+  left: 24px;
   max-width: 80%;
   display: inline-flex;
   align-items: center;
   gap: 10px;
   padding: 8px 18px;
-  background: rgba(24, 16, 14, 0.80);
+  background: rgba(22, 14, 12, 0.65);
   backdrop-filter: var(--filter-blur-smooth);
   -webkit-backdrop-filter: var(--filter-blur-smooth);
   border: 1px solid rgba(255, 230, 215, 0.16);
@@ -420,20 +424,20 @@ body:not(.admin-body) {
   color: #ffffff;
 }
 
-/* Floating Controls HUD */
+/* Floating Controls HUD (Frosted Glassmorphism Overlay) */
 .carousel-hud {
   position: absolute;
-  bottom: 14px;
-  left: 20px;
-  right: 20px;
+  bottom: 64px;
+  left: 24px;
+  right: 24px;
   z-index: 25;
-  background: rgba(24, 16, 14, 0.82);
+  background: rgba(22, 14, 12, 0.65);
   backdrop-filter: var(--filter-blur-smooth);
   -webkit-backdrop-filter: var(--filter-blur-smooth);
-  border: var(--border-glass);
+  border: 1px solid rgba(255, 230, 215, 0.18);
   border-radius: var(--radius-pill);
-  box-shadow: var(--shadow-card), var(--inner-bevel-pill);
-  padding: 8px 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55), inset 0 1px 1px rgba(255, 255, 255, 0.20);
+  padding: 8px 22px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -445,7 +449,7 @@ body:not(.admin-body) {
   left: 24px;
   right: 24px;
   height: 2px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.12);
   overflow: hidden;
   border-radius: 2px;
 }
@@ -474,7 +478,7 @@ body:not(.admin-body) {
   width: 8px;
   height: 5px;
   border-radius: 3px;
-  background: rgba(255, 255, 255, 0.20);
+  background: rgba(255, 255, 255, 0.25);
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -490,7 +494,7 @@ body:not(.admin-body) {
   font-family: var(--font-display);
   font-size: 11px;
   font-weight: 700;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
@@ -506,11 +510,11 @@ body:not(.admin-body) {
 }
 
 .carousel-btn {
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   color: var(--text-pure);
   display: flex;
   align-items: center;
@@ -520,8 +524,9 @@ body:not(.admin-body) {
 }
 
 .carousel-btn:hover {
-  background: rgba(255, 255, 255, 0.16);
-  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: scale(1.05);
 }
 
 .carousel-btn .material-symbols-outlined {
@@ -529,20 +534,23 @@ body:not(.admin-body) {
 }
 
 /* ================================================================
-   SITE FOOTER (75% Flash Ticker)
+   SITE FOOTER (Floating Frosted Glassmorphism Flash Ticker)
    ================================================================ */
 .site-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   height: var(--footer-height);
-  background: rgba(20, 14, 13, 0.88);
+  background: rgba(18, 12, 11, 0.68);
   backdrop-filter: var(--filter-blur-smooth);
   -webkit-backdrop-filter: var(--filter-blur-smooth);
-  border-top: 1px solid rgba(255, 230, 215, 0.10);
+  border-top: 1px solid rgba(255, 230, 215, 0.14);
+  box-shadow: 0 -8px 28px rgba(0, 0, 0, 0.55), inset 0 1px 1px rgba(255, 255, 255, 0.12);
   display: flex;
   align-items: center;
   padding: 0 20px;
-  position: relative;
   z-index: 30;
-  flex-shrink: 0;
   overflow: hidden;
 }
 
