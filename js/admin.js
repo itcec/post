@@ -387,7 +387,7 @@
 
     if (!previewItem || !previewText || !previewIcon) return;
 
-    const rawText = textEl ? textEl.value.trim() : '';
+    const rawText = textEl ? textEl.value : '';
     const family = familyEl ? familyEl.value : "'Inter', sans-serif";
     const size = sizeEl ? sizeEl.value : 'auto';
     const styleVal = styleEl ? styleEl.value : 'normal-600';
@@ -397,11 +397,13 @@
     const colorHex = ACCENT_COLORS[accentVal] || ACCENT_COLORS.alert;
     const iconName = ACCENT_ICONS[accentVal] || 'priority_high';
 
-    previewText.textContent = rawText || 'Type an announcement above to see the live preview...';
+    previewText.textContent = rawText.trim() ? rawText : 'Type an announcement above to see the live preview...';
     previewText.style.fontFamily = family;
     previewText.style.fontSize = size === 'auto' ? '14.5px' : size;
     previewText.style.fontStyle = fontStyle || 'normal';
     previewText.style.fontWeight = fontWeight || '600';
+    previewText.style.whiteSpace = 'pre-wrap';
+    previewText.style.wordBreak = 'break-word';
 
     previewItem.style.borderLeftColor = colorHex;
     previewIcon.style.color = colorHex;
@@ -433,10 +435,10 @@
       return `
         <div class="admin-list-item anim-fade-in" style="animation-delay: ${idx * 0.05}s">
           <div class="admin-list-item-content">
-            <span class="material-symbols-outlined" style="color:${colorHex};font-size:22px;flex-shrink:0">${iconName}</span>
-            <div class="admin-list-item-text">
-              <span class="admin-list-item-title" style="font-family:${item.fontFamily || 'inherit'};font-size:14px;font-style:${item.fontStyle || 'normal'};font-weight:${item.fontWeight || '600'};">${escapeHtml(item.text)}</span>
-              <span class="admin-list-item-subtitle" style="display:flex;gap:12px;margin-top:2px;font-size:11px;">
+            <span class="material-symbols-outlined" style="color:${colorHex};font-size:22px;flex-shrink:0;margin-top:2px;">${iconName}</span>
+            <div class="admin-list-item-text" style="flex:1;min-width:0;">
+              <div class="admin-list-item-title" style="font-family:${item.fontFamily || 'inherit'};font-size:14px;font-style:${item.fontStyle || 'normal'};font-weight:${item.fontWeight || '600'};white-space:pre-wrap;word-break:break-word;line-height:1.4;">${escapeHtml(item.text)}</div>
+              <span class="admin-list-item-subtitle" style="display:flex;gap:12px;margin-top:4px;font-size:11px;">
                 <span>Family: <strong>${fontDisplay}</strong></span>
                 <span>Size: <strong>${sizeDisplay}</strong></span>
                 <span>Accent: <strong style="color:${colorHex};text-transform:capitalize;">${accent}</strong></span>
@@ -465,7 +467,8 @@
     const accentEl = document.getElementById('announcement-accent-select');
 
     if (!textEl) return;
-    const text = textEl.value.trim();
+    // Trim outer whitespace while preserving all internal enters, newlines, and spaces
+    const text = textEl.value.replace(/^\s+/, '').replace(/\s+$/, '');
     if (!text) {
       textEl.focus();
       textEl.style.borderColor = 'var(--accent-red)';

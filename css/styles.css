@@ -1029,6 +1029,9 @@ body:not(.admin-body) {
   font-weight: 600;
   line-height: 1.5;
   color: #ffffff;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 /* Two Announcements (Generous vertical distribution) */
@@ -1058,6 +1061,9 @@ body:not(.admin-body) {
   font-weight: 600;
   line-height: 1.4;
   color: var(--text-pure);
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 /* Standard Multi-Item Announcements */
@@ -1084,6 +1090,9 @@ body:not(.admin-body) {
   font-size: 11.5px;
   line-height: 1.35;
   color: var(--text-primary);
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 /* ================================================================
@@ -1435,6 +1444,9 @@ body.admin-body {
   font-size: 14px;
   font-weight: 600;
   color: var(--text-primary);
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .admin-list-item-subtitle {
