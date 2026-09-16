@@ -139,11 +139,21 @@
         </div>
 
         <div class="form-row" style="align-items:flex-end;">
-          <div class="form-group" style="flex:0 0 160px;">
+          <div class="form-group" style="flex:0 0 140px;">
+            <label class="form-label" for="slide-pos-select">Position</label>
+            <select class="form-select" id="slide-pos-select">
+              <option value="center">Center</option>
+              <option value="top">Top Center</option>
+              <option value="bottom">Bottom Center</option>
+              <option value="left">Left</option>
+              <option value="right">Right</option>
+            </select>
+          </div>
+          <div class="form-group" style="flex:0 0 150px;">
             <label class="form-label" for="slide-duration-input">Duration (Seconds)</label>
             <input class="form-input" id="slide-duration-input" type="number" min="3" max="300" placeholder="Default (10s)" />
           </div>
-          <div class="form-group" id="slide-loop-group" style="flex:0 0 160px;padding-bottom:10px;">
+          <div class="form-group" id="slide-loop-group" style="flex:0 0 140px;padding-bottom:10px;">
             <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-secondary);cursor:pointer;">
               <input type="checkbox" id="slide-loop-input" checked style="accent-color:var(--accent-gold);width:16px;height:16px;cursor:pointer;" />
               Loop Video

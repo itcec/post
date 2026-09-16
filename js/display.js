@@ -105,6 +105,7 @@
       const type = slide.type || detectMediaType(slide.url);
       const isCurrent = idx === currentSlide;
       const isVideo = type === 'video';
+      const captionText = slide.caption ? slide.caption.trim() : '';
 
       let mediaHtml = '';
       if (isVideo) {
@@ -134,17 +135,23 @@
           `;
         }
       } else {
-        // Image
+        // Image as immersive background cover with contain blur fallback option
+        const bgPos = slide.position || 'center';
         mediaHtml = `
-          <img src="${escapeHtml(slide.url)}" alt="${escapeHtml(slide.caption || 'Slide ' + (idx + 1))}" 
-               onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\\'carousel-empty\\'><span class=\\'material-symbols-outlined\\'>broken_image</span><p>Image failed to load</p><small>${escapeHtml(slide.url)}</small></div>';" />
+          <div class="slide-bg-cover" style="background-image: url('${escapeHtml(slide.url)}'); background-position: ${bgPos};"></div>
+          <div class="slide-readability-overlay"></div>
         `;
       }
 
       return `
         <div class="carousel-slide ${isCurrent ? 'active' : ''}" data-idx="${idx}">
           ${mediaHtml}
-          ${slide.caption ? `<div class="carousel-slide-caption">${escapeHtml(slide.caption)}</div>` : ''}
+          ${captionText ? `
+            <div class="carousel-slide-caption">
+              <span class="material-symbols-outlined caption-icon">campaign</span>
+              <span class="caption-text">${escapeHtml(captionText)}</span>
+            </div>
+          ` : ''}
         </div>
       `;
     }).join('');
@@ -159,7 +166,7 @@
     }
 
     if (countText) {
-      countText.textContent = `Slide ${currentSlide + 1} of ${slideCount}`;
+      countText.textContent = `SLIDE ${currentSlide + 1} OF ${slideCount}`;
     }
 
     const currSlideData = slides[currentSlide];

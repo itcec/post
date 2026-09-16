@@ -86,6 +86,7 @@
     const typeEl = document.getElementById('slide-type-select');
     const urlInput = document.getElementById('slide-url-input');
     const captionInput = document.getElementById('slide-caption-input');
+    const posSelect = document.getElementById('slide-pos-select');
     const durationInput = document.getElementById('slide-duration-input');
     const loopInput = document.getElementById('slide-loop-input');
 
@@ -100,6 +101,7 @@
     }
 
     const type = typeEl ? typeEl.value : detectMediaType(url);
+    const position = posSelect ? posSelect.value : 'center';
     const duration = durationInput && durationInput.value ? parseInt(durationInput.value) : 10;
     const loop = loopInput ? loopInput.checked : true;
     const caption = captionInput ? captionInput.value.trim() : '';
@@ -111,7 +113,7 @@
       // Update existing slide
       slides = slides.map(s => {
         if (s.id === editId) {
-          return { ...s, type, url, caption, duration, loop };
+          return { ...s, type, url, caption, position, duration, loop };
         }
         return s;
       });
@@ -123,6 +125,7 @@
         type,
         url,
         caption,
+        position,
         duration,
         loop
       });
@@ -143,6 +146,7 @@
     const typeEl = document.getElementById('slide-type-select');
     const urlInput = document.getElementById('slide-url-input');
     const captionInput = document.getElementById('slide-caption-input');
+    const posSelect = document.getElementById('slide-pos-select');
     const durationInput = document.getElementById('slide-duration-input');
     const loopInput = document.getElementById('slide-loop-input');
     const addBtnText = document.getElementById('add-slide-text');
@@ -153,6 +157,7 @@
     if (typeEl) typeEl.value = slide.type || detectMediaType(slide.url);
     if (urlInput) urlInput.value = slide.url || '';
     if (captionInput) captionInput.value = slide.caption || '';
+    if (posSelect) posSelect.value = slide.position || 'center';
     if (durationInput) durationInput.value = slide.duration || 10;
     if (loopInput) loopInput.checked = slide.loop !== false;
 
@@ -168,6 +173,7 @@
     const editIdEl = document.getElementById('slide-edit-id');
     const urlInput = document.getElementById('slide-url-input');
     const captionInput = document.getElementById('slide-caption-input');
+    const posSelect = document.getElementById('slide-pos-select');
     const durationInput = document.getElementById('slide-duration-input');
     const loopInput = document.getElementById('slide-loop-input');
     const addBtnText = document.getElementById('add-slide-text');
@@ -177,6 +183,7 @@
     if (editIdEl) editIdEl.value = '';
     if (urlInput) urlInput.value = '';
     if (captionInput) captionInput.value = '';
+    if (posSelect) posSelect.value = 'center';
     if (durationInput) durationInput.value = '';
     if (loopInput) loopInput.checked = true;
 
