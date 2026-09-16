@@ -10,95 +10,120 @@
 <body>
 
   <!-- ============================================================
-       HEADER
-       Logos | Title | Weather | Date & Clock
+       TV SIGNAGE SCREEN CONTAINER
+       Left 75%: Header + Media Carousel + Flash Footer
+       Right 25%: Full-Height Announcements & Schedules (100vh)
        ============================================================ -->
-  <header class="site-header">
-    <div class="header-content">
+  <div class="tv-screen-container">
 
-      <!-- LEFT: Logos -->
-      <div class="header-logos">
-        <img src="assets/school_logo.png" alt="Cebu Eastern College Logo" />
-        <img src="assets/it_departmentlogo.png" alt="IT Department Logo" />
-      </div>
+    <!-- ============================================================
+         LEFT 75% COLUMN: Header, Media Carousel, Flash Footer
+         ============================================================ -->
+    <div class="tv-left-column">
 
-      <!-- TITLE -->
-      <div class="header-title">
-        <h1>College of Information Technology</h1>
-        <span class="subtitle">Cebu Eastern College, Inc.</span>
-      </div>
+      <!-- HEADER (75% width) -->
+      <header class="site-header">
+        <div class="header-content">
 
-      <!-- WEATHER -->
-      <div class="header-weather">
-        <span class="material-symbols-outlined weather-icon" id="weather-icon">cloud</span>
-        <div class="weather-info">
-          <span class="weather-temp" id="weather-temp">--°C</span>
-          <span class="weather-desc" id="weather-desc">Loading weather...</span>
-          <span class="weather-location" id="weather-location">Cebu City · Colon-Carbon</span>
+          <!-- LEFT: Logos -->
+          <div class="header-logos">
+            <img src="assets/school_logo.png" alt="Cebu Eastern College Logo" />
+            <img src="assets/it_departmentlogo.png" alt="IT Department Logo" />
+          </div>
+
+          <!-- TITLE -->
+          <div class="header-title">
+            <h1>College of Information Technology</h1>
+            <span class="subtitle">Cebu Eastern College, Inc.</span>
+          </div>
+
+          <!-- WEATHER -->
+          <div class="header-weather">
+            <span class="material-symbols-outlined weather-icon" id="weather-icon">cloud</span>
+            <div class="weather-info">
+              <span class="weather-temp" id="weather-temp">--°C</span>
+              <span class="weather-desc" id="weather-desc">Loading weather...</span>
+              <span class="weather-location" id="weather-location">Cebu City · Colon-Carbon</span>
+            </div>
+          </div>
+
+          <!-- DATE & CLOCK -->
+          <div class="header-datetime">
+            <div class="clock-display">
+              <span class="clock-time" id="clock-hours">12</span>
+              <span class="clock-colon">:</span>
+              <span class="clock-time" id="clock-minutes">00</span>
+              <span class="clock-ampm" id="clock-ampm">AM</span>
+            </div>
+            <div class="date-display">
+              <span class="date-day" id="date-day">Monday</span>
+              <span class="date-full" id="date-full">September 16, 2026</span>
+            </div>
+          </div>
+
         </div>
-      </div>
+      </header>
 
-      <!-- DATE & CLOCK -->
-      <div class="header-datetime">
-        <div class="clock-display">
-          <span class="clock-time" id="clock-hours">12</span>
-          <span class="clock-colon">:</span>
-          <span class="clock-time" id="clock-minutes">00</span>
-          <span class="clock-ampm" id="clock-ampm">AM</span>
+      <!-- MIDDLE: IMAGE & VIDEO CAROUSEL -->
+      <main class="carousel-section">
+        <div class="carousel-viewport" id="carousel-viewport">
+          <!-- Slides rendered by JS -->
         </div>
-        <div class="date-display">
-          <span class="date-day" id="date-day">Monday</span>
-          <span class="date-full" id="date-full">September 16, 2026</span>
+
+        <!-- Carousel HUD Bar -->
+        <div class="carousel-hud">
+          <div class="carousel-progress-track">
+            <div class="carousel-progress-bar" id="carousel-progress"></div>
+          </div>
+
+          <div class="carousel-meta">
+            <div class="carousel-indicators" id="carousel-dots">
+              <!-- Dots rendered by JS -->
+            </div>
+            <span class="carousel-meta-text" id="carousel-count">No slides</span>
+            <span style="width:4px;height:4px;border-radius:50%;background:var(--text-muted);"></span>
+            <span class="carousel-meta-text accent" id="carousel-timer-status">Auto</span>
+          </div>
+
+          <div class="carousel-controls">
+            <button class="carousel-btn" onclick="window._togglePause()" title="Pause / Play">
+              <span class="material-symbols-outlined" id="pause-icon">pause</span>
+            </button>
+            <span id="pause-text" style="display:none;">Auto</span>
+            <button class="carousel-btn" onclick="window._prevSlide()" title="Previous">
+              <span class="material-symbols-outlined">arrow_back</span>
+            </button>
+            <button class="carousel-btn" onclick="window._nextSlide()" title="Next">
+              <span class="material-symbols-outlined">arrow_forward</span>
+            </button>
+          </div>
         </div>
-      </div>
+      </main>
+
+      <!-- BOTTOM: FLASH ANNOUNCEMENTS (75% width) -->
+      <footer class="site-footer">
+        <div class="flash-label">
+          <span class="material-symbols-outlined">campaign</span>
+          <span class="flash-label-text">Flash Announcement</span>
+        </div>
+        <div class="flash-ticker">
+          <div class="flash-ticker-track" id="flash-track">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+        <div class="flash-status">
+          <span class="flash-status-dot"></span>
+          <span>LIVE</span>
+        </div>
+      </footer>
 
     </div>
-  </header>
 
-  <!-- ============================================================
-       MAIN CONTENT
-       Left 75%: Carousel  |  Right 25%: Sidebar
-       ============================================================ -->
-  <div class="main-content">
-
-    <!-- LEFT: IMAGE CAROUSEL (75%) -->
-    <section class="carousel-section">
-      <div class="carousel-viewport" id="carousel-viewport">
-        <!-- Slides rendered by JS -->
-      </div>
-
-      <!-- Carousel HUD Bar -->
-      <div class="carousel-hud">
-        <div class="carousel-progress-track">
-          <div class="carousel-progress-bar" id="carousel-progress"></div>
-        </div>
-
-        <div class="carousel-meta">
-          <div class="carousel-indicators" id="carousel-dots">
-            <!-- Dots rendered by JS -->
-          </div>
-          <span class="carousel-meta-text" id="carousel-count">No slides</span>
-          <span style="width:4px;height:4px;border-radius:50%;background:var(--text-muted);"></span>
-          <span class="carousel-meta-text accent" id="carousel-timer-status">Auto</span>
-        </div>
-
-        <div class="carousel-controls">
-          <button class="carousel-btn" onclick="window._togglePause()" title="Pause / Play">
-            <span class="material-symbols-outlined" id="pause-icon">pause</span>
-          </button>
-          <span id="pause-text" style="display:none;">Auto</span>
-          <button class="carousel-btn" onclick="window._prevSlide()" title="Previous">
-            <span class="material-symbols-outlined">arrow_back</span>
-          </button>
-          <button class="carousel-btn" onclick="window._nextSlide()" title="Next">
-            <span class="material-symbols-outlined">arrow_forward</span>
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- RIGHT: SIDEBAR (25%) -->
-    <aside class="sidebar-section">
+    <!-- ============================================================
+         RIGHT 25% COLUMN: Full-Height Announcements & Schedules
+         Takes 100% of height from top to bottom
+         ============================================================ -->
+    <aside class="tv-right-column">
 
       <!-- Panel 1: Office Hours Today -->
       <div class="sidebar-panel">
@@ -144,26 +169,8 @@
       </div>
 
     </aside>
-  </div>
 
-  <!-- ============================================================
-       FOOTER — FLASH ANNOUNCEMENTS (Height reduced by 10%)
-       ============================================================ -->
-  <footer class="site-footer">
-    <div class="flash-label">
-      <span class="material-symbols-outlined">campaign</span>
-      <span class="flash-label-text">Flash Announcement</span>
-    </div>
-    <div class="flash-ticker">
-      <div class="flash-ticker-track" id="flash-track">
-        <!-- Rendered by JS -->
-      </div>
-    </div>
-    <div class="flash-status">
-      <span class="flash-status-dot"></span>
-      <span>LIVE</span>
-    </div>
-  </footer>
+  </div>
 
   <!-- Scripts -->
   <script src="js/shared.js"></script>

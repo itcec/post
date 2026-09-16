@@ -86,7 +86,6 @@
 html, body {
   width: 100%;
   height: 100%;
-  overflow: hidden;
   background: var(--bg-primary);
   color: var(--text-primary);
   font-family: var(--font-body);
@@ -94,8 +93,13 @@ html, body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body:not(.admin-body) {
+  overflow: hidden;
   user-select: none;
 }
+
 
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg-secondary); }
@@ -308,29 +312,73 @@ input, select, textarea { font: inherit; color: inherit; }
 }
 
 /* ================================================================
-   MAIN LAYOUT
+   MAIN LAYOUT (75% Left Column | 25% Full-Height Right Column)
    ================================================================ */
-.main-content {
-  position: absolute;
-  top: var(--header-height);
-  left: 0;
-  right: 0;
-  bottom: var(--footer-height);
-  padding: var(--space-md);
+.tv-screen-container {
   display: flex;
-  gap: var(--space-md);
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
+  background: var(--bg-primary);
 }
 
-/* ---------- LEFT: CAROUSEL (75%) ---------- */
-.carousel-section {
-  flex: 3;
-  min-width: 0;
+/* ---------- LEFT COLUMN (75% Width, 100% Height) ---------- */
+.tv-left-column {
+  flex: 0 0 75%;
+  width: 75%;
+  max-width: 75%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-right: 1px solid var(--border-subtle);
+  background: var(--bg-primary);
+}
+
+.tv-left-column .site-header {
   position: relative;
-  border-radius: var(--radius-xl);
+  top: auto;
+  left: auto;
+  right: auto;
+  height: var(--header-height);
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.tv-left-column .carousel-section {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  border-radius: 0;
   overflow: hidden;
   background: var(--bg-secondary);
-  box-shadow: var(--shadow-xl);
+  box-shadow: none;
+}
+
+.tv-left-column .site-footer {
+  position: relative;
+  bottom: auto;
+  left: auto;
+  right: auto;
+  height: var(--footer-height);
+  flex-shrink: 0;
+  width: 100%;
+}
+
+/* Standalone site-header for admin page */
+body.admin-body .site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+/* Standalone site-footer if used elsewhere */
+body.admin-body .site-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 .carousel-viewport {
@@ -338,6 +386,7 @@ input, select, textarea { font: inherit; color: inherit; }
   width: 100%;
   height: 100%;
 }
+
 
 .carousel-slide {
   position: absolute;
@@ -531,24 +580,29 @@ input, select, textarea { font: inherit; color: inherit; }
   opacity: 0.6;
 }
 
-/* ---------- RIGHT: SIDEBAR (25%) ---------- */
+/* ---------- RIGHT COLUMN: ANNOUNCEMENTS & SCHEDULES (25% Width, 100% Height) ---------- */
+.tv-right-column,
 .sidebar-section {
-  flex: 1;
-  min-width: 280px;
-  max-width: 400px;
+  flex: 0 0 25%;
+  width: 25%;
+  max-width: 25%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
+  padding: var(--space-md);
+  background: var(--bg-card);
+  border-left: 1px solid var(--border-subtle);
   overflow: hidden;
 }
 
 /* Sidebar Panel Base */
 .sidebar-panel {
-  background: var(--bg-card);
+  background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   padding: var(--space-md);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
@@ -556,6 +610,7 @@ input, select, textarea { font: inherit; color: inherit; }
 
 .sidebar-panel.flex-grow {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
 }
 
@@ -911,17 +966,20 @@ input, select, textarea { font: inherit; color: inherit; }
 
 /* Admin-specific body override */
 body.admin-body {
-  overflow-y: auto;
-  height: auto;
+  overflow-y: auto !important;
+  overflow-x: hidden;
+  height: auto !important;
   min-height: 100vh;
   background: var(--bg-primary);
+  user-select: text;
 }
 
 .admin-container {
-  max-width: 960px;
+  max-width: 980px;
   margin: 0 auto;
   padding: var(--space-xl) var(--space-lg);
   padding-top: calc(var(--header-height) + var(--space-xl));
+  padding-bottom: 120px; /* ample breathing room to scroll and edit comfortably */
 }
 
 .admin-section {
