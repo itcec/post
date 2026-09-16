@@ -741,126 +741,233 @@ body:not(.admin-body) {
 .live-pill {
   background: var(--status-alert-bg);
   color: var(--status-alert);
-}
-
-/* CARD 1: Weather & Time Content */
+}/* ================================================================
+   CARD 1: WEATHER & CONDITIONS (Exact Reference Match)
+   ================================================================ */
 .weather-panel {
-  padding: 12px 14px;
+  padding: 10px 14px 12px;
 }
 
-.weather-temp-row {
+.weather-panel .panel-header-left span:last-child {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #f1f2f6;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+}
+
+.weather-crop-grid {
+  display: grid;
+  grid-template-columns: 46px 66px 1fr 68px;
+  align-items: center;
+  margin-top: 6px;
+  background: rgba(16, 11, 10, 0.45);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 230, 215, 0.06);
+  min-height: 52px;
+}
+
+.weather-col-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+}
+
+.weather-col-icon .weather-main-icon {
+  font-size: 32px;
+  color: var(--accent-warm);
+  filter: drop-shadow(0 2px 6px rgba(252, 163, 17, 0.4));
+}
+
+.weather-col-temp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid rgba(255, 230, 215, 0.12);
+  border-right: 1px solid rgba(255, 230, 215, 0.12);
+  height: 100%;
+  padding: 0 4px;
+}
+
+.weather-col-temp .weather-temp-val {
+  font-family: var(--font-display);
+  font-size: 25px;
+  font-weight: 600;
+  color: var(--text-pure);
+  letter-spacing: -0.02em;
+}
+
+.weather-col-meta {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4px 8px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.weather-location-pill {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 2px 7px;
+  background: rgba(45, 32, 28, 0.85);
+  border: 1px solid rgba(255, 230, 215, 0.08);
+  border-radius: 4px;
+  font-family: var(--font-display);
+  font-size: 8.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #baa8a0;
+  margin-bottom: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.weather-col-meta .weather-desc-text {
+  font-size: 9.5px;
+  color: #8f7d75;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.weather-col-wind {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid rgba(255, 230, 215, 0.12);
+  height: 100%;
+  padding: 0 4px;
+}
+
+.weather-col-wind .weather-wind-val {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 800;
+  color: #ece5e2;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+/* ================================================================
+   CARD 2: OFFICE HOURS TODAY (Exact Reference Match)
+   ================================================================ */
+.office-hours-panel {
+  padding: 10px 14px 12px;
+}
+
+.office-hours-panel .panel-header {
+  border-bottom: none;
+  padding-bottom: 2px;
+}
+
+.office-hours-panel .panel-header-left span:last-child {
+  font-family: var(--font-display);
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.office-crop-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 4px;
+  gap: 12px;
+  padding-top: 4px;
 }
 
-.weather-main-icon {
-  font-size: 26px;
-  color: var(--accent-warm);
-}
-
-.weather-temp-val {
-  font-family: var(--font-display);
-  font-size: 26px;
-  font-weight: 300;
-  color: var(--text-pure);
-  line-height: 1;
-}
-
-.weather-wind-val {
-  font-family: var(--font-display);
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-secondary);
-}
-
-.weather-desc-text {
-  font-size: 10.5px;
-  color: var(--text-muted);
-  margin-top: 4px;
-  line-height: 1.25;
-}
-
-/* CARD 2: Office Hours Today (Clean: Avatar + Info + Badge, No Ring) */
-.office-card {
+.office-crop-left {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 4px 0;
+  gap: 12px;
+  min-width: 0;
 }
 
-.office-avatar {
-  width: 38px;
-  height: 38px;
-  border-radius: var(--radius-sm);
-  background: rgba(252, 163, 17, 0.16);
-  border: 1px solid rgba(252, 163, 17, 0.35);
+.office-crop-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  background: #1c1410;
+  border: 1.5px solid rgba(252, 163, 17, 0.65);
   color: var(--accent-warm);
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-display);
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 17px;
+  font-weight: 900;
+  letter-spacing: 0.02em;
   flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
-.office-info {
+.office-crop-info {
   display: flex;
   flex-direction: column;
   min-width: 0;
 }
 
-.office-name {
+.office-crop-name {
   font-family: var(--font-display);
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text-pure);
-  line-height: 1.2;
+  font-size: 17px;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
 }
 
-.office-role {
-  font-size: 11px;
-  color: var(--text-secondary);
+.office-crop-room {
+  font-size: 12px;
+  color: #a3928a;
+  font-weight: 500;
+  margin-top: 2px;
 }
 
-.office-time {
-  font-size: 11px;
-  font-weight: 600;
+.office-crop-time {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 800;
   color: var(--accent-warm);
-  margin-top: 1px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .status-pill {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 2px 8px;
+  gap: 5px;
+  padding: 3px 10px;
   border-radius: var(--radius-pill);
   font-family: var(--font-display);
-  font-size: 9px;
+  font-size: 9.5px;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .status-pill.available {
-  background: var(--status-available-bg);
-  border: 1px solid rgba(49, 210, 156, 0.40);
-  color: var(--status-available);
+  background: rgba(30, 60, 48, 0.85);
+  border: 1px solid rgba(49, 210, 156, 0.45);
+  color: #31d29c;
 }
 
 .status-pill.busy {
-  background: var(--status-busy-bg);
-  border: 1px solid rgba(252, 163, 17, 0.40);
+  background: rgba(60, 45, 20, 0.85);
+  border: 1px solid rgba(252, 163, 17, 0.45);
   color: var(--accent-warm);
 }
 
 .status-pill.closed {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  color: var(--text-muted);
+  background: rgba(45, 45, 45, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.20);
+  color: #9e9e9e;
 }
 
 .status-dot {
@@ -871,7 +978,85 @@ body:not(.admin-body) {
   animation: pulse-blink 1.5s ease-in-out infinite;
 }
 
-/* CARD 3: Notice & Advisories */
+/* ================================================================
+   CARD 3: NOTICE & ADVISORIES (Use Whole Card & Dynamic Scale)
+   ================================================================ */
+.announcements-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.announcements-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 2px 0;
+}
+
+/* Single Announcement (Uses full card space with large, bold text) */
+.announcements-container.few-1 {
+  justify-content: center;
+}
+
+.announcements-container.few-1 .announcement-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  background: rgba(40, 22, 20, 0.55);
+  border: 1px solid rgba(255, 87, 87, 0.22);
+  border-left: 5px solid var(--status-alert);
+  border-radius: var(--radius-md);
+  box-shadow: inset 0 0 20px rgba(255, 87, 87, 0.08);
+}
+
+.announcements-container.few-1 .announcement-item .material-symbols-outlined {
+  font-size: 32px;
+  color: var(--status-alert);
+  filter: drop-shadow(0 0 10px rgba(255, 87, 87, 0.5));
+}
+
+.announcements-container.few-1 .announcement-text {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: #ffffff;
+}
+
+/* Two Announcements (Generous vertical distribution) */
+.announcements-container.few-2 {
+  justify-content: space-evenly;
+}
+
+.announcements-container.few-2 .announcement-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: rgba(38, 22, 20, 0.50);
+  border: 1px solid rgba(255, 87, 87, 0.18);
+  border-left: 4px solid var(--status-alert);
+  border-radius: var(--radius-sm);
+}
+
+.announcements-container.few-2 .announcement-item .material-symbols-outlined {
+  font-size: 24px;
+  color: var(--status-alert);
+}
+
+.announcements-container.few-2 .announcement-text {
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text-pure);
+}
+
+/* Standard Multi-Item Announcements */
 .announcement-item {
   display: flex;
   align-items: flex-start;
@@ -881,6 +1066,7 @@ body:not(.admin-body) {
   border: 1px solid rgba(255, 230, 215, 0.06);
   border-left: 3px solid var(--status-alert);
   border-radius: var(--radius-sm);
+  flex-shrink: 0;
 }
 
 .announcement-item .material-symbols-outlined {
@@ -896,16 +1082,39 @@ body:not(.admin-body) {
   color: var(--text-primary);
 }
 
-/* CARD 4: Schedules of the Month (No Today Sort) */
+/* ================================================================
+   CARD 4: SCHEDULES OF THE MONTH (Smooth Auto-Scroll if > 5)
+   ================================================================ */
+.schedules-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.schedules-scroll-wrapper {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.schedules-scroll-track {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 2px 0;
+  will-change: transform;
+}
+
 .month-schedule-item {
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  padding: 8px 10px;
+  padding: 7px 9px;
   background: rgba(36, 24, 21, 0.50);
   border: 1px solid rgba(255, 230, 215, 0.06);
   border-radius: var(--radius-sm);
   transition: background 0.2s ease;
+  flex-shrink: 0;
 }
 
 .month-schedule-item:hover {
@@ -948,9 +1157,10 @@ body:not(.admin-body) {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
   margin-top: 3px;
   font-size: 10px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .month-meta-venue {

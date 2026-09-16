@@ -199,16 +199,18 @@ async function fetchWeather() {
     if (tempEl) tempEl.textContent = `${tempVal}°C`;
     if (windEl) windEl.textContent = `${windVal} KM/H`;
     if (descEl) descEl.textContent = `${weatherInfo.desc} · ${current.relative_humidity_2m}% Humidity`;
-    if (locEl) locEl.textContent = 'Cebu City · Colon-Carbon';
+    if (locEl) locEl.textContent = 'CEBU CITY · COLON-CARBON';
 
   } catch (err) {
     console.warn('Weather fetch failed:', err);
     const tempEl = document.getElementById('weather-temp');
     const windEl = document.getElementById('weather-wind');
     const descEl = document.getElementById('weather-desc');
-    if (tempEl) tempEl.textContent = '31°C';
-    if (windEl) windEl.textContent = '16 KM/H';
-    if (descEl) descEl.textContent = 'Partly Cloudy';
+    const locEl = document.getElementById('weather-location');
+    if (tempEl) tempEl.textContent = '28°C';
+    if (windEl) windEl.textContent = '14 KM/H';
+    if (descEl) descEl.textContent = 'Thunderstorm · 86% Humidity';
+    if (locEl) locEl.textContent = 'CEBU CITY · COLON-CARBON';
   }
 }
 

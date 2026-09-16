@@ -330,7 +330,7 @@
     }
   }
 
-  // ---- Sidebar: Office Hours ----
+  // ---- Sidebar: Office Hours (Exact Reference Layout) ----
   function renderOfficeHours() {
     const data = getData('officeHours');
     const container = document.getElementById('office-hours-content');
@@ -358,18 +358,73 @@
     }
 
     container.innerHTML = `
-      <div class="office-card">
-        <div class="office-avatar">${escapeHtml(data.initials || 'DO')}</div>
-        <div class="office-info">
-          <span class="office-name">${escapeHtml(data.name)}</span>
-          <span class="office-role">${escapeHtml(data.room)}</span>
-          <span class="office-time">${escapeHtml(data.time)}</span>
+      <div class="office-crop-card">
+        <div class="office-crop-left">
+          <div class="office-crop-avatar">${escapeHtml(data.initials || 'DO')}</div>
+          <div class="office-crop-info">
+            <div class="office-crop-name">${escapeHtml(data.name || "Dean's Office")}</div>
+            <div class="office-crop-room">${escapeHtml(data.room || "IT Building")}</div>
+          </div>
         </div>
+        <div class="office-crop-time">${escapeHtml(data.time || "8:00 AM – 5:00 PM")}</div>
       </div>
     `;
   }
 
-  // ---- Schedules of the Month Feed ----
+  // ---- Schedules of the Month Feed (Smooth Auto-Scroll if > 5) ----
+  let scheduleScrollAnimationId = null;
+  let scheduleScrollState = {
+    pos: 0,
+    direction: 1, // 1 for down, -1 for up
+    speed: 0.45,
+    pauseTimer: 0
+  };
+
+  function setupScheduleAutoScroll() {
+    const wrapper = document.getElementById('schedules-scroll-wrapper');
+    const track = document.getElementById('room-schedule-content');
+    if (!wrapper || !track) return;
+
+    if (scheduleScrollAnimationId) {
+      cancelAnimationFrame(scheduleScrollAnimationId);
+      scheduleScrollAnimationId = null;
+    }
+
+    // Reset transform
+    track.style.transform = 'translateY(0px)';
+    scheduleScrollState.pos = 0;
+    scheduleScrollState.direction = 1;
+    scheduleScrollState.pauseTimer = 60; // initial pause
+
+    function step() {
+      const maxScroll = track.scrollHeight - wrapper.clientHeight;
+      if (maxScroll > 6) {
+        if (scheduleScrollState.pauseTimer > 0) {
+          scheduleScrollState.pauseTimer--;
+        } else {
+          scheduleScrollState.pos += scheduleScrollState.speed * scheduleScrollState.direction;
+
+          if (scheduleScrollState.pos >= maxScroll) {
+            scheduleScrollState.pos = maxScroll;
+            scheduleScrollState.direction = -1;
+            scheduleScrollState.pauseTimer = 150; // pause 2.5s at bottom
+          } else if (scheduleScrollState.pos <= 0) {
+            scheduleScrollState.pos = 0;
+            scheduleScrollState.direction = 1;
+            scheduleScrollState.pauseTimer = 150; // pause 2.5s at top
+          }
+
+          track.style.transform = `translateY(-${scheduleScrollState.pos}px)`;
+        }
+      } else {
+        track.style.transform = 'translateY(0px)';
+      }
+      scheduleScrollAnimationId = requestAnimationFrame(step);
+    }
+
+    scheduleScrollAnimationId = requestAnimationFrame(step);
+  }
+
   function renderRoomSchedule() {
     const data = getData('roomSchedule');
     const container = document.getElementById('room-schedule-content');
@@ -399,21 +454,35 @@
           <div class="month-item-title truncate">${escapeHtml(item.event)}</div>
           <div class="month-item-meta">
             <span class="month-meta-venue">
-              <span class="material-symbols-outlined" style="font-size:12px;vertical-align:middle;">location_on</span>
-              ${escapeHtml(item.instructor || 'Campus')}
+              <span class="material-symbols-outlined" style="font-size:12px;vertical-align:middle;margin-right:2px;">location_on</span>${escapeHtml(item.instructor || 'Campus')}
             </span>
             <span class="month-meta-time">${escapeHtml(item.time || 'All Day')}</span>
           </div>
         </div>
       </div>
     `).join('');
+
+    // If schedules count > 5 or items overflow, start smooth up/down auto-scroll
+    setTimeout(() => {
+      setupScheduleAutoScroll();
+    }, 100);
   }
 
-  // ---- Sidebar: Announcements ----
+  // ---- Sidebar: Announcements (Whole-Card Scaling) ----
   function renderAnnouncements() {
     const data = getData('announcements');
     const container = document.getElementById('announcements-content');
     if (!container) return;
+
+    // Apply scaling class based on item count
+    container.classList.remove('few-1', 'few-2', 'normal');
+    if (data.length === 1) {
+      container.classList.add('few-1');
+    } else if (data.length === 2) {
+      container.classList.add('few-2');
+    } else {
+      container.classList.add('normal');
+    }
 
     if (data.length === 0) {
       container.innerHTML = `
@@ -428,7 +497,7 @@
     container.innerHTML = data.map(item => `
       <div class="announcement-item">
         <span class="material-symbols-outlined">priority_high</span>
-        <div>
+        <div style="flex:1;">
           <div class="announcement-text">${escapeHtml(item.text)}</div>
         </div>
       </div>

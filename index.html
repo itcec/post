@@ -125,31 +125,39 @@
          ============================================================ -->
     <aside class="tv-right-column">
 
-      <!-- CARD 1: Weather & Time -->
+      <!-- CARD 1: Weather & Conditions (Exact Reference Layout) -->
       <div class="sidebar-panel weather-panel">
-        <div class="panel-header">
+        <div class="panel-header weather-panel-header">
           <div class="panel-header-left gold">
-            <span class="material-symbols-outlined">partly_cloudy_day</span>
-            <span>Weather & Conditions</span>
+            <span class="material-symbols-outlined">wb_twilight</span>
+            <span>WEATHER &amp; CONDITIONS</span>
           </div>
-          <span class="location-chip" id="weather-location">Cebu City</span>
         </div>
         <div class="weather-card-content">
-          <div class="weather-temp-row">
-            <span class="material-symbols-outlined weather-main-icon" id="weather-icon">sunny</span>
-            <div class="weather-temp-val" id="weather-temp">31°C</div>
-            <div class="weather-wind-val" id="weather-wind">16 KM/H</div>
+          <div class="weather-crop-grid">
+            <div class="weather-col-icon">
+              <span class="material-symbols-outlined weather-main-icon" id="weather-icon">thunderstorm</span>
+            </div>
+            <div class="weather-col-temp">
+              <span class="weather-temp-val" id="weather-temp">28°C</span>
+            </div>
+            <div class="weather-col-meta">
+              <div class="weather-location-pill" id="weather-location">CEBU CITY · COLON-CARBON</div>
+              <div class="weather-desc-text" id="weather-desc">Thunderstorm · 86% Humidity</div>
+            </div>
+            <div class="weather-col-wind">
+              <span class="weather-wind-val" id="weather-wind">14 KM/H</span>
+            </div>
           </div>
-          <div class="weather-desc-text" id="weather-desc">Partly Cloudy · Colon-Carbon Area</div>
         </div>
       </div>
 
-      <!-- CARD 2: Office Hours Today (Percentage Ring Removed) -->
-      <div class="sidebar-panel">
+      <!-- CARD 2: Office Hours Today (Exact Reference Layout) -->
+      <div class="sidebar-panel office-hours-panel">
         <div class="panel-header">
           <div class="panel-header-left gold">
             <span class="material-symbols-outlined">account_circle</span>
-            <span>Office Hours Today</span>
+            <span>OFFICE HOURS TODAY</span>
           </div>
           <span class="status-pill available" id="office-status-pill">
             <span class="status-dot"></span>
@@ -161,31 +169,33 @@
         </div>
       </div>
 
-      <!-- CARD 3: Notice & Advisories (Important Announcements) -->
+      <!-- CARD 3: Notice & Advisories (Dynamic Whole-Card Usage) -->
       <div class="sidebar-panel announcements-panel flex-grow">
         <div class="panel-header">
           <div class="panel-header-left red">
             <span class="material-symbols-outlined">notification_important</span>
-            <span>Notice & Advisories</span>
+            <span>NOTICE &amp; ADVISORIES</span>
           </div>
           <span class="live-pill">LIVE</span>
         </div>
-        <div id="announcements-content" style="display:flex;flex-direction:column;gap:6px;overflow-y:auto;">
+        <div class="announcements-container" id="announcements-content">
           <!-- Rendered by JS -->
         </div>
       </div>
 
-      <!-- CARD 4: Schedules of the Month (Today Sort Removed) -->
+      <!-- CARD 4: Schedules of the Month (Smooth Auto-Scroll if > 5) -->
       <div class="sidebar-panel schedules-panel flex-grow">
         <div class="panel-header">
           <div class="panel-header-left blue">
             <span class="material-symbols-outlined">calendar_month</span>
-            <span>Schedules of the Month</span>
+            <span>SCHEDULES OF THE MONTH</span>
           </div>
           <span class="milestone-chip" id="schedule-counter-text">Events</span>
         </div>
-        <div id="room-schedule-content" style="display:flex;flex-direction:column;gap:6px;overflow-y:auto;">
-          <!-- Rendered by JS -->
+        <div class="schedules-scroll-wrapper" id="schedules-scroll-wrapper">
+          <div class="schedules-scroll-track" id="room-schedule-content">
+            <!-- Rendered by JS -->
+          </div>
         </div>
       </div>
 
