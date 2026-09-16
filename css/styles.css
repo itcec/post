@@ -9,26 +9,26 @@
 
 /* ---------- CSS Custom Properties (Design Tokens — Cosmo Mission Control) ---------- */
 :root {
-  /* Warm Dark Mission Control Palette */
-  --bg-dark-base: #140e0d;
-  --bg-dark-gradient: linear-gradient(135deg, #181110 0%, #120d0c 45%, #1e130f 100%);
-  --bg-surface-glass: rgba(28, 20, 18, 0.65);
-  --bg-surface-elevated: rgba(38, 26, 22, 0.78);
-  --bg-surface-subtle: rgba(24, 17, 15, 0.50);
+  /* Deep Dark Green Tech Palette */
+  --bg-dark-base: #030a06;
+  --bg-dark-gradient: linear-gradient(135deg, #05120a 0%, #030a06 45%, #06170d 100%);
+  --bg-surface-glass: rgba(8, 22, 14, 0.65);
+  --bg-surface-elevated: rgba(11, 30, 19, 0.78);
+  --bg-surface-subtle: rgba(6, 17, 11, 0.50);
 
   /* Specular Rims & 1px Borders */
-  --border-glass: 1px solid rgba(255, 230, 215, 0.12);
-  --border-glass-light: 1px solid rgba(255, 235, 220, 0.24);
-  --border-glass-subtle: 1px solid rgba(255, 220, 200, 0.07);
-  --inner-bevel-glass: inset 0 1px 1px 0 rgba(255, 240, 230, 0.18),
-                       inset 0 -1px 1px 0 rgba(0, 0, 0, 0.45);
+  --border-glass: 1px solid rgba(160, 255, 200, 0.12);
+  --border-glass-light: 1px solid rgba(180, 255, 215, 0.22);
+  --border-glass-subtle: 1px solid rgba(140, 240, 180, 0.08);
+  --inner-bevel-glass: inset 0 1px 1px 0 rgba(200, 255, 225, 0.18),
+                       inset 0 -1px 1px 0 rgba(0, 0, 0, 0.55);
   --inner-bevel-pill: inset 0 1px 1px 0 rgba(255, 255, 255, 0.25);
 
   /* Frosted Backdrop Filters */
   --filter-blur-smooth: blur(24px) saturate(135%);
   --filter-blur-deep: blur(34px) saturate(145%);
 
-  /* Warm Amber / Orange Accents (Reference Style) */
+  /* Warm Amber / Gold Accents */
   --accent-warm: #fca311;
   --accent-warm-bright: #ffb830;
   --accent-warm-dim: #c87d00;
@@ -47,15 +47,15 @@
 
   /* High-Legibility Light Numerals & Text */
   --text-pure: #ffffff;
-  --text-primary: #f5ebe6;
-  --text-secondary: #baa8a0;
-  --text-muted: #82726b;
-  --text-dim: #544742;
+  --text-primary: #eafaf1;
+  --text-secondary: #9ec2ad;
+  --text-muted: #628571;
+  --text-dim: #3d594a;
 
   /* Shadows */
-  --shadow-floating: 0 16px 36px -6px rgba(0, 0, 0, 0.55), 0 4px 12px rgba(0, 0, 0, 0.35);
-  --shadow-card: 0 10px 24px -4px rgba(0, 0, 0, 0.45);
-  --shadow-pill: 0 4px 14px rgba(0, 0, 0, 0.30);
+  --shadow-floating: 0 16px 36px -6px rgba(0, 0, 0, 0.65), 0 4px 12px rgba(0, 0, 0, 0.45);
+  --shadow-card: 0 10px 24px -4px rgba(0, 0, 0, 0.55);
+  --shadow-pill: 0 4px 14px rgba(0, 0, 0, 0.35);
 
   /* Geometry */
   --radius-sm: 8px;
@@ -83,14 +83,14 @@
   --radius-lg: 18px;
   --radius-xl: 24px;
 
-  --bg-primary: #140e0d;
-  --bg-card: rgba(28, 20, 18, 0.78);
-  --bg-surface: rgba(36, 25, 22, 0.65);
-  --bg-surface-high: rgba(48, 33, 29, 0.78);
-  --bg-surface-highest: rgba(60, 42, 37, 0.85);
+  --bg-primary: #030a06;
+  --bg-card: rgba(8, 22, 14, 0.78);
+  --bg-surface: rgba(10, 26, 17, 0.65);
+  --bg-surface-high: rgba(13, 34, 22, 0.78);
+  --bg-surface-highest: rgba(16, 42, 28, 0.85);
 
-  --border-subtle: rgba(255, 230, 215, 0.10);
-  --border-medium: rgba(255, 230, 215, 0.18);
+  --border-subtle: rgba(160, 255, 200, 0.10);
+  --border-medium: rgba(160, 255, 200, 0.18);
   --border-accent: rgba(252, 163, 17, 0.40);
 
   --accent-gold: var(--accent-warm);
@@ -98,7 +98,7 @@
   --accent-red: var(--status-alert);
   --accent-red-dim: #d93838;
   --accent-red-container: var(--status-alert-bg);
-  --text-on-gold: #1a0e05;
+  --text-on-gold: #030a06;
 
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
   --shadow-md: 0 6px 16px rgba(0, 0, 0, 0.35);
@@ -136,7 +136,7 @@ body:not(.admin-body) {
 }
 
 /* ================================================================
-   AMBIENT BACKGROUND LAYER (Full-bleed cinematic warm glow)
+   AMBIENT BACKGROUND LAYER (Full-bleed cinematic dark green glow)
    ================================================================ */
 .screen-ambient-bg {
   position: fixed;
@@ -145,9 +145,9 @@ body:not(.admin-body) {
   height: calc(100vh + 60px);
   background-size: cover;
   background-position: center;
-  filter: blur(65px) brightness(0.25) saturate(160%);
+  filter: blur(65px) brightness(0.20) saturate(160%);
   transform: scale(1.06);
-  opacity: 0.75;
+  opacity: 0.70;
   z-index: 0;
   pointer-events: none;
   transition: background-image 1.2s ease, opacity 1s ease;
@@ -163,6 +163,7 @@ body:not(.admin-body) {
   overflow: hidden;
   position: relative;
   z-index: 10;
+  background: var(--bg-dark-base);
 }
 
 /* ---------- LEFT 75% COLUMN (Header, Carousel, Flash Footer) ---------- */
@@ -175,12 +176,15 @@ body:not(.admin-body) {
   flex-direction: column;
   overflow: hidden;
   position: relative;
-  border-right: 1px solid rgba(255, 230, 215, 0.12);
-  background: rgba(14, 10, 9, 0.45);
+  /* Bold solid line separator to eliminate zoom flicker / color bleeding */
+  border-right: 3px solid #010503;
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.90);
+  background: #020704;
+  z-index: 12;
 }
 
 /* ================================================================
-   SITE HEADER (Floating Frosted Glassmorphism Overlay on Slides)
+   SITE HEADER (Floating Frosted Glassmorphism Overlay — 40% Opacity)
    ================================================================ */
 .site-header {
   position: absolute;
@@ -192,11 +196,11 @@ body:not(.admin-body) {
   padding: 0 24px;
   display: flex;
   align-items: center;
-  background: rgba(18, 12, 11, 0.62);
+  background: rgba(3, 10, 6, 0.40);
   backdrop-filter: var(--filter-blur-smooth);
   -webkit-backdrop-filter: var(--filter-blur-smooth);
-  border-bottom: 1px solid rgba(255, 230, 215, 0.14);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.55), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  border-bottom: 1px solid rgba(160, 255, 200, 0.12);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.50), inset 0 1px 1px rgba(255, 255, 255, 0.15);
   z-index: 30;
 }
 
@@ -424,19 +428,19 @@ body:not(.admin-body) {
   color: #ffffff;
 }
 
-/* Floating Controls HUD (Frosted Glassmorphism Overlay) */
+/* Floating Controls HUD (Frosted Glassmorphism Overlay — 40% Opacity) */
 .carousel-hud {
   position: absolute;
   bottom: 64px;
   left: 24px;
   right: 24px;
   z-index: 25;
-  background: rgba(22, 14, 12, 0.65);
+  background: rgba(3, 10, 6, 0.40);
   backdrop-filter: var(--filter-blur-smooth);
   -webkit-backdrop-filter: var(--filter-blur-smooth);
-  border: 1px solid rgba(255, 230, 215, 0.18);
+  border: 1px solid rgba(160, 255, 200, 0.15);
   border-radius: var(--radius-pill);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55), inset 0 1px 1px rgba(255, 255, 255, 0.20);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.50), inset 0 1px 1px rgba(255, 255, 255, 0.18);
   padding: 8px 22px;
   display: flex;
   align-items: center;
@@ -534,7 +538,7 @@ body:not(.admin-body) {
 }
 
 /* ================================================================
-   SITE FOOTER (Floating Frosted Glassmorphism Flash Ticker)
+   SITE FOOTER (Floating Frosted Glassmorphism Flash Ticker — 40% Opacity)
    ================================================================ */
 .site-footer {
   position: absolute;
@@ -542,11 +546,11 @@ body:not(.admin-body) {
   left: 0;
   right: 0;
   height: var(--footer-height);
-  background: rgba(18, 12, 11, 0.68);
+  background: rgba(3, 10, 6, 0.40);
   backdrop-filter: var(--filter-blur-smooth);
   -webkit-backdrop-filter: var(--filter-blur-smooth);
-  border-top: 1px solid rgba(255, 230, 215, 0.14);
-  box-shadow: 0 -8px 28px rgba(0, 0, 0, 0.55), inset 0 1px 1px rgba(255, 255, 255, 0.12);
+  border-top: 1px solid rgba(160, 255, 200, 0.12);
+  box-shadow: 0 -8px 28px rgba(0, 0, 0, 0.50), inset 0 1px 1px rgba(255, 255, 255, 0.12);
   display: flex;
   align-items: center;
   padding: 0 20px;
@@ -647,9 +651,8 @@ body:not(.admin-body) {
 /* ================================================================
    RIGHT 25% COLUMN: FULL-HEIGHT CARDS STACK
    1. Weather & Time
-   2. Office Hours Today (no percentage)
-   3. Notice & Advisories
-   4. Schedules of the Month (no today sort)
+   2. Notice & Advisories
+   3. Schedules of the Month
    ================================================================ */
 .tv-right-column {
   flex: 0 0 25%;
@@ -660,11 +663,12 @@ body:not(.admin-body) {
   flex-direction: column;
   gap: 12px;
   padding: 14px;
-  background: rgba(20, 14, 13, 0.82);
+  background: rgba(4, 13, 8, 0.88);
   backdrop-filter: var(--filter-blur-deep);
   -webkit-backdrop-filter: var(--filter-blur-deep);
   overflow: hidden;
-  box-shadow: -10px 0 35px rgba(0, 0, 0, 0.5);
+  box-shadow: -10px 0 35px rgba(0, 0, 0, 0.65);
+  border-left: 1px solid rgba(160, 255, 200, 0.08);
 }
 
 /* Card Surfaces */
@@ -684,7 +688,7 @@ body:not(.admin-body) {
 }
 
 .sidebar-panel:hover {
-  border-color: rgba(255, 235, 220, 0.22);
+  border-color: rgba(180, 255, 215, 0.24);
 }
 
 .sidebar-panel.flex-grow {
@@ -699,7 +703,7 @@ body:not(.admin-body) {
   justify-content: space-between;
   gap: 8px;
   padding-bottom: 6px;
-  border-bottom: 1px solid rgba(255, 230, 215, 0.08);
+  border-bottom: 1px solid rgba(160, 255, 200, 0.08);
 }
 
 .panel-header-left {
@@ -749,7 +753,9 @@ body:not(.admin-body) {
 .live-pill {
   background: var(--status-alert-bg);
   color: var(--status-alert);
-}/* ================================================================
+}
+
+/* ================================================================
    CARD 1: MAXIMIZED ANIMATED WEATHER & CONDITIONS CARD
    ================================================================ */
 .weather-hero-card {
@@ -786,8 +792,8 @@ body:not(.admin-body) {
   width: 100%;
   height: 100%;
   background: 
-    linear-gradient(180deg, rgba(16, 11, 10, 0.70) 0%, rgba(16, 11, 10, 0.15) 45%, rgba(16, 11, 10, 0.88) 100%),
-    linear-gradient(90deg, rgba(16, 11, 10, 0.85) 0%, rgba(16, 11, 10, 0.35) 60%, rgba(16, 11, 10, 0.1) 100%);
+    linear-gradient(180deg, rgba(3, 10, 6, 0.70) 0%, rgba(3, 10, 6, 0.15) 45%, rgba(3, 10, 6, 0.90) 100%),
+    linear-gradient(90deg, rgba(3, 10, 6, 0.88) 0%, rgba(3, 10, 6, 0.40) 60%, rgba(3, 10, 6, 0.12) 100%);
   z-index: 2;
   pointer-events: none;
 }
@@ -807,10 +813,10 @@ body:not(.admin-body) {
   align-items: center;
   gap: 6px;
   padding: 4px 10px;
-  background: rgba(22, 14, 12, 0.72);
+  background: rgba(6, 18, 11, 0.68);
   backdrop-filter: var(--filter-blur-smooth);
   -webkit-backdrop-filter: var(--filter-blur-smooth);
-  border: 1px solid rgba(255, 230, 215, 0.16);
+  border: 1px solid rgba(160, 255, 200, 0.16);
   border-radius: var(--radius-pill);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
@@ -833,10 +839,10 @@ body:not(.admin-body) {
 .weather-location-chip {
   display: inline-block;
   padding: 3px 8px;
-  background: rgba(28, 18, 16, 0.75);
+  background: rgba(8, 24, 15, 0.70);
   backdrop-filter: var(--filter-blur-smooth);
   -webkit-backdrop-filter: var(--filter-blur-smooth);
-  border: 1px solid rgba(255, 230, 215, 0.12);
+  border: 1px solid rgba(160, 255, 200, 0.14);
   border-radius: var(--radius-pill);
   font-family: var(--font-display);
   font-size: 8.5px;
@@ -846,20 +852,30 @@ body:not(.admin-body) {
   color: var(--text-secondary);
 }
 
-/* Floating Telemetry Dock at bottom */
+/* Floating Telemetry Dock at bottom (Aligned to Left) */
 .weather-telemetry-dock {
   position: relative;
   z-index: 5;
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 12px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 4px;
   padding: 12px 16px 14px;
 }
 
-.weather-temp-block {
+.weather-details-left {
   display: flex;
-  align-items: baseline;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  width: 100%;
+}
+
+.weather-temp-row-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .weather-hero-temp {
@@ -869,46 +885,32 @@ body:not(.admin-body) {
   color: #ffffff;
   line-height: 0.95;
   letter-spacing: -0.03em;
-  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.75);
-}
-
-.weather-details-block {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 5px;
-  min-width: 0;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.85);
 }
 
 .weather-hero-desc {
   font-family: var(--font-display);
   font-size: 11.5px;
   font-weight: 700;
-  color: #ffffff;
-  text-align: right;
+  color: var(--text-primary);
+  text-align: left;
   line-height: 1.25;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 220px;
-}
-
-.weather-sub-metrics {
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  max-width: 100%;
 }
 
 .weather-metric-pill {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 3px 8px;
-  background: rgba(22, 14, 12, 0.78);
+  padding: 4px 9px;
+  background: rgba(6, 18, 11, 0.75);
   backdrop-filter: var(--filter-blur-smooth);
   -webkit-backdrop-filter: var(--filter-blur-smooth);
-  border: 1px solid rgba(255, 230, 215, 0.15);
+  border: 1px solid rgba(160, 255, 200, 0.16);
   border-radius: var(--radius-pill);
   font-family: var(--font-display);
   font-size: 10px;
@@ -918,22 +920,8 @@ body:not(.admin-body) {
 }
 
 .weather-metric-pill .material-symbols-outlined {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--accent-warm);
-}
-
-.weather-metric-pill.live {
-  border-color: rgba(49, 210, 156, 0.40);
-  color: #31d29c;
-}
-
-.weather-live-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: #31d29c;
-  box-shadow: 0 0 8px #31d29c;
-  animation: pulse-blink 1.5s ease-in-out infinite;
 }
 
 .status-pill {
@@ -950,19 +938,19 @@ body:not(.admin-body) {
 }
 
 .status-pill.available {
-  background: rgba(30, 60, 48, 0.85);
+  background: rgba(10, 36, 22, 0.85);
   border: 1px solid rgba(49, 210, 156, 0.45);
   color: #31d29c;
 }
 
 .status-pill.busy {
-  background: rgba(60, 45, 20, 0.85);
+  background: rgba(45, 32, 10, 0.85);
   border: 1px solid rgba(252, 163, 17, 0.45);
   color: var(--accent-warm);
 }
 
 .status-pill.closed {
-  background: rgba(45, 45, 45, 0.85);
+  background: rgba(25, 30, 26, 0.85);
   border: 1px solid rgba(255, 255, 255, 0.20);
   color: #9e9e9e;
 }
@@ -976,11 +964,30 @@ body:not(.admin-body) {
 }
 
 /* ================================================================
-   CARD 3: NOTICE & ADVISORIES (Use Whole Card & Dynamic Scale)
+   CARD 2: NOTICE & ADVISORIES (Whole Card + Ambient Bottom Gradient)
    ================================================================ */
 .announcements-panel {
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  /* Stylish subtle bottom ambient gradient */
+  background: 
+    linear-gradient(180deg, rgba(8, 22, 14, 0.65) 0%, rgba(10, 28, 18, 0.70) 65%, rgba(18, 55, 35, 0.82) 100%);
+  box-shadow: var(--shadow-card), var(--inner-bevel-glass), inset 0 -24px 30px -14px rgba(49, 210, 156, 0.16);
+}
+
+/* Decorative subtle bottom gradient glow bar */
+.announcements-panel::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 12px;
+  right: 12px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, rgba(49, 210, 156, 0.55) 30%, rgba(252, 163, 17, 0.50) 70%, transparent 100%);
+  pointer-events: none;
+  border-radius: 2px;
 }
 
 .announcements-container {
@@ -1004,8 +1011,8 @@ body:not(.admin-body) {
   align-items: center;
   gap: 14px;
   padding: 16px 18px;
-  background: rgba(40, 22, 20, 0.55);
-  border: 1px solid rgba(255, 87, 87, 0.22);
+  background: rgba(30, 20, 18, 0.60);
+  border: 1px solid rgba(255, 87, 87, 0.24);
   border-left: 5px solid var(--status-alert);
   border-radius: var(--radius-md);
   box-shadow: inset 0 0 20px rgba(255, 87, 87, 0.08);
@@ -1035,8 +1042,8 @@ body:not(.admin-body) {
   align-items: center;
   gap: 12px;
   padding: 12px 14px;
-  background: rgba(38, 22, 20, 0.50);
-  border: 1px solid rgba(255, 87, 87, 0.18);
+  background: rgba(28, 20, 18, 0.55);
+  border: 1px solid rgba(255, 87, 87, 0.20);
   border-left: 4px solid var(--status-alert);
   border-radius: var(--radius-sm);
 }
@@ -1059,8 +1066,8 @@ body:not(.admin-body) {
   align-items: flex-start;
   gap: 8px;
   padding: 8px 10px;
-  background: rgba(36, 24, 21, 0.50);
-  border: 1px solid rgba(255, 230, 215, 0.06);
+  background: rgba(12, 28, 18, 0.60);
+  border: 1px solid rgba(160, 255, 200, 0.08);
   border-left: 3px solid var(--status-alert);
   border-radius: var(--radius-sm);
   flex-shrink: 0;
@@ -1080,7 +1087,7 @@ body:not(.admin-body) {
 }
 
 /* ================================================================
-   CARD 4: SCHEDULES OF THE MONTH (Smooth Auto-Scroll if > 5)
+   CARD 3: SCHEDULES OF THE MONTH (Smooth Auto-Scroll if > 5)
    ================================================================ */
 .schedules-panel {
   display: flex;
@@ -1107,16 +1114,16 @@ body:not(.admin-body) {
   align-items: flex-start;
   gap: 8px;
   padding: 7px 9px;
-  background: rgba(36, 24, 21, 0.50);
-  border: 1px solid rgba(255, 230, 215, 0.06);
+  background: rgba(12, 28, 18, 0.55);
+  border: 1px solid rgba(160, 255, 200, 0.08);
   border-radius: var(--radius-sm);
   transition: background 0.2s ease;
   flex-shrink: 0;
 }
 
 .month-schedule-item:hover {
-  background: rgba(48, 32, 28, 0.70);
-  border-color: rgba(255, 230, 215, 0.14);
+  background: rgba(16, 38, 24, 0.75);
+  border-color: rgba(160, 255, 200, 0.16);
 }
 
 .month-date-badge {
